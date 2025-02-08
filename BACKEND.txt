@@ -1,0 +1,15 @@
+AQUI IRA TODO LO DE BACKEND
+Agrega cosas por si las dudas y pon la fecha y hora
+para evitar cosas y saber que se hizo
+///////////////////////////////////////////////////
+fecha: Lunes 3 Febrero, 10:30 pm
+
+Se creo la base de Django,
+Lo subi al repo pero el entorno virtual no se sube
+favor de instalarlo, lo hice en windows 10,
+Intalar entorno virtual:
+	cd Backend
+	pip install virtualenv
+	python -m virtualenv venv
+	.venv\Scripts\activate
+///////////////////////////////////////////////////
