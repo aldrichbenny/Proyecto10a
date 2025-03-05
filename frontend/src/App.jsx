@@ -1,25 +1,39 @@
-import { useState } from 'react'
 import React from 'react';
-import { BrowserRouter, Router, Route} from 'react-router-dom';
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter, Routes, Route} from 'react-router-dom';
 
 //Paginas Administrador
-
-
-//Paginas Cliente
+import InicioADM from './pages/Administrador/InicioADM';
 
 
 //Paginas Areas de trabajo
+import InicioAR from './pages/Area/InicioAR';
 
+
+//Paginas Cliente
+import InicioCL from './pages/Cliente/InicioCL';
+
+
+import Login from './pages/Login';
+import Register from './pages/Register';
 
 function App() {
 
   return (
-    <>
-    <p> Hola </p>
-    </>
+    <BrowserRouter>
+      <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+
+          {/*Rutas administrador*/}
+          <Route path="/indexADM" element={<InicioADM />} />
+
+          {/*Rutas Areas de trabajo*/}
+          <Route path="/indexAR" element={<InicioAR />} />
+
+          {/*Rutas Cliente*/}
+          <Route path="/indexCL" element={<InicioCL />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
