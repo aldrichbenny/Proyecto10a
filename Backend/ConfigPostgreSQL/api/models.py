@@ -1,22 +1,24 @@
 from django.db import models
-from django.utils import timezone #para la hora y tiempo real
+from django.utils import timezone 
+from django.core.exceptions import ValidationError
+
 # Create your models here.
 
 
 class Roles(models.Model):
     ROL_CHOICES = (
-        (1,'Cliente'),
-        (2,'JefedeArea'),
-        (3,'Administrador'),
+        ('Cliente', 'Cliente'),
+        ('JefedeArea', 'Jefe de Área'),
+        ('Administrador', 'Administrador'),
     )
     id_rol = models.AutoField(primary_key=True)
-    nombre_rol = models.SmallIntegerField(choices=ROL_CHOICES)
+    nombre_rol = models.CharField(max_length=20, choices=ROL_CHOICES)
     descripcion_rol = models.CharField(max_length=100)
 
     class Meta:
         db_table = 'roles'
     def __str__(self):
-        return dict(self.ROL_CHOICES).get(self.nombre_rol, str(self.nombre_rol + self.id_rol))
+        return str(self.nombre_rol)
 
 class Usuario(models.Model):
     id_usuario = models.AutoField(primary_key=True)
@@ -47,20 +49,20 @@ class Perfil(models.Model):
 
 class Preguntasseguridad(models.Model):
     ASK_CHOICES = (
-        (1,'¿Donde naciste?'),
-        (2,'¿Año que naciste?'),
-        (3,'¿Nombre de un familiar?'),
-        (4,'¿Color favorito?'),
-        (5,'¿Numero favorito?'),
-        (6,'¿Que edad tuviste en el 2010?'),
+        ('¿Donde naciste?', '¿Donde naciste?'),
+        ('¿Año que naciste?', '¿Año que naciste?'),
+        ('¿Nombre de un familiar?', '¿Nombre de un familiar?'),
+        ('¿Color favorito?', '¿Color favorito?'),
+        ('¿Numero favorito?', '¿Numero favorito?'),
+        ('¿Que edad tuviste en el 2010?', '¿Que edad tuviste en el 2010?'),
     )
 
     id_pregunta = models.AutoField(primary_key=True)
-    pregunta1 = models.SmallIntegerField(choices=ASK_CHOICES)
+    pregunta1 = models.CharField(max_length=50, choices=ASK_CHOICES)
     respuesta1 = models.CharField(max_length=50)
-    pregunta2 = models.SmallIntegerField(choices=ASK_CHOICES)
+    pregunta2 = models.CharField(max_length=50, choices=ASK_CHOICES)
     respuesta2 = models.CharField(max_length=50)
-    pregunta3 = models.SmallIntegerField(choices=ASK_CHOICES)
+    pregunta3 = models.CharField(max_length=50, choices=ASK_CHOICES)
     respuesta3 = models.CharField(max_length=50)
     id_usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, db_column='id_usuario')
 
@@ -69,6 +71,10 @@ class Preguntasseguridad(models.Model):
 
     def __str__(self):
         return str(self.id_pregunta)
+    
+    def clean(self):
+        if len({self.pregunta1, self.pregunta2, self.pregunta3}) < 3:
+            raise ValidationError("Las preguntas seleccionadas no pueden repetirse.")
     
 #///////////////////////////////////////////////////////////////////////////////////////////////////
 #///////////////////////////////////////////////////////////////////////////////////////////////////

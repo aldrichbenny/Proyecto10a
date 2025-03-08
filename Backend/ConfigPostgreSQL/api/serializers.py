@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django import forms
 from .models import *
 
 
@@ -8,10 +9,11 @@ class Roles_Serializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class Usuario_Serializer(serializers.ModelSerializer):
+    detalle_id_rol = Roles_Serializer(source='id_rol', read_only=True)    
     class Meta:
         model = Usuario
-        fields = '__all__'
-
+        fields = ['id_usuario', 'correo', 'contraseña', 'id_rol', 'detalle_id_rol']
+           
 class Perfil_Serializer(serializers.ModelSerializer):
     class Meta:
         model = Perfil
@@ -21,6 +23,17 @@ class Preguntasseguridad_Serializer(serializers.ModelSerializer):
     class Meta:
         model = Preguntasseguridad
         fields = '__all__'
+
+    def clean(self):
+        cleaned_data = super().clean()
+        pregunta1 = cleaned_data.get('pregunta1')
+        pregunta2 = cleaned_data.get('pregunta2')
+        pregunta3 = cleaned_data.get('pregunta3')
+
+        if len({pregunta1, pregunta2, pregunta3}) < 3:
+            raise forms.ValidationError("Las preguntas seleccionadas no pueden repetirse.")
+
+        return cleaned_data
 
 #--------------------------------------------------------------------------------
 
