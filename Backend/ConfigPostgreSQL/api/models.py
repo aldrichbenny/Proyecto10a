@@ -12,7 +12,7 @@ class Roles(models.Model):
         ('Administrador', 'Administrador'),
     )
     id_rol = models.AutoField(primary_key=True)
-    nombre_rol = models.CharField(max_length=20, choices=ROL_CHOICES)
+    nombre_rol = models.CharField(max_length=20, choices=ROL_CHOICES, unique=True)
     descripcion_rol = models.CharField(max_length=100)
 
     class Meta:
@@ -82,7 +82,7 @@ class Preguntasseguridad(models.Model):
 
 class Categoria(models.Model):
     id_categoria = models.AutoField(primary_key=True)
-    nombre_categoria = models.CharField(max_length=50)
+    nombre_categoria = models.CharField(max_length=50, unique=True)
     descripcion_categoria = models.CharField(max_length=100)
     class Meta:
         db_table = 'categoria'
@@ -101,27 +101,27 @@ class Productos(models.Model):
         db_table = 'productos'
     def __str__(self):
         return self.nombre_producto
-    
-class Talla(models.Model):
-    id_talla = models.AutoField(primary_key=True)
-    nombre_talla = models.CharField(max_length=50)
-    cantidad = models.IntegerField(default=0)
-    id_producto = models.ForeignKey(Productos, on_delete=models.CASCADE, db_column='id_producto')
 
-    class Meta:
-        db_table = 'talla'
-    def __str__(self):
-        return self.nombre_talla
-    
 class Colores(models.Model):
     id_color = models.AutoField(primary_key=True)
     nombre_color = models.CharField(max_length=50)
-    id_talla = models.ForeignKey(Talla, on_delete=models.CASCADE, db_column='id_talla')
 
     class Meta:
         db_table = 'colores'
     def __str__(self):
         return self.nombre_color
+      
+class Talla(models.Model):
+    id_talla = models.AutoField(primary_key=True)
+    nombre_talla = models.CharField(max_length=50)
+    cantidad = models.IntegerField(default=0)
+    id_producto = models.ForeignKey(Productos, on_delete=models.CASCADE, db_column='id_producto')
+    id_color = models.ForeignKey(Colores, on_delete=models.CASCADE, db_column='id_color')
+
+    class Meta:
+        db_table = 'talla'
+    def __str__(self):
+        return f"{self.nombre_talla} - {self.id_producto.nombre_producto}"
     
 class Stock(models.Model):
     id_stock = models.AutoField(primary_key=True)
@@ -141,7 +141,7 @@ class Historial_stock(models.Model):
     descripcion_historial_stock = models.CharField(max_length=100)
     fecha_historial_stock = models.DateField(default=timezone.now)
     hora_historial_stock = models.TimeField(default=timezone.now)
-    id_stock = models.ForeignKey(Stock, on_delete=models.CASCADE, db_column='id_stock')
+    id_talla = models.ForeignKey(Talla, on_delete=models.CASCADE, db_column='id_talla')
 
     class Meta:
         db_table = 'historial_stock'
@@ -163,7 +163,7 @@ class Solicitud(models.Model):
     class Meta:
         db_table = 'solicitud'
         constraints = [
-            models.CheckConstraint(check=models.Q(estado_solicitud__in=['ENREVISION', 'CORTE', 'EMBALAJE', 'ENVIADO']), name='estado_solicitud')
+            models.CheckConstraint(check=models.Q(estado_solicitud__in=['ENREVISION','PENDIENTE', 'CORTE', 'EMBALAJE', 'ENVIADO']), name='estado_solicitud')
         ]
     def __str__(self):
         return self.id_solicitud
@@ -213,7 +213,7 @@ class Pedido(models.Model):
         db_table = 'pedido'
         constraints = [
             models.CheckConstraint(check=models.Q(cantidad_total__gte=0),  name='pedido_cantidad_total'),
-            models.CheckConstraint(check=models.Q(estado_pedido__in=['ENREVISION', 'CORTE', 'EMBALAJE', 'ENVIADO']), name='pedido_estado_solicitud')
+            models.CheckConstraint(check=models.Q(estado_pedido__in=['ENREVISION','PENDIENTE','CORTE', 'EMBALAJE', 'ENVIADO']), name='pedido_estado_solicitud')
         ]
     def __str__(self):
         return self.id_pedido
@@ -228,7 +228,7 @@ class Historial_pedido(models.Model):
     class Meta:
         db_table = 'historial_pedido'
         constraints = [
-            models.CheckConstraint(check=models.Q(estado_seguimiento__in=['ENREVISION', 'CORTE', 'EMBALAJE', 'ENVIADO']), name='historial_estado_solicitud')
+            models.CheckConstraint(check=models.Q(estado_seguimiento__in=['ENREVISION','PENDIENTE', 'CORTE', 'EMBALAJE', 'ENVIADO']), name='historial_estado_solicitud')
         ]
     def __str__(self):
         return self.id_historial_pedido
