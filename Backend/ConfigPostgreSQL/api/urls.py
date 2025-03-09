@@ -4,7 +4,7 @@ from .views import ApiUrlsView
 
 urlpatterns = [
 
-    path('api-routes/', ApiUrlsView.as_view(), name='api_urls'),
+    path('', ApiUrlsView.as_view(), name='api_urls'),
 
     # ----------------------------------------------------------------------------------------------------
 
