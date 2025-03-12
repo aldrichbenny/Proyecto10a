@@ -14,12 +14,20 @@ class Roles_RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Roles.objects.all()
     serializer_class = Roles_Serializer
 
+#/////////////////////////////////
+#           AQUI EL HASH
+#/////////////////////////////////
 class Usuario_ListCreate(generics.ListCreateAPIView):
     queryset = Usuario.objects.all()
     serializer_class = Usuario_Serializer
 class Usuario_RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Usuario.objects.all()
     serializer_class = Usuario_Serializer
+
+#/////////////////////////////////
+#           AQUI EL HASH
+#/////////////////////////////////
+
 
 class Perfil_ListCreate(generics.ListCreateAPIView):
     queryset = Perfil.objects.all()
@@ -127,23 +135,23 @@ class Historial_pedido_RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIVi
 
 class ApiUrlsView(APIView):
     def get(self, request, *args, **kwargs):
-        url_patterns = [
-            reverse('Roles_list_create'),
-            reverse('Usuario_list_create'),
-            reverse('Perfillist_create'),
-            reverse('Preguntasseguridad_list_create'),
-            reverse('Categoria_list_create'),
-            reverse('Productos_list_create'),
-            reverse('Talla_list_create'),
-            reverse('Colores_list_create'),
-            reverse('Stock_list_create'),
-            reverse('Historial_stock_list_create'),
-            reverse('Solicitud_list_create'),
-            reverse('Solicitud_producto_list_create'),
-            reverse('Area_list_create'),
-            reverse('Trabajo_list_create'),
-            reverse('Pedido_list_create'),
-            reverse('Historial_pedido_list_create'),
-        ]
+        url_patterns = {
+            "Roles": request.build_absolute_uri(reverse('Roles_list_create')),
+            "Usuario": request.build_absolute_uri(reverse('Usuario_list_create')),
+            "Perfil": request.build_absolute_uri(reverse('Perfillist_create')),
+            "Preguntas de seguridad": request.build_absolute_uri(reverse('Preguntasseguridad_list_create')),
+            "Categoría": request.build_absolute_uri(reverse('Categoria_list_create')),
+            "Productos": request.build_absolute_uri(reverse('Productos_list_create')),
+            "Talla": request.build_absolute_uri(reverse('Talla_list_create')),
+            "Colores": request.build_absolute_uri(reverse('Colores_list_create')),
+            "Stock": request.build_absolute_uri(reverse('Stock_list_create')),
+            "Historial de stock": request.build_absolute_uri(reverse('Historial_stock_list_create')),
+            "Solicitud": request.build_absolute_uri(reverse('Solicitud_list_create')),
+            "Solicitud de producto": request.build_absolute_uri(reverse('Solicitud_producto_list_create')),
+            "Área": request.build_absolute_uri(reverse('Area_list_create')),
+            "Trabajo": request.build_absolute_uri(reverse('Trabajo_list_create')),
+            "Pedido": request.build_absolute_uri(reverse('Pedido_list_create')),
+            "Historial de pedido": request.build_absolute_uri(reverse('Historial_pedido_list_create')),
+        }
 
         return Response(url_patterns, status=status.HTTP_200_OK)
