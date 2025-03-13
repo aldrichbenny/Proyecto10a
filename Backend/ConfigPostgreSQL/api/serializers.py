@@ -109,11 +109,12 @@ class Trabajo_Serializer(serializers.ModelSerializer):
         fields = ['id_trabajo','descripcion_trabajo','id_area','detalle_id_area']
 
 class Pedido_Serializer(serializers.ModelSerializer):
-    detalle_id_area = Area_Serializer(source='id_area', read_only=True)    
-    detalle_id_solicitud = Solicitud_Serializer(source='id_solicitud', read_only=True)   
+    detalle_id_area = Area_Serializer(source='id_area', read_only=True)  
+    detalle_id_solicitud_producto = Solicitud_producto_Serializer(source='id_solicitud_producto', read_only=True)   
+    
     class Meta:
         model = Pedido
-        fields = ['id_pedido','estado_pedido','cantidad_total','id_solicitud','detalle_id_solicitud','id_area','detalle_id_area']
+        fields = ['id_pedido', 'estado_pedido', 'cantidad_total', 'id_solicitud_producto', 'detalle_id_solicitud_producto', 'id_area', 'detalle_id_area']
 
 class Historial_pedido_Serializer(serializers.ModelSerializer):
     detalle_id_pedido = Pedido_Serializer(source='id_pedido', read_only=True)    

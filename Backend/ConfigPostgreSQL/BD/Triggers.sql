@@ -51,7 +51,7 @@ CREATE OR REPLACE FUNCTION insert_historial_stock()
 RETURNS TRIGGER AS $$
 BEGIN
     INSERT INTO historial_stock (cantidad, descripcion_historial_stock, fecha_historial_stock, hora_historial_stock, id_talla)
-    VALUES (NEW.cantidad, 'Producto nuevo agregado', CURRENT_DATE, CURRENT_TIME, NEW.id_talla);
+    VALUES (NEW.cantidad, 'New product added', CURRENT_DATE, CURRENT_TIME, NEW.id_talla);
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -68,10 +68,10 @@ RETURNS TRIGGER AS $$
 BEGIN
     IF NEW.cantidad > OLD.cantidad THEN
         INSERT INTO historial_stock (cantidad, descripcion_historial_stock, fecha_historial_stock, hora_historial_stock, id_talla)
-        VALUES (NEW.cantidad - OLD.cantidad, 'Producto agregado', CURRENT_DATE, CURRENT_TIME, NEW.id_talla);
+        VALUES (NEW.cantidad - OLD.cantidad, 'Product added', CURRENT_DATE, CURRENT_TIME, NEW.id_talla);
     ELSIF NEW.cantidad < OLD.cantidad THEN
         INSERT INTO historial_stock (cantidad, descripcion_historial_stock, fecha_historial_stock, hora_historial_stock, id_talla)
-        VALUES (OLD.cantidad - NEW.cantidad, 'Producto retirado', CURRENT_DATE, CURRENT_TIME, NEW.id_talla);
+        VALUES (OLD.cantidad - NEW.cantidad, 'Product removed', CURRENT_DATE, CURRENT_TIME, NEW.id_talla);
     END IF;
     RETURN NEW;
 END;
@@ -82,3 +82,5 @@ AFTER UPDATE ON talla
 FOR EACH ROW
 WHEN (NEW.cantidad <> OLD.cantidad)
 EXECUTE FUNCTION update_historial_stock();
+
+/* ///////////////////////////////////////////////////////////////////////// */
