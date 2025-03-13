@@ -3,7 +3,6 @@ from .views import *
 from .views import ApiUrlsView
 
 urlpatterns = [
-
     path('', ApiUrlsView.as_view(), name='api_urls'),
 
     # ----------------------------------------------------------------------------------------------------

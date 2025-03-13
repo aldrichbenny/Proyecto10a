@@ -68,15 +68,22 @@ class Stock_Serializer(serializers.ModelSerializer):
         fields = ['id_stock','cantidad_actual','cantidad_eliminada','cantidad_agregada','id_talla','detalle_id_talla']
 
 class Historial_stock_Serializer(serializers.ModelSerializer):
-    detalle_id_talla = Talla_Serializer(source='id_talla', read_only=True)   
+    detalle_id_talla = Talla_Serializer(source='id_talla', read_only=True)
+    fecha_historial_stock = serializers.DateField(read_only=True) 
+    hora_historial_stock = serializers.TimeField(read_only=True) 
+
     class Meta:
         model = Historial_stock
-        fields = ['id_historial_stock','cantidad','descripcion_historial_stock','fecha_historial_stock','hora_historial_stock','id_talla','detalle_id_talla']
+        fields = ['id_historial_stock', 'cantidad', 'descripcion_historial_stock', 'fecha_historial_stock', 'hora_historial_stock', 'id_talla', 'detalle_id_talla']
+
 
 #--------------------------------------------------------------------------------
 
 class Solicitud_Serializer(serializers.ModelSerializer):
-    detalle_id_usuario = Usuario_Serializer(source='id_usuario', read_only=True)    
+    detalle_id_usuario = Usuario_Serializer(source='id_usuario', read_only=True) 
+    fecha_registro = serializers.DateField(read_only=True) 
+    hora_registro = serializers.TimeField(read_only=True) 
+
     class Meta:
         model = Solicitud
         fields = ['id_solicitud','fecha_registro','hora_registro','fecha_entrega_estimada','estado_solicitud','id_usuario','detalle_id_usuario']
@@ -110,6 +117,8 @@ class Pedido_Serializer(serializers.ModelSerializer):
 
 class Historial_pedido_Serializer(serializers.ModelSerializer):
     detalle_id_pedido = Pedido_Serializer(source='id_pedido', read_only=True)    
+    fecha = serializers.DateField(read_only=True) 
+    hora = serializers.TimeField(read_only=True) 
 
     class Meta:
         model = Historial_pedido
