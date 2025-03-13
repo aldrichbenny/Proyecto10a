@@ -19,7 +19,8 @@ class Roles(models.Model):
         db_table = 'roles'
     def __str__(self):
         return str(self.nombre_rol)
-
+    
+#////////////////////////////////////////////////////
 class Usuario(models.Model):
     id_usuario = models.AutoField(primary_key=True)
     correo = models.EmailField(max_length=50, unique=True)
@@ -31,7 +32,7 @@ class Usuario(models.Model):
 
     def __str__(self):
         return str(self.correo)
-    
+#////////////////////////////////////////////////////
 class Perfil(models.Model):
     id_perfil = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=50)
@@ -139,8 +140,8 @@ class Historial_stock(models.Model):
     id_historial_stock = models.AutoField(primary_key=True)
     cantidad = models.IntegerField()
     descripcion_historial_stock = models.CharField(max_length=100)
-    fecha_historial_stock = models.DateField(default=timezone.now)
-    hora_historial_stock = models.TimeField(default=timezone.now)
+    fecha_historial_stock = models.DateField(default=timezone.localdate)
+    hora_historial_stock = models.TimeField(default=timezone.localtime(timezone.now()).time())
     id_talla = models.ForeignKey(Talla, on_delete=models.CASCADE, db_column='id_talla')
 
     class Meta:
@@ -154,9 +155,9 @@ class Historial_stock(models.Model):
 
 class Solicitud(models.Model):
     id_solicitud = models.AutoField(primary_key=True)
-    fecha_registro = models.DateField(default=timezone.now) 
-    hora_registro = models.TimeField(default=timezone.now)
-    fecha_entrega_estimada = models.DateField(default=timezone.now) 
+    fecha_registro = models.DateField(default=timezone.localdate)
+    hora_registro = models.TimeField(default=timezone.localtime(timezone.now()).time())
+    fecha_entrega_estimada = models.DateField(default=timezone.localdate)
     estado_solicitud = models.CharField(max_length=20)
     id_usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, db_column='id_usuario')
 
@@ -221,8 +222,8 @@ class Pedido(models.Model):
 class Historial_pedido(models.Model):
     id_historial_pedido = models.AutoField(primary_key=True)
     estado_seguimiento = models.CharField(max_length=20) 
-    fecha = models.DateField(default=timezone.now)      
-    hora = models.TimeField(default=timezone.now)
+    fecha = models.DateField(default=timezone.localdate)    
+    hora = models.TimeField(default=timezone.localtime(timezone.now()).time())
     id_pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, db_column='id_pedido')
 
     class Meta:
