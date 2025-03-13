@@ -7,9 +7,9 @@ from django.core.exceptions import ValidationError
 
 class Roles(models.Model):
     ROL_CHOICES = (
-        ('Cliente', 'Cliente'),
-        ('JefedeArea', 'Jefe de Área'),
-        ('Administrador', 'Administrador'),
+        ('Customer', 'Customer'),
+        ('AreaManager', 'Area Manager'),
+        ('Administrator', 'Administrator'),
     )
     id_rol = models.AutoField(primary_key=True)
     nombre_rol = models.CharField(max_length=20, choices=ROL_CHOICES, unique=True)
@@ -50,12 +50,12 @@ class Perfil(models.Model):
 
 class Preguntasseguridad(models.Model):
     ASK_CHOICES = (
-        ('¿Donde naciste?', '¿Donde naciste?'),
-        ('¿Año que naciste?', '¿Año que naciste?'),
-        ('¿Nombre de un familiar?', '¿Nombre de un familiar?'),
-        ('¿Color favorito?', '¿Color favorito?'),
-        ('¿Numero favorito?', '¿Numero favorito?'),
-        ('¿Que edad tuviste en el 2010?', '¿Que edad tuviste en el 2010?'),
+        ('Where were you born?', 'Where were you born?'),
+        ('What year were you born?', 'What year were you born?'),
+        ('Name of a relative?', 'Name of a relative?'),
+        ('Favorite color?', 'Favorite color?'),
+        ('Favorite number?', 'Favorite number?'),
+        ('How old were you in 2010?', 'How old were you in 2010?'),
     )
 
     id_pregunta = models.AutoField(primary_key=True)
@@ -121,6 +121,10 @@ class Talla(models.Model):
 
     class Meta:
         db_table = 'talla'
+        unique_together = ('nombre_talla', 'id_producto', 'id_color')
+        constraints = [
+            models.CheckConstraint(check=models.Q(cantidad__gte=0), name='talla_cantidad_no_negativa')
+        ]
     def __str__(self):
         return f"{self.nombre_talla} - {self.id_producto.nombre_producto}"
     
@@ -154,20 +158,28 @@ class Historial_stock(models.Model):
 #///////////////////////////////////////////////////////////////////////////////////////////////////
 
 class Solicitud(models.Model):
+    STATUS_CHOICES = (
+        ('IN REVIEW', 'IN REVIEW'),
+        ('PENDING', 'PENDING'),
+        ('CUT-OFF', 'CUT-OFF'),
+        ('PACKAGING', 'PACKAGING'),
+        ('SHIPPED', 'SHIPPED'),
+    )
+
     id_solicitud = models.AutoField(primary_key=True)
     fecha_registro = models.DateField(default=timezone.localdate)
     hora_registro = models.TimeField(default=timezone.localtime(timezone.now()).time())
     fecha_entrega_estimada = models.DateField(default=timezone.localdate)
-    estado_solicitud = models.CharField(max_length=20)
+    estado_solicitud = models.CharField(max_length=20, choices=STATUS_CHOICES)
     id_usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, db_column='id_usuario')
 
     class Meta:
         db_table = 'solicitud'
         constraints = [
-            models.CheckConstraint(check=models.Q(estado_solicitud__in=['ENREVISION','PENDIENTE', 'CORTE', 'EMBALAJE', 'ENVIADO']), name='estado_solicitud')
+            models.CheckConstraint(check=models.Q(estado_solicitud__in=['IN REVIEW', 'PENDING', 'CUT-OFF', 'PACKAGING', 'SHIPPED']), name='estado_solicitud')
         ]
     def __str__(self):
-        return self.id_solicitud
+        return str(self.id_solicitud)    
     
 class Solicitud_producto(models.Model):
     id_solicitud_producto = models.AutoField(primary_key=True)
@@ -181,7 +193,7 @@ class Solicitud_producto(models.Model):
             models.CheckConstraint(check=models.Q(cantidad_total__gte=0),  name='solicitud_cantidad_total'),
         ]
     def __str__(self):
-        return self.id_solicitud_producto
+        return str(self.id_solicitud_producto)
 
 class Area(models.Model):
     id_area = models.AutoField(primary_key=True)
@@ -191,7 +203,7 @@ class Area(models.Model):
     class Meta:
         db_table = 'area'
     def __str__(self):
-        return self.nombre_area
+        return str(self.nombre_area)
     
 class Trabajo(models.Model):
     id_trabajo = models.AutoField(primary_key=True)
@@ -201,27 +213,44 @@ class Trabajo(models.Model):
     class Meta:
         db_table = 'trabajo'
     def __str__(self):
-        return self.id_trabajo
+        return str(self.id_trabajo)
 
 class Pedido(models.Model):
+    STATUSP_CHOICES = (
+        ('IN REVIEW', 'IN REVIEW'),
+        ('PENDING', 'PENDING'),
+        ('CUT-OFF', 'CUT-OFF'),
+        ('PACKAGING', 'PACKAGING'),
+        ('SHIPPED', 'SHIPPED'),
+    )
+
     id_pedido = models.AutoField(primary_key=True)
-    estado_pedido  = models.CharField(max_length=20) 
+    estado_pedido = models.CharField(max_length=20, choices=STATUSP_CHOICES) 
     cantidad_total = models.IntegerField(default=0)  
-    id_solicitud = models.ForeignKey(Solicitud, on_delete=models.CASCADE, db_column='id_solicitud')
+    id_solicitud_producto = models.ForeignKey(Solicitud_producto, on_delete=models.CASCADE, db_column='id_solicitud_producto')
     id_area = models.ForeignKey(Area, on_delete=models.CASCADE, db_column='id_area')
 
     class Meta:
         db_table = 'pedido'
         constraints = [
             models.CheckConstraint(check=models.Q(cantidad_total__gte=0),  name='pedido_cantidad_total'),
-            models.CheckConstraint(check=models.Q(estado_pedido__in=['ENREVISION','PENDIENTE','CORTE', 'EMBALAJE', 'ENVIADO']), name='pedido_estado_solicitud')
+            models.CheckConstraint(check=models.Q(estado_pedido__in=['IN REVIEW', 'PENDING', 'CUT-OFF', 'PACKAGING', 'SHIPPED']), name='pedido_estado_solicitud')
         ]
     def __str__(self):
-        return self.id_pedido
+        return str(self.id_pedido)
+
 
 class Historial_pedido(models.Model):
+    STATUSHP_CHOICES = (
+        ('IN REVIEW', 'IN REVIEW'),
+        ('PENDING', 'PENDING'),
+        ('CUT-OFF', 'CUT-OFF'),
+        ('PACKAGING', 'PACKAGING'),
+        ('SHIPPED', 'SHIPPED'),
+    )
+
     id_historial_pedido = models.AutoField(primary_key=True)
-    estado_seguimiento = models.CharField(max_length=20) 
+    estado_seguimiento = models.CharField(max_length=20, choices=STATUSHP_CHOICES) 
     fecha = models.DateField(default=timezone.localdate)    
     hora = models.TimeField(default=timezone.localtime(timezone.now()).time())
     id_pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, db_column='id_pedido')
@@ -229,8 +258,7 @@ class Historial_pedido(models.Model):
     class Meta:
         db_table = 'historial_pedido'
         constraints = [
-            models.CheckConstraint(check=models.Q(estado_seguimiento__in=['ENREVISION','PENDIENTE', 'CORTE', 'EMBALAJE', 'ENVIADO']), name='historial_estado_solicitud')
+            models.CheckConstraint(check=models.Q(estado_seguimiento__in=['IN REVIEW', 'PENDING', 'CUT-OFF', 'PACKAGING', 'SHIPPED']), name='historial_estado_solicitud')
         ]
     def __str__(self):
-        return self.id_historial_pedido
-
+        return str(self.id_historial_pedido)
