@@ -83,7 +83,7 @@ INSERT INTO solicitud (fecha_registro, hora_registro, fecha_entrega_estimada, es
 (CURRENT_DATE, CURRENT_TIME, CURRENT_DATE + INTERVAL '7 days', 'IN REVIEW', 1),
 (CURRENT_DATE, CURRENT_TIME, CURRENT_DATE + INTERVAL '5 days', 'IN REVIEW', 2);
 
-INSERT INTO solicitud_producto (cantidad_total, id_producto, id_solicitud) VALUES 
+INSERT INTO solicitud_producto (cantidad_total, id_talla, id_solicitud) VALUES 
 (2, 1, 1),
 (3, 2, 2),
 (1, 5, 3);
