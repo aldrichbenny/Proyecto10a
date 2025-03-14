@@ -89,11 +89,11 @@ class Solicitud_Serializer(serializers.ModelSerializer):
         fields = ['id_solicitud','fecha_registro','hora_registro','fecha_entrega_estimada','estado_solicitud','id_usuario','detalle_id_usuario']
 
 class Solicitud_producto_Serializer(serializers.ModelSerializer):
-    detalle_id_producto = Productos_Serializer(source='id_producto', read_only=True)   
+    detalle_id_talla = Talla_Serializer(source='id_talla', read_only=True)   
     detalle_id_solicitud = Solicitud_Serializer(source='id_solicitud', read_only=True)   
     class Meta:
         model = Solicitud_producto
-        fields = ['id_solicitud_producto','cantidad_total','id_producto','detalle_id_producto','id_solicitud','detalle_id_solicitud']
+        fields = ['id_solicitud_producto','cantidad_total','id_talla','detalle_id_talla','id_solicitud','detalle_id_solicitud']
 
 class Area_Serializer(serializers.ModelSerializer):
     detalle_id_usuario = Usuario_Serializer(source='id_usuario', read_only=True)    

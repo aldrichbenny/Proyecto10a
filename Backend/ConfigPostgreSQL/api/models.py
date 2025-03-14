@@ -46,7 +46,7 @@ class Perfil(models.Model):
         db_table = 'perfil'
 
     def __str__(self):
-        return self.nombre + ' ' + self.apellido_pat + ' ' + self.apellido_mat
+        return str(self.nombre + ' ' + self.apellido_pat + ' ' + self.apellido_mat)
 
 class Preguntasseguridad(models.Model):
     ASK_CHOICES = (
@@ -88,7 +88,7 @@ class Categoria(models.Model):
     class Meta:
         db_table = 'categoria'
     def __str__(self):
-        return self.nombre_categoria
+        return str(self.nombre_categoria)
 
 class Productos(models.Model):
     id_producto = models.AutoField(primary_key=True)
@@ -101,7 +101,7 @@ class Productos(models.Model):
     class Meta:
         db_table = 'productos'
     def __str__(self):
-        return self.nombre_producto
+        return str(self.nombre_producto)
 
 class Colores(models.Model):
     id_color = models.AutoField(primary_key=True)
@@ -110,7 +110,7 @@ class Colores(models.Model):
     class Meta:
         db_table = 'colores'
     def __str__(self):
-        return self.nombre_color
+        return str(self.nombre_color)
       
 class Talla(models.Model):
     id_talla = models.AutoField(primary_key=True)
@@ -138,7 +138,7 @@ class Stock(models.Model):
     class Meta:
         db_table = 'stock'
     def __str__(self):
-        return self.id_stock
+        return str(self.id_stock)
     
 class Historial_stock(models.Model):
     id_historial_stock = models.AutoField(primary_key=True)
@@ -151,7 +151,7 @@ class Historial_stock(models.Model):
     class Meta:
         db_table = 'historial_stock'
     def __str__(self):
-        return self.id_historial_stock
+        return str(self.id_historial_stock)
 
 #///////////////////////////////////////////////////////////////////////////////////////////////////
 #///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -184,7 +184,7 @@ class Solicitud(models.Model):
 class Solicitud_producto(models.Model):
     id_solicitud_producto = models.AutoField(primary_key=True)
     cantidad_total = models.IntegerField(default=0)
-    id_producto = models.ForeignKey(Productos, on_delete=models.CASCADE, db_column='id_producto')
+    id_talla = models.ForeignKey(Talla, on_delete=models.CASCADE, db_column='id_talla')
     id_solicitud = models.ForeignKey(Solicitud, on_delete=models.CASCADE, db_column='id_solicitud')
 
     class Meta:

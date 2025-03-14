@@ -51,7 +51,7 @@ CREATE OR REPLACE FUNCTION insert_historial_stock()
 RETURNS TRIGGER AS $$
 BEGIN
     INSERT INTO historial_stock (cantidad, descripcion_historial_stock, fecha_historial_stock, hora_historial_stock, id_talla)
-    VALUES (NEW.cantidad, 'New product added', CURRENT_DATE, CURRENT_TIME, NEW.id_talla);
+    VALUES (NEW.cantidad, 'New product added', CURRENT_TIMESTAMP AT TIME ZONE 'America/Tijuana', CURRENT_TIMESTAMP AT TIME ZONE 'America/Tijuana', NEW.id_talla);
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -68,10 +68,10 @@ RETURNS TRIGGER AS $$
 BEGIN
     IF NEW.cantidad > OLD.cantidad THEN
         INSERT INTO historial_stock (cantidad, descripcion_historial_stock, fecha_historial_stock, hora_historial_stock, id_talla)
-        VALUES (NEW.cantidad - OLD.cantidad, 'Product added', CURRENT_DATE, CURRENT_TIME, NEW.id_talla);
+        VALUES (NEW.cantidad - OLD.cantidad, 'Product added', CURRENT_TIMESTAMP AT TIME ZONE 'America/Tijuana', CURRENT_TIMESTAMP AT TIME ZONE 'America/Tijuana', NEW.id_talla);
     ELSIF NEW.cantidad < OLD.cantidad THEN
         INSERT INTO historial_stock (cantidad, descripcion_historial_stock, fecha_historial_stock, hora_historial_stock, id_talla)
-        VALUES (OLD.cantidad - NEW.cantidad, 'Product removed', CURRENT_DATE, CURRENT_TIME, NEW.id_talla);
+        VALUES (OLD.cantidad - NEW.cantidad, 'Product removed', CURRENT_TIMESTAMP AT TIME ZONE 'America/Tijuana', CURRENT_TIMESTAMP AT TIME ZONE 'America/Tijuana', NEW.id_talla);
     END IF;
     RETURN NEW;
 END;
@@ -84,3 +84,55 @@ WHEN (NEW.cantidad <> OLD.cantidad)
 EXECUTE FUNCTION update_historial_stock();
 
 /* ///////////////////////////////////////////////////////////////////////// */
+
+CREATE OR REPLACE FUNCTION insert_historial_pedido()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO historial_pedido (estado_seguimiento, fecha, hora, id_pedido)
+    VALUES (NEW.estado_pedido, CURRENT_TIMESTAMP AT TIME ZONE 'America/Tijuana', CURRENT_TIMESTAMP AT TIME ZONE 'America/Tijuana', NEW.id_pedido);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_insert_historial_pedido
+AFTER INSERT ON pedido
+FOR EACH ROW
+EXECUTE FUNCTION insert_historial_pedido();
+
+CREATE OR REPLACE FUNCTION update_historial_pedido()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF OLD.estado_pedido <> NEW.estado_pedido THEN
+        INSERT INTO historial_pedido (estado_seguimiento, fecha, hora, id_pedido)
+        VALUES (NEW.estado_pedido, CURRENT_TIMESTAMP AT TIME ZONE 'America/Tijuana', CURRENT_TIMESTAMP AT TIME ZONE 'America/Tijuana', NEW.id_pedido);
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_update_historial_pedido
+AFTER UPDATE OF estado_pedido ON pedido
+FOR EACH ROW
+EXECUTE FUNCTION update_historial_pedido();
+
+/* ///////////////////////////////////////////////////////////////////////// */
+
+CREATE OR REPLACE FUNCTION update_stock_and_historial()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE talla
+    SET cantidad = cantidad - NEW.cantidad_total
+    WHERE id_talla = NEW.id_talla;
+
+    INSERT INTO historial_stock (cantidad, descripcion_historial_stock, fecha_historial_stock, hora_historial_stock, id_talla)
+    VALUES (NEW.cantidad_total, 'Product ordered by customer', CURRENT_TIMESTAMP AT TIME ZONE 'America/Tijuana', CURRENT_TIMESTAMP AT TIME ZONE 'America/Tijuana', NEW.id_talla);
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_update_stock_and_historial
+AFTER INSERT ON solicitud_producto
+FOR EACH ROW
+EXECUTE FUNCTION update_stock_and_historial();
+
