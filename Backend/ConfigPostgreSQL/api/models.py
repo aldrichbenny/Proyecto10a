@@ -93,15 +93,24 @@ class Categoria(models.Model):
 class Productos(models.Model):
     id_producto = models.AutoField(primary_key=True)
     nombre_producto = models.CharField(max_length=50)
-    descripcion_producto = models.CharField(max_length=100)
+    descripcion_producto = models.CharField(max_length=255)
     precio_producto = models.DecimalField(max_digits=8, decimal_places=2)
-    imagen = models.CharField(max_length=100)
     id_categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, db_column='id_categoria')
 
     class Meta:
         db_table = 'productos'
     def __str__(self):
         return str(self.nombre_producto)
+
+class Imagen(models.Model):
+    id_imagen = models.AutoField(primary_key=True)
+    nombre_imagen = models.CharField(max_length=255)
+    id_producto = models.ForeignKey(Productos, on_delete=models.CASCADE, db_column='id_producto')
+
+    class Meta:
+        db_table = 'imagen'
+    def __str__(self):
+        return str(self.id_imagen)
 
 class Colores(models.Model):
     id_color = models.AutoField(primary_key=True)
@@ -117,16 +126,25 @@ class Talla(models.Model):
     nombre_talla = models.CharField(max_length=50)
     cantidad = models.IntegerField(default=0)
     id_producto = models.ForeignKey(Productos, on_delete=models.CASCADE, db_column='id_producto')
-    id_color = models.ForeignKey(Colores, on_delete=models.CASCADE, db_column='id_color')
 
     class Meta:
         db_table = 'talla'
-        unique_together = ('nombre_talla', 'id_producto', 'id_color')
+        unique_together = ('nombre_talla', 'id_producto')
         constraints = [
             models.CheckConstraint(check=models.Q(cantidad__gte=0), name='talla_cantidad_no_negativa')
         ]
     def __str__(self):
         return f"{self.nombre_talla} - {self.id_producto.nombre_producto}"
+
+class Colores_talla(models.Model):
+    id_color_talla = models.AutoField(primary_key=True)
+    id_talla = models.ForeignKey(Talla, on_delete=models.CASCADE, db_column='id_talla')
+    id_color = models.ForeignKey(Colores, on_delete=models.CASCADE, db_column='id_color')
+
+    class Meta:
+        db_table = 'colores_talla'
+    def __str__(self):
+        return str(self.id_color_talla)
     
 class Stock(models.Model):
     id_stock = models.AutoField(primary_key=True)

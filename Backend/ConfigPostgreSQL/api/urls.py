@@ -27,11 +27,17 @@ urlpatterns = [
     path('Productos/', Productos_ListCreate.as_view(), name='Productos_list_create'),
     path('Productos/<int:pk>/', Productos_RetrieveUpdateDestroy.as_view(), name='Productos_detail'),
 
+    path('Imagen/', Imagen_ListCreate.as_view(), name='Imagen_list_create'),
+    path('Imagen/<int:pk>/', Imagen_RetrieveUpdateDestroy.as_view(), name='Imagen_detail'),
+
     path('Talla/', Talla_ListCreate.as_view(), name='Talla_list_create'),
     path('Talla/<int:pk>/', Talla_RetrieveUpdateDestroy.as_view(), name='Talla_detail'),
 
     path('Colores/', Colores_ListCreate.as_view(), name='Colores_list_create'),
     path('Colores/<int:pk>/', Colores_RetrieveUpdateDestroy.as_view(), name='Colores_detail'),
+
+    path('Colores_talla/', Colores_talla_ListCreate.as_view(), name='Colores_talla_list_create'),
+    path('Colores_talla/<int:pk>/', Colores_talla_RetrieveUpdateDestroy.as_view(), name='Colores_talla_detail'),
 
     path('Stock/', Stock_ListCreate.as_view(), name='Stock_list_create'),
     path('Stock/<int:pk>/', Stock_RetrieveUpdateDestroy.as_view(), name='Stock_detail'),

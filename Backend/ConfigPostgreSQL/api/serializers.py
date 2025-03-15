@@ -8,12 +8,14 @@ class Roles_Serializer(serializers.ModelSerializer):
     class Meta:
         model = Roles
         fields = '__all__'
-
+#--------------------------------------------------------------------------------
 class Usuario_Serializer(serializers.ModelSerializer):
     detalle_id_rol = Roles_Serializer(source='id_rol', read_only=True)    
     class Meta:
         model = Usuario
         fields = ['id_usuario', 'correo', 'contraseña', 'id_rol', 'detalle_id_rol']
+
+#--------------------------------------------------------------------------------
            
 class Perfil_Serializer(serializers.ModelSerializer):
     detalle_id_usuario = Usuario_Serializer(source='id_usuario', read_only=True)    
@@ -47,7 +49,13 @@ class Productos_Serializer(serializers.ModelSerializer):
     detalle_id_categoria = Categoria_Serializer(source='id_categoria', read_only=True)    
     class Meta:
         model = Productos
-        fields = ['id_producto','nombre_producto', 'descripcion_producto', 'precio_producto','imagen','id_categoria','detalle_id_categoria']
+        fields = ['id_producto','nombre_producto', 'descripcion_producto', 'precio_producto','id_categoria','detalle_id_categoria']
+
+class Imagen_Serializer(serializers.ModelSerializer):
+    detalle_id_producto = Productos_Serializer(source='id_producto', read_only=True)    
+    class Meta:
+        model = Imagen
+        fields = ['id_imagen','nombre_imagen', 'id_producto','detalle_id_producto']
 
 class Colores_Serializer(serializers.ModelSerializer):
     class Meta:
@@ -56,10 +64,16 @@ class Colores_Serializer(serializers.ModelSerializer):
 
 class Talla_Serializer(serializers.ModelSerializer):
     detalle_id_producto = Productos_Serializer(source='id_producto', read_only=True)   
-    detalle_id_color = Colores_Serializer(source='id_color', read_only=True)     
     class Meta:
         model = Talla
-        fields = ['id_talla','nombre_talla','cantidad','id_producto','detalle_id_producto','id_color','detalle_id_color']
+        fields = ['id_talla','nombre_talla','cantidad','id_producto','detalle_id_producto']
+
+class Colores_talla_Serializer(serializers.ModelSerializer):
+    detalle_id_talla = Talla_Serializer(source='id_talla', read_only=True)   
+    detalle_id_color = Colores_Serializer(source='id_color', read_only=True)     
+    class Meta:
+        model = Colores_talla
+        fields = ['id_color_talla','id_talla','detalle_id_talla','id_color','detalle_id_color']
 
 class Stock_Serializer(serializers.ModelSerializer):
     detalle_id_talla = Talla_Serializer(source='id_talla', read_only=True)   
