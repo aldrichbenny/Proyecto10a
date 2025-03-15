@@ -59,13 +59,6 @@ class Productos_RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Productos.objects.all()
     serializer_class = Productos_Serializer
 
-class Imagen_ListCreate(generics.ListCreateAPIView):
-    queryset = Imagen.objects.all()
-    serializer_class = Imagen_Serializer
-class Imagen_RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Imagen.objects.all()
-    serializer_class = Imagen_Serializer
-
 class Talla_ListCreate(generics.ListCreateAPIView):
     queryset = Talla.objects.all()
     serializer_class = Talla_Serializer
@@ -79,13 +72,6 @@ class Colores_ListCreate(generics.ListCreateAPIView):
 class Colores_RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Colores.objects.all()
     serializer_class = Colores_Serializer
-
-class Colores_talla_ListCreate(generics.ListCreateAPIView):
-    queryset = Colores_talla.objects.all()
-    serializer_class = Colores_talla_Serializer
-class Colores_talla_RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Colores_talla.objects.all()
-    serializer_class = Colores_talla_Serializer
 
 class Stock_ListCreate(generics.ListCreateAPIView):
     queryset = Stock.objects.all()
@@ -156,10 +142,8 @@ class ApiUrlsView(APIView):
             "Preguntas de seguridad": request.build_absolute_uri(reverse('Preguntasseguridad_list_create')),
             "Categoría": request.build_absolute_uri(reverse('Categoria_list_create')),
             "Productos": request.build_absolute_uri(reverse('Productos_list_create')),
-            "Imagen": request.build_absolute_uri(reverse('Imagen_list_create')),
             "Talla": request.build_absolute_uri(reverse('Talla_list_create')),
             "Colores": request.build_absolute_uri(reverse('Colores_list_create')),
-            "Colores_Talla": request.build_absolute_uri(reverse('Colores_talla_list_create')),
             "Stock": request.build_absolute_uri(reverse('Stock_list_create')),
             "Historial de stock": request.build_absolute_uri(reverse('Historial_stock_list_create')),
             "Solicitud": request.build_absolute_uri(reverse('Solicitud_list_create')),
