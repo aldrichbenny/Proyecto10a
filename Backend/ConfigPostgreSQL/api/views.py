@@ -5,6 +5,8 @@ from django.urls import reverse, resolve
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.parsers import MultiPartParser, FormParser
+
 # Create your views here.
 
 class Roles_ListCreate(generics.ListCreateAPIView):
@@ -62,6 +64,8 @@ class Productos_RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
 class Imagen_ListCreate(generics.ListCreateAPIView):
     queryset = Imagen.objects.all()
     serializer_class = Imagen_Serializer
+    parser_classes = (MultiPartParser, FormParser)  # Permite recibir imágenes
+
 class Imagen_RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Imagen.objects.all()
     serializer_class = Imagen_Serializer

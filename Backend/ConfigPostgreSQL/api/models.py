@@ -104,7 +104,7 @@ class Productos(models.Model):
 
 class Imagen(models.Model):
     id_imagen = models.AutoField(primary_key=True)
-    nombre_imagen = models.CharField(max_length=255)
+    nombre_imagen = models.ImageField(upload_to='imagenes/', null=True, blank=True) 
     id_producto = models.ForeignKey(Productos, on_delete=models.CASCADE, db_column='id_producto')
 
     class Meta:
