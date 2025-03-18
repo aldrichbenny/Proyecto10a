@@ -5,6 +5,8 @@ from django.urls import reverse, resolve
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.decorators import authentication_classes, permission_classes
+
 # Create your views here.
 
 class Roles_ListCreate(generics.ListCreateAPIView):
@@ -17,6 +19,8 @@ class Roles_RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
 #/////////////////////////////////
 #           AQUI EL HASH
 #/////////////////////////////////
+@authentication_classes([])
+@permission_classes([])
 class Usuario_ListCreate(generics.ListCreateAPIView):
     queryset = Usuario.objects.all()
     serializer_class = Usuario_Serializer
@@ -114,7 +118,7 @@ class Trabajo_ListCreate(generics.ListCreateAPIView):
     queryset = Trabajo.objects.all()
     serializer_class = Trabajo_Serializer
 class Trabajo_RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Historial_stock.objects.all()
+    queryset = Trabajo.objects.all()
     serializer_class = Trabajo_Serializer
 
 class Pedido_ListCreate(generics.ListCreateAPIView):
