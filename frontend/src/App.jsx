@@ -6,7 +6,9 @@ import InicioADM from './pages/Administrador/InicioADM';
 
 
 //Paginas Areas de trabajo
-import InicioAR from './pages/Area/InicioAR';
+import PendAR from './pages/Area/PendAR';
+import ProcAR from './pages/Area/ProcAR';
+import HistAR from './pages/Area/HistAR';
 
 
 //Paginas Cliente
@@ -28,7 +30,9 @@ function App() {
           <Route path="/indexADM" element={<InicioADM />} />
 
           {/*Rutas Areas de trabajo*/}
-          <Route path="/indexAR" element={<InicioAR />} />
+          <Route path="/indexAR" element={<PendAR />} />
+          <Route path="/procesoAR" element={<ProcAR />} />
+          <Route path="/historialAR" element={<HistAR />} />
 
           {/*Rutas Cliente*/}
           <Route path="/indexCL" element={<InicioCL />} />
