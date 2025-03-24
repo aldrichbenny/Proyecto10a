@@ -65,4 +65,6 @@ urlpatterns = [
 
     path('Historial_pedido/', Historial_pedido_ListCreate.as_view(), name='Historial_pedido_list_create'),
     path('Historial_pedido/<int:pk>/', Historial_pedido_RetrieveUpdateDestroy.as_view(), name='Historial_pedido_detail'),
+
+    path('Actualizar_contraseña/', Actualizar_contraseña.as_view(), name='Actualizar_contraseña'),
 ]
