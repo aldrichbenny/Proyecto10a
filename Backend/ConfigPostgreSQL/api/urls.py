@@ -4,6 +4,7 @@ from .views import ApiUrlsView
 
 urlpatterns = [
     path('', ApiUrlsView.as_view(), name='api_urls'),
+    path('login/', LoginView.as_view(), name='login'),
 
     # ----------------------------------------------------------------------------------------------------
 
