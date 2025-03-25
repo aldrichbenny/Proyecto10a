@@ -1,0 +1,44 @@
+/* Sidebar base */
+.sidebar {
+    width: 200px; /* Ancho fijo */
+    height: 100vh;
+    background-color: #343a40;
+    color: white;
+    padding: 24px 16px;
+    box-sizing: border-box;
+    position: fixed;
+    top: 64px; /* 🔥 Ahora baja lo suficiente para que no lo cubra el header */
+    left: 0;
+    overflow-y: auto;
+    z-index: 100;
+}
+
+/* Navegación */
+.nav-link {
+    color: #adb5bd;
+    padding: 12px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.nav-link:hover {
+    background-color: #495057;
+    color: white;
+}
+
+/* Iconos */
+.icon {
+    margin-right: 12px;
+    font-size: 18px;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 180px; /* 🔥 Un poco más estrecho para móviles */
+    }
+}

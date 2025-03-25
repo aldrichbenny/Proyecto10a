@@ -1,0 +1,9 @@
+/* Asegura que el navbar ocupe todo el ancho y quede fijo */
+.navbar {
+    width: 100%;
+    z-index: 1050; /* Asegura que esté sobre el contenido */
+  }
+  
+  .container-fluid {
+    padding: 0 16px; /* Añade espacio a los lados */
+  }
