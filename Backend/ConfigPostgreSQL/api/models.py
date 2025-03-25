@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone 
 from django.core.exceptions import ValidationError
+import bcrypt
 
 # Create your models here.
 
@@ -24,8 +25,15 @@ class Roles(models.Model):
 class Usuario(models.Model):
     id_usuario = models.AutoField(primary_key=True)
     correo = models.EmailField(max_length=50, unique=True)
-    contraseña = models.CharField(max_length=100)
+    contraseña = models.CharField(max_length=128)
     id_rol = models.ForeignKey(Roles, on_delete=models.CASCADE, db_column='id_rol')
+
+    def set_password(self, raw_password):
+        salt = bcrypt.gensalt()
+        self.contraseña = bcrypt.hashpw(raw_password.encode('utf-8'), salt).decode('utf-8')
+
+    def check_password(self, raw_password):
+        return bcrypt.checkpw(raw_password.encode('utf-8'), self.contraseña.encode('utf-8'))
 
     class Meta:
         db_table = 'usuario'
