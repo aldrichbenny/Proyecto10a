@@ -9,22 +9,32 @@ class Roles_Serializer(serializers.ModelSerializer):
         model = Roles
         fields = '__all__'
 #--------------------------------------------------------------------------------
-class Usuario_Serializer(serializers.ModelSerializer):
+class UsuarioSerializer(serializers.ModelSerializer):
     detalle_id_rol = Roles_Serializer(source='id_rol', read_only=True)    
     class Meta:
         model = Usuario
         fields = ['id_usuario', 'correo', 'contraseña', 'id_rol', 'detalle_id_rol']
+        extra_kwargs = {'contraseña': {'write_only': True}}
+
+    def create(self, validated_data):
+        usuario = Usuario.objects.create(
+            correo=validated_data['correo'],
+            id_rol=validated_data['id_rol']
+        )
+        usuario.set_password(validated_data['contraseña'])
+        usuario.save()
+        return usuario
 
 #--------------------------------------------------------------------------------
            
 class Perfil_Serializer(serializers.ModelSerializer):
-    detalle_id_usuario = Usuario_Serializer(source='id_usuario', read_only=True)    
+    detalle_id_usuario = UsuarioSerializer(source='id_usuario', read_only=True)    
     class Meta:
         model = Perfil
         fields = ['id_perfil','nombre','apellido_pat','apellido_mat','telefono','direccion','id_usuario','detalle_id_usuario']
 
 class Preguntasseguridad_Serializer(serializers.ModelSerializer):
-    detalle_id_usuario = Usuario_Serializer(source='id_usuario', read_only=True)    
+    detalle_id_usuario = UsuarioSerializer(source='id_usuario', read_only=True)    
     class Meta:
         model = Preguntasseguridad
         fields = ['id_pregunta','pregunta1', 'respuesta1','pregunta2','respuesta2','pregunta3','respuesta3','id_usuario','detalle_id_usuario']
@@ -94,7 +104,7 @@ class Historial_stock_Serializer(serializers.ModelSerializer):
 #--------------------------------------------------------------------------------
 
 class Solicitud_Serializer(serializers.ModelSerializer):
-    detalle_id_usuario = Usuario_Serializer(source='id_usuario', read_only=True) 
+    detalle_id_usuario = UsuarioSerializer(source='id_usuario', read_only=True) 
     fecha_registro = serializers.DateField(read_only=True) 
     hora_registro = serializers.TimeField(read_only=True) 
 
@@ -110,7 +120,7 @@ class Solicitud_producto_Serializer(serializers.ModelSerializer):
         fields = ['id_solicitud_producto','cantidad_total','id_talla','detalle_id_talla','id_solicitud','detalle_id_solicitud']
 
 class Area_Serializer(serializers.ModelSerializer):
-    detalle_id_usuario = Usuario_Serializer(source='id_usuario', read_only=True)    
+    detalle_id_usuario = UsuarioSerializer(source='id_usuario', read_only=True)    
     class Meta:
         model = Area
         fields = ['id_area','nombre_area','id_usuario','detalle_id_usuario']
