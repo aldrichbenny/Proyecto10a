@@ -1,6 +1,7 @@
 import React from 'react';
 import NavbarAR from '../../components/Area/NavbarAR';
 import SidebarAR from '../../components/Area/SidebarAR';
+import { FileEarmarkFill } from 'react-bootstrap-icons';
 import '../../css/app.css'
 
 const HistAR = () => {
@@ -17,7 +18,8 @@ const HistAR = () => {
                     <div className="content">
                         <div className="container">
                             <div className="title-container">
-                                Title container
+                                <div className='Symbol'> <FileEarmarkFill size={40} /> </div>
+                                <div className='Title'>Historial</div>
                             </div>
                             <div className="container2">
                                 Container de tablas

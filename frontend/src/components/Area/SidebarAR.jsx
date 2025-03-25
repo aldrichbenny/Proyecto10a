@@ -29,7 +29,7 @@ const SidebarAR = () => {
             onClick={() => handleNavigate('/indexAR', 'Pendientes')}
             className={`nav-link ${activeTab === 'Pendientes' ? 'active' : 'text-dark'}`}
           >
-            <Clock size={20} className="ms-2 me-2" />
+            <Clock size={20} className="ms-1 me-2" />
             Pendientes
           </button>
         </li>
@@ -38,7 +38,7 @@ const SidebarAR = () => {
             onClick={() => handleNavigate('/procesoAR', 'En proceso')}
             className={`nav-link ${activeTab === 'En proceso' ? 'active' : 'text-dark'}`}
           >
-            <ArrowClockwise size={20} className="ms-2 me-2" />
+            <ArrowClockwise size={20} className="ms-1 me-2" />
             En proceso
           </button>
         </li>
@@ -47,7 +47,7 @@ const SidebarAR = () => {
             onClick={() => handleNavigate('/historialAR', 'Historial')}
             className={`nav-link ${activeTab === 'Historial' ? 'active' : 'text-dark'}`}
           >
-            <FileEarmark size={20} className="ms-2 me-2" />
+            <FileEarmark size={20} className="ms-1 me-2" />
             Historial
           </button>
         </li>

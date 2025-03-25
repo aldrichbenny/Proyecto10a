@@ -42,13 +42,29 @@
   padding: 16px;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  margin-bottom: 0;
+  box-shadow: 5px 5px 5px #c2c0c0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.Symbol {
+  display: flex;
+  align-items: center;
+}
+
+.Title {
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .container {
   padding: 16px;
-  max-height: 400px;
-  overflow-y: auto;
+  max-height: 620pt;
+  overflow-y: hidden;
 }
 
 .container2 {
@@ -58,4 +74,8 @@
   border-bottom-right-radius: 8px;
   color: black;
   padding: 16px;
+  box-shadow: 3px 5px 5px #c2c0c0;
+  overflow-y: auto;
+  flex: 1;
+  max-height: calc(100vh - 150px);
 }

@@ -1,12 +1,13 @@
 import React from 'react';
 import '../css/Login.css';
+import logo from '../assets/images/TLogoWhite1.png';
 
 const Login = () => {
     return(
         <div className='main-container'>
             <div className="sidenav">
                 <div className="login-main-text">
-                <img className='logo' src="https://placehold.co/300x200" alt="Logo" />
+                <img className='logo' src={logo} height="300px" width="500px" alt="Logo" />
                 <br/>
                 <br />
                 <h1>Login</h1>
@@ -18,7 +19,7 @@ const Login = () => {
                 <div className="login-form">
                     <form>
                     <div className="form-group">
-                        <label className="form-label">User Name</label>
+                        <label className="form-label">Username</label>
                         <input type="text" className="form-control" placeholder="User Name" />
                     </div>
                     <div className="form-group">

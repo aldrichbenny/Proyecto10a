@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Navbar, Nav, NavDropdown, Container, Badge, Image } from 'react-bootstrap';
 import '../../css/Navbar.css';
+import logo from '../../assets/images/TLogoWhite2.png';
 
 const NavbarAR = () => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -10,14 +11,16 @@ const NavbarAR = () => {
       <Container fluid>
         <Navbar.Brand href="#">
           <img
-            src="https://placehold.co/800x200"
-            height="30"
+            src={logo} 
+            height="50px" 
+            width="100px"
             alt="MDB Logo"
             loading="lazy"
           />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarNav" />
         <Navbar.Collapse id="navbarNav">
+          
             {/* Se debe mantener la navegacion vacia para que el elemento del perfil se mantenga en la derecha */}
           <Nav className="me-auto">
             <Nav.Link href="#"></Nav.Link>

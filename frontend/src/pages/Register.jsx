@@ -1,12 +1,13 @@
 import React from 'react';
 import '../css/Register.css';
+import logo from '../assets/images/TLogoWhite1.png';
 
 const Register = () => {
     return(
         <div className='main-container'>
             <div className="sidenav">
                 <div className="register-main-text">
-                <img className='logo' src="https://placehold.co/300x200" alt="Logo" />
+                <img className='logo' src={logo} height="300px" width="500px" alt="Logo" />
                 <br/>
                 <br />
                 <h1>Register</h1>
@@ -23,13 +24,13 @@ const Register = () => {
                         </div>
 
                         <div className="form-group">
-                            <label className="form-label">Surname</label>
+                            <label className="form-label">Paternal Surname</label>
                             <input type="text" className="form-control" placeholder="Enter your surname" required />
                         </div>
 
                         <div className="form-group">
-                            <label className="form-label">Address</label>
-                            <input type="text" className="form-control" placeholder="Enter your address" required />
+                            <label className="form-label">Maternal Surname</label>
+                            <input type="text" className="form-control" placeholder="Enter your surname" required />
                         </div>
 
                         <div className="form-group">
@@ -43,13 +44,18 @@ const Register = () => {
                         </div>
 
                         <div className="form-group">
-                            <label className="form-label">Password</label>
-                            <input type="password" className="form-control" placeholder="Enter your password" required />
+                            <label className="form-label">Address</label>
+                            <input type="text" className="form-control" placeholder="Enter your address" required />
                         </div>
 
                         <div className="form-group">
-                            <label className="form-label">Confirm Password</label>
-                            <input type="password" className="form-control" placeholder="Confirm your password" required />
+                            <label className="form-label">Zip Code</label>
+                            <input type="text" className="form-control" placeholder="Enter your address" required />
+                        </div>
+
+                        <div className="form-group">
+                            <label className="form-label">Password</label>
+                            <input type="password" className="form-control" placeholder="Enter your password" required />
                         </div>
 
                         <button type="submit" className="btn btn-primary w-100 mt-3">
