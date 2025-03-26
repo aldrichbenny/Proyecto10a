@@ -67,4 +67,16 @@ urlpatterns = [
     path('Historial_pedido/<int:pk>/', Historial_pedido_RetrieveUpdateDestroy.as_view(), name='Historial_pedido_detail'),
 
     path('Actualizar_contraseña/', Actualizar_contraseña.as_view(), name='Actualizar_contraseña'),
+
+    path('Wishlist/', Wishlist_ListCreate.as_view(), name='Wishlist'),
+    path('Wishlist/<int:pk>/', Wishlist_RetrieveUpdateDestroy.as_view(), name='Wishlist_detail'),
+
+    path('Wishlist_producto/', Wishlist_producto_ListCreate.as_view(), name='Wishlist_producto'),
+    path('Wishlist_producto/<int:pk>/', Wishlist_producto_RetrieveUpdateDestroy.as_view(), name='Wishlist_producto_detail'),
+
+    path('Carrito/', Carrito_ListCreate.as_view(), name='Carrito'),
+    path('Carrito/<int:pk>/', Carrito_RetrieveUpdateDestroy.as_view(), name='Carrito_detail'),
+
+    path('Carrito_producto/', Wishlist_producto_ListCreate.as_view(), name='Carrito_producto'),
+    path('Carrito_producto/<int:pk>/', Wishlist_producto_RetrieveUpdateDestroy.as_view(), name='Carrito_producto_detail'),
 ]

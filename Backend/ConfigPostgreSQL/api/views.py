@@ -155,6 +155,34 @@ class Historial_pedido_RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIVi
     queryset = Historial_pedido.objects.all()
     serializer_class = Historial_pedido_Serializer
 
+class Wishlist_ListCreate(generics.ListCreateAPIView):
+    queryset = Wishlist.objects.all()
+    serializer_class = Wishlist_Serializer
+class Wishlist_RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Wishlist.objects.all()
+    serializer_class = Wishlist_Serializer
+
+class Carrito_ListCreate(generics.ListCreateAPIView):
+    queryset = Carrito.objects.all()
+    serializer_class = Carrito_Serializer
+class Carrito_RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Carrito.objects.all()
+    serializer_class = Carrito_Serializer
+
+class Wishlist_producto_ListCreate(generics.ListCreateAPIView):
+    queryset = Wishlist_Producto.objects.all()
+    serializer_class = Wishlist_Producto_Serializer
+class Wishlist_producto_RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Wishlist_Producto.objects.all()
+    serializer_class = Wishlist_Producto_Serializer
+
+class Carrito_producto_ListCreate(generics.ListCreateAPIView):
+    queryset = Carrito_Producto.objects.all()
+    serializer_class = Carrito_Producto_Serializer
+class Carrito_producto_RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Carrito_Producto.objects.all()
+    serializer_class = Carrito_Producto_Serializer
+
 #-------------------------------------------------------------------
 logger = logging.getLogger(__name__)
 class LoginView(APIView):
@@ -224,6 +252,10 @@ class ApiUrlsView(APIView):
             "Historial de pedido": request.build_absolute_uri(reverse('Historial_pedido_list_create')),
             "Login": request.build_absolute_uri(reverse('Login')),
             "Actualizar contraseña": request.build_absolute_uri(reverse('Actualizar_contraseña')),
+            "Wishlist": request.build_absolute_uri(reverse('Wishlist')),
+            "Carrito": request.build_absolute_uri(reverse('Carrito')),
+            "Wishlist_producto": request.build_absolute_uri(reverse('Wishlist_producto')),
+            "Carrito_producto": request.build_absolute_uri(reverse('Carrito_producto')),
         }
 
         return Response(url_patterns, status=status.HTTP_200_OK)
