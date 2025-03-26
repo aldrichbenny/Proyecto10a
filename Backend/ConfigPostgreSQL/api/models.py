@@ -288,3 +288,48 @@ class Historial_pedido(models.Model):
         ]
     def __str__(self):
         return str(self.id_historial_pedido)
+
+class Wishlist(models.Model):
+    id_wishlist = models.AutoField(primary_key=True)
+    id_usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, db_column='id_usuario')
+
+    class Meta:
+        db_table = 'wishlist'
+
+    def __str__(self):
+        return f"{self.id_wishlist} - {self.id_usuario.correo}"
+    
+class Carrito(models.Model):
+    id_carrito = models.AutoField(primary_key=True)
+    id_usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, db_column='id_usuario')
+
+    class Meta:
+        db_table = 'carrito'
+
+    def __str__(self):
+        return f"{self.id_carrito} - {self.id_usuario.correo}"
+    
+class Wishlist_Producto(models.Model):
+    id_wishlist_producto = models.AutoField(primary_key=True)
+    cantidad = models.IntegerField(default=0)  
+    id_talla = models.ForeignKey(Talla, on_delete=models.CASCADE, db_column='id_talla')
+    id_wishlist = models.ForeignKey(Wishlist, on_delete=models.CASCADE, db_column='id_wishlist')
+
+
+    class Meta:
+        db_table = 'wishlist_producto'
+
+    def __str__(self):
+        return f"{self.id_wishlist_producto} - {self.id_wishlist.id_usuario.correo}"
+    
+class Carrito_Producto(models.Model):
+    id_carrito_producto = models.AutoField(primary_key=True)
+    cantidad = models.IntegerField(default=0)  
+    id_talla = models.ForeignKey(Talla, on_delete=models.CASCADE, db_column='id_talla')
+    id_carrito = models.ForeignKey(Carrito, on_delete=models.CASCADE, db_column='id_carrito')
+
+    class Meta:
+        db_table = 'carrito_producto'
+
+    def __str__(self):
+        return f"{self.id_carrito_producto} - {self.id_wishlist.id_usuario.correo}"

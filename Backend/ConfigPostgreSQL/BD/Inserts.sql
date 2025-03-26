@@ -398,3 +398,25 @@ INSERT INTO historial_pedido (estado_seguimiento, fecha, hora, id_pedido) VALUES
 ('PENDING', CURRENT_DATE, CURRENT_TIME, 1),
 ('PENDING', CURRENT_DATE, CURRENT_TIME, 2),
 ('PENDING', CURRENT_DATE, CURRENT_TIME, 3);
+
+INSERT INTO wishlist (id_usuario) VALUES 
+(1), (2), (3), (4), (5);
+
+INSERT INTO carrito (id_usuario) VALUES 
+(1), (2), (3), (4), (5);
+
+INSERT INTO wishlist_producto (cantidad, id_talla, id_wishlist) VALUES 
+(1, 1, 1), (2, 5, 1), (1, 9, 1), (3, 13, 1), (1, 17, 1), (2, 21, 1), (1, 25, 1),
+(1, 2, 2), (2, 6, 2), (1, 10, 2), (3, 14, 2), (1, 18, 2), (2, 22, 2), (1, 26, 2),
+(1, 3, 3), (2, 7, 3), (1, 11, 3), (3, 15, 3), (1, 19, 3), (2, 23, 3), (1, 27, 3),
+(1, 4, 4), (2, 8, 4), (1, 12, 4), (3, 16, 4), (1, 20, 4), (2, 24, 4), (1, 28, 4),
+(1, 5, 5), (2, 9, 5), (1, 13, 5), (3, 17, 5), (1, 21, 5), (2, 25, 5), (1, 29, 5);
+
+INSERT INTO carrito_producto (cantidad, id_talla, id_carrito) VALUES 
+(2, 1, 1), (1, 5, 1), (3, 9, 1), (1, 13, 1), (2, 17, 1), (1, 21, 1), (3, 25, 1),
+(2, 2, 2), (1, 6, 2), (3, 10, 2), (1, 14, 2), (2, 18, 2), (1, 22, 2), (3, 26, 2),
+(2, 3, 3), (1, 7, 3), (3, 11, 3), (1, 15, 3), (2, 19, 3), (1, 23, 3), (3, 27, 3),
+(2, 4, 4), (1, 8, 4), (3, 12, 4), (1, 16, 4), (2, 20, 4), (1, 24, 4), (3, 28, 4),
+(2, 5, 5), (1, 9, 5), (3, 13, 5), (1, 17, 5), (2, 21, 5), (1, 25, 5), (3, 29, 5);
+
+
