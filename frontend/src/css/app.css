@@ -1,0 +1,81 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #d9d9d9;
+}
+
+.navbar {
+  background-color: #000;
+  color: white;
+  padding: 16px;
+  text-align: center;
+}
+
+.main-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 140pt;
+  padding: 0;
+  box-sizing: border-box;
+  height: 100vh;
+  overflow: hidden;
+  position: sticky;
+  top: 0;
+}
+
+.content {
+  flex: 1;
+  padding: 16px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  margin-top: 50pt;
+}
+
+.title-container {
+  background-color: #b04a4a;
+  color: white;
+  padding: 16px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  box-shadow: 5px 5px 5px #c2c0c0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.Symbol {
+  display: flex;
+  align-items: center;
+}
+
+.Title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.container {
+  padding: 16px;
+  max-height: 620pt;
+  overflow-y: hidden;
+}
+
+.container2 {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  color: black;
+  padding: 16px;
+  box-shadow: 3px 5px 5px #c2c0c0;
+  overflow-y: auto;
+  flex: 1;
+  max-height: calc(100vh - 150px);
+}
