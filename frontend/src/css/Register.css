@@ -90,3 +90,60 @@ body {
 .form-label{
     margin-top: 15pt;
 }
+
+.register-form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 
+                0 6px 20px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+/* Add these to your existing CSS */
+
+.main-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.register-form-container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-column {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+@media screen and (min-width: 768px){
+    .main {
+        margin-left: 55%; 
+        width: 100%;
+        padding: 0 40px;
+    }
+
+    .sidenav {
+        width: 40%;
+    }
+
+    .register-form {
+        margin-top: 30%;
+        width: 155%;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
