@@ -13,9 +13,10 @@ body {
 .sidenav {
     height: 100%;
     background-color: var(--Primary);
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
     display: flex;
     justify-content: center;
+    overflow: hidden;
 }
 
 
@@ -44,7 +45,7 @@ body {
 
 @media screen and (min-width: 768px){
     .main{
-        margin-left: 60%; 
+        margin-left: 55%; 
     }
 
     .sidenav{
@@ -56,14 +57,13 @@ body {
     }
 
     .login-form{
-        margin-top: 80%;
+        margin-top: 65%;
     }
 
     .register-form{
         margin-top: 20%;
     }
 }
-
 
 .login-main-text{
     margin-top: 20%;
@@ -98,4 +98,8 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 
                 0 6px 20px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease;
+}
+
+.logo{
+    margin-top: 50pt;
 }

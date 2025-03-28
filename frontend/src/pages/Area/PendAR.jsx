@@ -1,7 +1,7 @@
 import React from 'react';
 import NavbarAR from '../../components/Area/NavbarAR';
 import SidebarAR from '../../components/Area/SidebarAR';
-import { ClockFill, ArrowClockwise, FileEarmark } from 'react-bootstrap-icons';
+import { ClockFill} from 'react-bootstrap-icons';
 import '../../css/app.css'
 
 

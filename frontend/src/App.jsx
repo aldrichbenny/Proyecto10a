@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route} from 'react-router-dom';
 
 //Paginas Administrador
-import InicioADM from './pages/Administrador/InicioADM';
+import DashboardADM from './pages/Administrador/DashboardADM';
 
 
 //Paginas Areas de trabajo
@@ -27,7 +27,7 @@ function App() {
           <Route path="/register" element={<Register />} />
 
           {/*Rutas administrador*/}
-          <Route path="/indexADM" element={<InicioADM />} />
+          <Route path="/DashboardADM" element={<DashboardADM />} />
 
           {/*Rutas Areas de trabajo*/}
           <Route path="/indexAR" element={<PendAR />} />

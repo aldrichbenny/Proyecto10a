@@ -1,10 +1,17 @@
 import { useState } from 'react';
 import { Navbar, Nav, NavDropdown, Container, Badge, Image } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import '../../css/Navbar.css';
 import logo from '../../assets/images/TLogoWhite2.png';
 
 const NavbarAR = () => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('authToken'); 
+    navigate('/');
+  };
 
   return (
     <Navbar expand="lg" bg="dark" variant="dark" className="w-100" fixed="top">
@@ -25,7 +32,9 @@ const NavbarAR = () => {
           <Nav className="me-auto">
             <Nav.Link href="#"></Nav.Link>
           </Nav>
-
+          <div className='AreaName'>
+            Titulo
+          </div>
           <Nav>
             <NavDropdown
               title={
@@ -41,7 +50,7 @@ const NavbarAR = () => {
             >
               <NavDropdown.Item href="#">My profile</NavDropdown.Item>
               <NavDropdown.Item href="#">Settings</NavDropdown.Item>
-              <NavDropdown.Item href="#">Logout</NavDropdown.Item>
+              <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>
