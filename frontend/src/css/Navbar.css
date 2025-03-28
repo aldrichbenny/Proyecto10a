@@ -1,0 +1,18 @@
+.navbar {
+  width: 100%;
+  z-index: 1050;
+}
+  
+.container-fluid {
+  padding: 0 16px;
+}
+
+img {
+  margin-left: 22pt;
+}
+
+.AreaName{
+  font-size: 22px;
+  font-weight: bold;
+  margin-right: 100pt;
+}

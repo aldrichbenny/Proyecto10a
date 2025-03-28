@@ -6,6 +6,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
+from django.contrib.auth import authenticate
+from rest_framework import status
+from .models import Usuario
+from .serializers import UsuarioSerializer
+from django.contrib.auth.hashers import make_password, check_password
+import logging
 
 # Create your views here.
 
@@ -21,10 +27,10 @@ class Roles_RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
 #/////////////////////////////////
 class Usuario_ListCreate(generics.ListCreateAPIView):
     queryset = Usuario.objects.all()
-    serializer_class = Usuario_Serializer
+    serializer_class = UsuarioSerializer
 class Usuario_RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Usuario.objects.all()
-    serializer_class = Usuario_Serializer
+    serializer_class = UsuarioSerializer
 
 #/////////////////////////////////
 #           AQUI EL HASH
@@ -150,6 +156,50 @@ class Historial_pedido_RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIVi
     serializer_class = Historial_pedido_Serializer
 
 #-------------------------------------------------------------------
+logger = logging.getLogger(__name__)
+class LoginView(APIView):
+    def post(self, request):
+        correo = request.data.get('correo')
+        contraseña = request.data.get('contraseña')
+        logger.info(f"Intento de login con correo: {correo}")
+        
+        try:
+            usuario = Usuario.objects.get(correo=correo)
+            logger.info(f"Usuario encontrado: {usuario.correo}")
+            
+            if usuario.check_password(contraseña):
+                logger.info("Contraseña correcta")
+                serializer = UsuarioSerializer(usuario)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                logger.warning("Contraseña incorrecta")
+                return Response({
+                    'error': 'Credenciales inválidas',
+                    'datos_enviados': {'correo': correo, 'contraseña': contraseña}
+                }, status=status.HTTP_401_UNAUTHORIZED)
+        except Usuario.DoesNotExist:
+            logger.warning(f"Usuario no encontrado: {correo}")
+            return Response({
+                'error': 'Usuario no encontrado',
+                'datos_enviados': {'correo': correo, 'contraseña': contraseña}
+            }, status=status.HTTP_404_NOT_FOUND)
+
+class Actualizar_contraseña(APIView):
+    def post(self, request):
+        correo = request.data.get('correo')
+        contraseña_actual = request.data.get('contraseña_actual')
+        nueva_contraseña = request.data.get('nueva_contraseña')
+
+        try:
+            usuario = Usuario.objects.get(correo=correo)
+            if usuario.check_password(contraseña_actual):
+                usuario.set_password(nueva_contraseña)
+                usuario.save()
+                return Response({'message': 'Contraseña actualizada correctamente'}, status=status.HTTP_200_OK)
+            else:
+                return Response({'error': 'Contraseña actual incorrecta'}, status=status.HTTP_401_UNAUTHORIZED)
+        except Usuario.DoesNotExist:
+            return Response({'error': 'Usuario no encontrado'}, status=status.HTTP_404_NOT_FOUND)
 
 class ApiUrlsView(APIView):
     def get(self, request, *args, **kwargs):
@@ -172,6 +222,8 @@ class ApiUrlsView(APIView):
             "Trabajo": request.build_absolute_uri(reverse('Trabajo_list_create')),
             "Pedido": request.build_absolute_uri(reverse('Pedido_list_create')),
             "Historial de pedido": request.build_absolute_uri(reverse('Historial_pedido_list_create')),
+            "Login": request.build_absolute_uri(reverse('Login')),
+            "Actualizar contraseña": request.build_absolute_uri(reverse('Actualizar_contraseña')),
         }
 
         return Response(url_patterns, status=status.HTTP_200_OK)

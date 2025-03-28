@@ -1,0 +1,30 @@
+.sidebar-ar {
+  height: 100%;
+  width: 100%; 
+  background-color: #f8f9fa;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  margin-top: 15pt;
+}
+
+.sidebar-ar .nav-link {
+  font-size: 16px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 14pt;
+  width: 110pt;
+  justify-content: flex-start;
+  box-sizing: border-box;
+}
+
+.sidebar-ar .nav-link.active {
+  background-color: #0d6efd;
+  color: #fff;
+}
+
+.sidebar-ar .nav-link:hover {
+  background-color: #e9ecef;
+}

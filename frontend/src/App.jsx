@@ -5,9 +5,12 @@ import { BrowserRouter, Routes, Route} from 'react-router-dom';
 import InicioADM from './pages/Administrador/InicioADM';
 import MainAdmin from './pages/Administrador/MainAdmin';
 import DashboardAdmin from './pages/Administrador/DashboardAdmin';
+import DashboardADM from './pages/Administrador/DashboardADM';
 
 //Paginas Areas de trabajo
-import InicioAR from './pages/Area/InicioAR';
+import PendAR from './pages/Area/PendAR';
+import ProcAR from './pages/Area/ProcAR';
+import HistAR from './pages/Area/HistAR';
 
 //Paginas Cliente
 import InicioCL from './pages/Cliente/InicioCL';
@@ -50,6 +53,24 @@ function App() {
         </Routes>
       </BrowserRouter>
     </CartProvider>
+
+    <BrowserRouter>
+      <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+
+          {/*Rutas administrador*/}
+          <Route path="/DashboardADM" element={<DashboardADM />} />
+
+          {/*Rutas Areas de trabajo*/}
+          <Route path="/indexAR" element={<PendAR />} />
+          <Route path="/procesoAR" element={<ProcAR />} />
+          <Route path="/historialAR" element={<HistAR />} />
+
+          {/*Rutas Cliente*/}
+          <Route path="/indexCL" element={<InicioCL />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
