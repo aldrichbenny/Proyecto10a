@@ -12,6 +12,7 @@ import ProcAR from './pages/Area/ProcAR';
 import ProcDetailsAR from './pages/Area/ProcDetailsAR';
 import HistAR from './pages/Area/HistAR';
 import HistDetailsAR from './pages/Area/HistDetailsAR';
+import ProfileAR from './pages/Area/ProfileAR';
 
 
 //Paginas Cliente
@@ -39,6 +40,7 @@ function App() {
           <Route path="/procesoDetailsAR" element={<ProcDetailsAR />} />
           <Route path="/historialAR" element={<HistAR />} />
           <Route path="/historialDetailsAR" element={<HistDetailsAR />} />
+          <Route path="/profileAR" element={<ProfileAR />} />
 
           {/*Rutas Cliente*/}
           <Route path="/indexCL" element={<InicioCL />} />

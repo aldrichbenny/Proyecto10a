@@ -43,7 +43,7 @@ const NavbarAR = () => {
               id="avatar-dropdown"
               align="end"
             >
-              <NavDropdown.Item href="#">My profile</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => navigate('/profileAR')}>My profile</NavDropdown.Item>
               <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
             </NavDropdown>
           </Nav>
