@@ -62,6 +62,10 @@ urlpatterns = [
 
     path('Pedido/', Pedido_ListCreate.as_view(), name='Pedido_list_create'),
     path('Pedido/<int:pk>/', Pedido_RetrieveUpdateDestroy.as_view(), name='Pedido_detail'),
+    path('Pedido/estado/<str:estado>/', Pedido_ByStatus.as_view(), name='Pedido_by_status'),
+    path('Pedido/area/<str:nombre_area>/', Pedido_ByArea.as_view(), name='Pedido_by_area'),
+    path('Pedido/area/<str:nombre_area>/estado/<str:estado_pedido>/', Pedido_ByAreaAndStatus.as_view(), name='Pedido_by_area_and_status'),
+
 
     path('Historial_pedido/', Historial_pedido_ListCreate.as_view(), name='Historial_pedido_list_create'),
     path('Historial_pedido/<int:pk>/', Historial_pedido_RetrieveUpdateDestroy.as_view(), name='Historial_pedido_detail'),
