@@ -33,7 +33,7 @@ const NavbarAR = () => {
             <Nav.Link href="#"></Nav.Link>
           </Nav>
           <div className='AreaName'>
-            Titulo
+            Area de corte
           </div>
           <Nav>
             <NavDropdown
