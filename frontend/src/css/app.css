@@ -78,4 +78,32 @@
   overflow-y: auto;
   flex: 1;
   max-height: calc(100vh - 150px);
+  padding-bottom: 70pt;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 0;
+  margin-left: auto; /* Esto empuja el botón a la derecha */
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.back-button:hover {
+  color: #f0f0f0;
+  transform: scale(1.05);
+}
+
+.back-button:active {
+  transform: scale(0.95);
+}
+
+.title-container {
+  /* Asegúrate de que el contenedor tenga display flex */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* ... el resto de tus estilos existentes ... */
 }

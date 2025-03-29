@@ -3,6 +3,7 @@ import NavbarAR from '../../components/Area/NavbarAR';
 import SidebarAR from '../../components/Area/SidebarAR';
 import { FileEarmarkFill } from 'react-bootstrap-icons';
 import '../../css/app.css'
+import TableHistorialAR from '../../components/Area/TableHistorialAR';
 
 const HistAR = () => {
     return(
@@ -20,9 +21,12 @@ const HistAR = () => {
                             <div className="title-container">
                                 <div className='Symbol'> <FileEarmarkFill size={40} /> </div>
                                 <div className='Title'>Historial</div>
+
+                                {/* Se deja sin usar el boton de back para usarlo en detalles */}
+                                <button className='back-button' saria-label="Volver atrás"></button>
                             </div>
                             <div className="container2">
-                                Container de tablas
+                                <TableHistorialAR/>
                             </div>
                         </div>
                     </div>

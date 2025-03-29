@@ -138,7 +138,7 @@ class Trabajo_ListCreate(generics.ListCreateAPIView):
     queryset = Trabajo.objects.all()
     serializer_class = Trabajo_Serializer
 class Trabajo_RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Historial_stock.objects.all()
+    queryset = Trabajo.objects.all()
     serializer_class = Trabajo_Serializer
 
 class Pedido_ListCreate(generics.ListCreateAPIView):
@@ -147,6 +147,32 @@ class Pedido_ListCreate(generics.ListCreateAPIView):
 class Pedido_RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Pedido.objects.all()
     serializer_class = Pedido_Serializer
+class Pedido_ByStatus(generics.ListAPIView):
+    serializer_class = Pedido_Serializer
+    def get_queryset(self):
+        estado = self.kwargs.get('estado')
+        if estado:
+            return Pedido.objects.filter(estado_pedido=estado)
+        return Pedido.objects.none()
+class Pedido_ByArea(generics.ListAPIView):
+    serializer_class = Pedido_Serializer
+    def get_queryset(self):
+        nombre_area = self.kwargs.get('nombre_area')
+        queryset = Pedido.objects.all()
+        if nombre_area:
+            queryset = queryset.filter(id_area__nombre_area=nombre_area)
+        return queryset
+class Pedido_ByAreaAndStatus(generics.ListAPIView):
+    serializer_class = Pedido_Serializer
+    def get_queryset(self):
+        nombre_area = self.kwargs.get('nombre_area')
+        estado_pedido = self.kwargs.get('estado_pedido') 
+        queryset = Pedido.objects.all()
+        if nombre_area:
+            queryset = queryset.filter(id_area__nombre_area=nombre_area)
+        if estado_pedido:
+            queryset = queryset.filter(estado_pedido=estado_pedido)
+        return queryset
 
 class Historial_pedido_ListCreate(generics.ListCreateAPIView):
     queryset = Historial_pedido.objects.all()

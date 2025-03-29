@@ -11,5 +11,6 @@ Intalar entorno virtual:
 	cd Backend
 	pip install virtualenv
 	python -m virtualenv venv
+	(python -m virtualenv .venv)
 	.venv\Scripts\activate
 ///////////////////////////////////////////////////

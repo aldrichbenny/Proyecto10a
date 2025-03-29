@@ -11,9 +11,9 @@ const SidebarAR = () => {
   const location = useLocation();
 
   useEffect(() => {
-    if (location.pathname === '/indexAR') setActiveTab('Pendientes');
-    if (location.pathname === '/procesoAR') setActiveTab('En proceso');
-    if (location.pathname === '/historialAR') setActiveTab('Historial');
+    if (location.pathname === '/indexAR' || location.pathname === '/pendienteDetailsAR') setActiveTab('Pendientes');
+    if (location.pathname === '/procesoAR' || location.pathname === '/procesoDetailsAR') setActiveTab('En proceso');
+    if (location.pathname === '/historialAR' || location.pathname === '/historialDetailsAR') setActiveTab('Historial');
   }, [location.pathname]);
 
   const handleNavigate = (path, tab) => {

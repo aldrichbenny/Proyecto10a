@@ -7,8 +7,11 @@ import DashboardADM from './pages/Administrador/DashboardADM';
 
 //Paginas Areas de trabajo
 import PendAR from './pages/Area/PendAR';
+import PendDetailsAR from './pages/Area/PendDetailsAR';
 import ProcAR from './pages/Area/ProcAR';
+import ProcDetailsAR from './pages/Area/ProcDetailsAR';
 import HistAR from './pages/Area/HistAR';
+import HistDetailsAR from './pages/Area/HistDetailsAR';
 
 
 //Paginas Cliente
@@ -31,8 +34,11 @@ function App() {
 
           {/*Rutas Areas de trabajo*/}
           <Route path="/indexAR" element={<PendAR />} />
+          <Route path="/pendienteDetailsAR" element={<PendDetailsAR />} />
           <Route path="/procesoAR" element={<ProcAR />} />
+          <Route path="/procesoDetailsAR" element={<ProcDetailsAR />} />
           <Route path="/historialAR" element={<HistAR />} />
+          <Route path="/historialDetailsAR" element={<HistDetailsAR />} />
 
           {/*Rutas Cliente*/}
           <Route path="/indexCL" element={<InicioCL />} />
