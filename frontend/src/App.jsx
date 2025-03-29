@@ -2,20 +2,20 @@ import React from 'react';
 import { BrowserRouter, Routes, Route} from 'react-router-dom';
 
 //Paginas Administrador
-//import DashboardADM from './pages/Administrador/DashboardADM';//este no se usa
-//import InicioADM from './pages/Administrador/InicioADM';
 import MainAdmin from './pages/Administrador/MainAdmin';
 import DashboardAdmin from './pages/Administrador/DashboardAdmin';
 
 //Paginas Areas de trabajo
-//import InicioAR from './pages/Area/InicioAR';//este no se uso
 import PendAR from './pages/Area/PendAR';
+import PendDetailsAR from './pages/Area/PendDetailsAR';
 import ProcAR from './pages/Area/ProcAR';
+import ProcDetailsAR from './pages/Area/ProcDetailsAR';
 import HistAR from './pages/Area/HistAR';
+import HistDetailsAR from './pages/Area/HistDetailsAR';
+import ProfileAR from './pages/Area/ProfileAR';
 
 
 //Paginas Cliente
-//import InicioCL from './pages/Cliente/InicioCL';/// este no se uso
 import MainCliente from './pages/Cliente/MainCliente';
 import Catalogo from './pages/Cliente/Catalogo';
 import ProductoDetalle from './pages/Cliente/ProductoDetalle';
@@ -37,8 +37,6 @@ function App() {
             <Route path="/register" element={<Register />} />
 
             {/*Rutas administrador*/}
-            {/*<Route path="/DashboardADM" element={<DashboardADM />} />*/}
-            {/*<Route path="/indexADM" element={<InicioADM />} />*/}
             <Route path="/admin" element={<MainAdmin />}>
                 <Route index element={<DashboardAdmin />} />
                 <Route path="clientes" element={<div>Clientes</div>} />
@@ -48,11 +46,14 @@ function App() {
             </Route>
             {/*Rutas Areas de trabajo*/}
             <Route path="/indexAR" element={<PendAR />} />
+            <Route path="/pendienteDetailsAR" element={<PendDetailsAR />} />
             <Route path="/procesoAR" element={<ProcAR />} />
+            <Route path="/procesoDetailsAR" element={<ProcDetailsAR />} />
             <Route path="/historialAR" element={<HistAR />} />
+            <Route path="/historialDetailsAR" element={<HistDetailsAR />} />
+            <Route path="/profileAR" element={<ProfileAR />} />
 
             {/*Rutas Cliente*/}
-            {/*<Route path="/indexCL" element={<InicioCL />} />*/}
             <Route path="/main" element={<MainCliente />} />
             <Route path="/catalogo/:categoria" element={<Catalogo />} />
             <Route path="/producto/:id" element={<ProductoDetalle />} />

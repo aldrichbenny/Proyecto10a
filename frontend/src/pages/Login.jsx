@@ -16,7 +16,9 @@ const Login = () => {
         try {
             const data = await login(correo, contraseña);
 
-            console.log('Usuario autenticado:', data);
+            //console.log('Usuario autenticado:', data);
+            localStorage.setItem('usuario', JSON.stringify(data));
+
 
             switch (data.detalle_id_rol?.nombre_rol) {
                 case 'Customer':
