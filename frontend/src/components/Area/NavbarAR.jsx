@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Navbar, Nav, NavDropdown, Container, Badge, Image } from 'react-bootstrap';
+import { PersonFill } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
 import '../../css/Navbar.css';
 import logo from '../../assets/images/TLogoWhite2.png';
@@ -14,7 +15,7 @@ const NavbarAR = () => {
   };
 
   return (
-    <Navbar expand="lg" bg="dark" variant="dark" className="w-100" fixed="top">
+    <Navbar bg="dark" className="w-100" fixed="top">
       <Container fluid>
         <Navbar.Brand href="#">
           <img
@@ -25,7 +26,6 @@ const NavbarAR = () => {
             loading="lazy"
           />
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbarNav" />
         <Navbar.Collapse id="navbarNav">
           
             {/* Se debe mantener la navegacion vacia para que el elemento del perfil se mantenga en la derecha */}
@@ -38,18 +38,12 @@ const NavbarAR = () => {
           <Nav>
             <NavDropdown
               title={
-                <Image
-                  src="https://placehold.co/20X20"
-                  roundedCircle
-                  height="30"
-                  alt="User Avatar"
-                />
+                <PersonFill size={30} style={{ color: 'white' }} />
               }
               id="avatar-dropdown"
               align="end"
             >
-              <NavDropdown.Item href="#">My profile</NavDropdown.Item>
-              <NavDropdown.Item href="#">Settings</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => navigate('/profileAR')}>My profile</NavDropdown.Item>
               <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
             </NavDropdown>
           </Nav>

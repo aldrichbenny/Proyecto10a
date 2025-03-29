@@ -1,0 +1,34 @@
+.profile-section {
+    margin-top: 30pt;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.profile-row:last-child {
+    border-bottom: none;
+}
+
+.label {
+    font-weight: bold;
+    color: #333;
+    padding-right: 8px;
+    text-align: left;
+}
+
+.value {
+    color: #555;
+    word-break: break-word;
+}

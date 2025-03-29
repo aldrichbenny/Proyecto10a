@@ -1,0 +1,71 @@
+.pendiente-AR-tableResponsive {
+    overflow-x: auto;
+}
+
+.pendiente-AR-tableCustom {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    width: 100%;
+}
+
+.pendiente-AR-tableCustom th {
+    background-color: #607D8B;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    vertical-align: middle;
+    padding: 12px 8px;
+}
+
+.pendiente-AR-tableCustom td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 10px 8px;
+}
+
+.pendiente-AR-btnView {
+    background-color: #e66e29;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    padding: 6px 12px;
+}
+
+.pendiente-AR-btnView:hover {
+    background-color: #8FA9A0;
+}
+
+.pendiente-AR-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.pagination {
+    margin-bottom: 0;
+}
+
+.page-item.active .page-link {
+    background-color: #ce161f;
+    border-color: #ce161f;
+}
+
+.sortable-header {
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.sortable-header:hover {
+    background-color: #c7bfbf;
+}
+
+.pendiente-AR-tableCustom th {
+    position: relative;
+    user-select: none;
+}
+
+.pendiente-AR-tableCustom th svg {
+    position: relative;
+    top: -2px;
+}
