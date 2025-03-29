@@ -189,6 +189,10 @@ class Solicitud(models.Model):
         ('PENDING', 'PENDING'),
         ('CUT-OFF', 'CUT-OFF'),
         ('PACKAGING', 'PACKAGING'),
+        ('CUT-OFF-PENDING', 'CUT-OFF-PENDING'),
+        ('CUT-OFF-ACCEPTED', 'CUT-OFF-ACCEPTED'),
+        ('PACKAGING-PENDING', 'PACKAGING-PENDING'),
+        ('PACKAGING-ACCEPTED', 'PACKAGING-ACCEPTED'),
         ('SHIPPED', 'SHIPPED'),
     )
 
@@ -202,7 +206,7 @@ class Solicitud(models.Model):
     class Meta:
         db_table = 'solicitud'
         constraints = [
-            models.CheckConstraint(check=models.Q(estado_solicitud__in=['IN REVIEW', 'PENDING', 'CUT-OFF', 'PACKAGING', 'SHIPPED']), name='estado_solicitud')
+            models.CheckConstraint(check=models.Q(estado_solicitud__in=['IN REVIEW', 'PENDING', 'CUT-OFF', 'CUT-OFF-PENDING', 'CUT-OFF-ACCEPTED', 'PACKAGING', 'PACKAGING-PENDING', 'PACKAGING-ACCEPTED', 'SHIPPED']), name='estado_solicitud')
         ]
     def __str__(self):
         return str(self.id_solicitud)    
@@ -247,6 +251,10 @@ class Pedido(models.Model):
         ('PENDING', 'PENDING'),
         ('CUT-OFF', 'CUT-OFF'),
         ('PACKAGING', 'PACKAGING'),
+        ('CUT-OFF-PENDING', 'CUT-OFF-PENDING'),
+        ('CUT-OFF-ACCEPTED', 'CUT-OFF-ACCEPTED'),
+        ('PACKAGING-PENDING', 'PACKAGING-PENDING'),
+        ('PACKAGING-ACCEPTED', 'PACKAGING-ACCEPTED'),
         ('SHIPPED', 'SHIPPED'),
     )
 
@@ -260,7 +268,7 @@ class Pedido(models.Model):
         db_table = 'pedido'
         constraints = [
             models.CheckConstraint(check=models.Q(cantidad_total__gte=0),  name='pedido_cantidad_total'),
-            models.CheckConstraint(check=models.Q(estado_pedido__in=['IN REVIEW', 'PENDING', 'CUT-OFF', 'PACKAGING', 'SHIPPED']), name='pedido_estado_solicitud')
+            models.CheckConstraint(check=models.Q(estado_pedido__in=['IN REVIEW', 'PENDING', 'CUT-OFF','CUT-OFF-PENDING', 'CUT-OFF-ACCEPTED', 'PACKAGING','PACKAGING-PENDING', 'PACKAGING-ACCEPTED', 'SHIPPED']), name='pedido_estado_solicitud')
         ]
     def __str__(self):
         return str(self.id_pedido)
@@ -272,6 +280,10 @@ class Historial_pedido(models.Model):
         ('PENDING', 'PENDING'),
         ('CUT-OFF', 'CUT-OFF'),
         ('PACKAGING', 'PACKAGING'),
+        ('CUT-OFF-PENDING', 'CUT-OFF-PENDING'),
+        ('CUT-OFF-ACCEPTED', 'CUT-OFF-ACCEPTED'),
+        ('PACKAGING-PENDING', 'PACKAGING-PENDING'),
+        ('PACKAGING-ACCEPTED', 'PACKAGING-ACCEPTED'),
         ('SHIPPED', 'SHIPPED'),
     )
 
@@ -284,7 +296,7 @@ class Historial_pedido(models.Model):
     class Meta:
         db_table = 'historial_pedido'
         constraints = [
-            models.CheckConstraint(check=models.Q(estado_seguimiento__in=['IN REVIEW', 'PENDING', 'CUT-OFF', 'PACKAGING', 'SHIPPED']), name='historial_estado_solicitud')
+            models.CheckConstraint(check=models.Q(estado_seguimiento__in=['IN REVIEW', 'PENDING', 'CUT-OFF','CUT-OFF-PENDING', 'CUT-OFF-ACCEPTED', 'PACKAGING','PACKAGING-PENDING', 'PACKAGING-ACCEPTED', 'SHIPPED']), name='historial_estado_solicitud')
         ]
     def __str__(self):
         return str(self.id_historial_pedido)
