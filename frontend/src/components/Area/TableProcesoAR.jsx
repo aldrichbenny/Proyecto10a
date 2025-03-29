@@ -132,7 +132,7 @@ const TableProcesoAR = () => {
                                 <td>{row.prenda}</td>
                                 <td>{row.cantidad}</td>
                                 <td>
-                                    <Button variant="success" className="pendiente-AR-btnView" onClick={() => navigate('/procesoDetailsAR')}>
+                                    <Button className="pendiente-AR-btnView btn-secondary" onClick={() => navigate('/procesoDetailsAR')}>
                                         Ver
                                     </Button>
                                 </td>

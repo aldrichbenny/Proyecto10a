@@ -87,7 +87,7 @@
   color: white;
   cursor: pointer;
   padding: 0;
-  margin-left: auto; /* Esto empuja el botón a la derecha */
+  margin-left: auto;
   transition: transform 0.2s ease, color 0.2s ease;
 }
 
@@ -101,9 +101,7 @@
 }
 
 .title-container {
-  /* Asegúrate de que el contenedor tenga display flex */
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* ... el resto de tus estilos existentes ... */
 }

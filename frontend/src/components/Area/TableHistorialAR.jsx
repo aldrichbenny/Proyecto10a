@@ -141,7 +141,7 @@ const TableHistorialAR = () => {
 
   return (
     <div className="historial-AR-container">
-      <Table responsive className="historial-AR-tableCustom" style={{ marginBottom: '0' }}>
+      <Table responsive className="historial-AR-tableCustom table-hover" style={{ marginBottom: '0' }}>
         <thead>
           <tr>
             <th 
@@ -167,7 +167,7 @@ const TableHistorialAR = () => {
               <td className="historial-AR-cell text-center">Orden #{order.id}</td>
               <td className="historial-AR-cell text-center">{order.date}</td>
               <td className="historial-AR-cell text-center">
-                <Button className="historial-AR-button" onClick={() => navigate('/historialDetailsAR')}>Ver</Button>
+                <Button className="historial-AR-button btn-secondary" onClick={() => navigate('/historialDetailsAR')}>Ver</Button>
               </td>
             </tr>
           ))}

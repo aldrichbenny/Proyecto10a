@@ -49,7 +49,6 @@ const NavbarAR = () => {
               align="end"
             >
               <NavDropdown.Item href="#">My profile</NavDropdown.Item>
-              <NavDropdown.Item href="#">Settings</NavDropdown.Item>
               <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
             </NavDropdown>
           </Nav>

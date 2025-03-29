@@ -124,7 +124,7 @@ const TablePendienteAR = () => {
                                 <td>{row.prenda}</td>
                                 <td>{row.cantidad}</td>
                                 <td>
-                                    <Button variant="success" className="pendiente-AR-btnView" onClick={() => navigate('/pendienteDetailsAR')}>
+                                    <Button className="pendiente-AR-btnView btn-secondary" onClick={() => navigate('/pendienteDetailsAR')}>
                                         Ver
                                     </Button>
                                 </td>
