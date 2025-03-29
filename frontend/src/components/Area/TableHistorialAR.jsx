@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Table, Button, Pagination } from 'react-bootstrap';
+import { Table, Button, Pagination, InputGroup, FormControl } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { FaSearch } from 'react-icons/fa';
 import '../../css/TableHistorialAR.css';
 
 const TableHistorialAR = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const initialOrders = [
     { id: 1, date: '28/02/2025 – 13:24:01 UTC-8' },
     { id: 2, date: '27/02/2025 – 10:15:32 UTC-8' },
@@ -33,154 +34,86 @@ const TableHistorialAR = () => {
 
   const [orders, setOrders] = useState(initialOrders);
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortConfig, setSortConfig] = useState({
-    key: null,
-    direction: 'ascending'
-  });
+  const [searchTerm, setSearchTerm] = useState('');
 
   const itemsPerPage = 15;
   const totalPages = Math.ceil(orders.length / itemsPerPage);
 
-  const requestSort = (key) => {
-    let direction = 'ascending';
-    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
-      direction = 'descending';
-    }
-    setSortConfig({ key, direction });
-    
-    const sortedData = [...orders].sort((a, b) => {
-      if (key === 'date') {
-        const datePartA = a[key].split('–')[0].trim();
-        const datePartB = b[key].split('–')[0].trim();
-        const dateA = parseDate(datePartA);
-        const dateB = parseDate(datePartB);
-        return direction === 'ascending' ? dateA - dateB : dateB - dateA;
-      }
-      
-      // Ordenamiento numérico para el ID
-      if (key === 'id') {
-        return direction === 'ascending' ? a[key] - b[key] : b[key] - a[key];
-      }
-      
-      return 0;
-    });
-    
-    setOrders(sortedData);
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
     setCurrentPage(1);
   };
 
-  const parseDate = (dateString) => {
-    const [day, month, year] = dateString.split('/').map(Number);
-    return new Date(year, month - 1, day);
-  };
+  const filteredData = orders.filter((order) =>
+    order.date.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    order.id.toString().includes(searchTerm)
+  );
 
-  const getSortIndicator = (key) => {
-    if (sortConfig.key !== key) return null;
-    return sortConfig.direction === 'ascending' ? ' ↑' : ' ↓';
-  };
-
-  const currentData = orders.slice(
+  const currentData = filteredData.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-  
+
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
-  
-  let paginationItems = [];
-  const maxVisiblePages = 5;
-  let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-  let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-
-  if (endPage - startPage + 1 < maxVisiblePages) {
-    startPage = Math.max(1, endPage - maxVisiblePages + 1);
-  }
-
-  if (startPage > 1) {
-    paginationItems.push(
-      <Pagination.Item 
-        key={1} 
-        active={1 === currentPage}
-        onClick={() => handlePageChange(1)}
-      >
-        1
-      </Pagination.Item>
-    );
-    if (startPage > 2) {
-      paginationItems.push(<Pagination.Ellipsis key="start-ellipsis" />);
-    }
-  }
-
-  for (let number = startPage; number <= endPage; number++) {
-    paginationItems.push(
-      <Pagination.Item 
-        key={number} 
-        active={number === currentPage}
-        onClick={() => handlePageChange(number)}
-      >
-        {number}
-      </Pagination.Item>
-    );
-  }
-
-  if (endPage < totalPages) {
-    if (endPage < totalPages - 1) {
-      paginationItems.push(<Pagination.Ellipsis key="end-ellipsis" />);
-    }
-    paginationItems.push(
-      <Pagination.Item 
-        key={totalPages} 
-        active={totalPages === currentPage}
-        onClick={() => handlePageChange(totalPages)}
-      >
-        {totalPages}
-      </Pagination.Item>
-    );
-  }
 
   return (
     <div className="historial-AR-container">
-      <Table responsive className="historial-AR-tableCustom table-hover" style={{ marginBottom: '0' }}>
+      {/* Sección de búsqueda */}
+      <div className="search-container">
+        <InputGroup className="mb-3">
+          <InputGroup.Text>
+            <FaSearch />
+          </InputGroup.Text>
+          <FormControl
+            placeholder="Buscar orden por fecha o hora"
+            value={searchTerm}
+            onChange={handleSearch}
+          />
+        </InputGroup>
+      </div>
+
+      {/* Tabla */}
+      <Table responsive className="historial-AR-tableCustom table-hover">
         <thead>
           <tr>
-            <th 
-              className="historial-AR-header text-center sortable-header"
-              onClick={() => requestSort('id')}
-              style={{ cursor: 'pointer' }}
-            >
-              Número de orden{getSortIndicator('id')}
-            </th>
-            <th 
-              className="historial-AR-header text-center sortable-header"
-              onClick={() => requestSort('date')}
-              style={{ cursor: 'pointer' }}
-            >
-              Fecha y hora{getSortIndicator('date')}
-            </th>
+            <th className="historial-AR-header text-center">Número de orden</th>
+            <th className="historial-AR-header text-center">Fecha y hora</th>
             <th className="historial-AR-header text-center">Acciones</th>
           </tr>
         </thead>
         <tbody>
           {currentData.map((order) => (
-            <tr key={order.id} style={{ height: '40px' }}>
+            <tr key={order.id}>
               <td className="historial-AR-cell text-center">Orden #{order.id}</td>
               <td className="historial-AR-cell text-center">{order.date}</td>
               <td className="historial-AR-cell text-center">
-                <Button className="historial-AR-button btn-secondary" onClick={() => navigate('/historialDetailsAR')}>Ver</Button>
+                <Button className="historial-AR-button btn-secondary" onClick={() => navigate('/historialDetailsAR')}>
+                  Ver
+                </Button>
               </td>
             </tr>
           ))}
         </tbody>
       </Table>
-      
+
+      {/* Paginación */}
       <div className="d-flex justify-content-center mt-3">
         <Pagination>
           <Pagination.Prev 
             onClick={() => handlePageChange(Math.max(1, currentPage - 1))} 
             disabled={currentPage === 1}
           />
-          {paginationItems}
+          {[...Array(totalPages)].map((_, i) => (
+            <Pagination.Item 
+              key={i + 1} 
+              active={i + 1 === currentPage}
+              onClick={() => handlePageChange(i + 1)}
+            >
+              {i + 1}
+            </Pagination.Item>
+          ))}
           <Pagination.Next 
             onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))} 
             disabled={currentPage === totalPages}

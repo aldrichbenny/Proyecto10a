@@ -22,7 +22,7 @@ const SidebarAR = () => {
   };
 
   return (
-    <div className="sidebar-ar">
+    <div className="sidebar-ar bg-light">
       <ul className="nav nav-pills flex-column mt-5">
         <li className="nav-item mb-2">
           <button
