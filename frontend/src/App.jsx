@@ -4,6 +4,11 @@ import { BrowserRouter, Routes, Route} from 'react-router-dom';
 //Paginas Administrador
 import MainAdmin from './pages/Administrador/MainAdmin';
 import DashboardAdmin from './pages/Administrador/DashboardAdmin';
+import ClienteADM from './pages/Administrador/ClienteADM';
+import OrdenesADM from './pages/Administrador/OrdenesADM';
+import SolicitudesADM from './pages/Administrador/SolicitudesADM';
+import ProductosADM from './pages/Administrador/ProductosADM';
+import ProfileADM from './pages/Administrador/ProfileADM';
 
 //Paginas Areas de trabajo
 import PendAR from './pages/Area/PendAR';
@@ -39,10 +44,11 @@ function App() {
             {/*Rutas administrador*/}
             <Route path="/admin" element={<MainAdmin />}>
                 <Route index element={<DashboardAdmin />} />
-                <Route path="clientes" element={<div>Clientes</div>} />
-                <Route path="ordenes" element={<div>Ordenes</div>} />
-                <Route path="solicitudes" element={<div>Solicitudes</div>} />
-                <Route path="productos" element={<div>Productos</div>} />
+                <Route path="clientes" element={<ClienteADM />} />
+                <Route path="ordenes" element={<OrdenesADM />} />
+                <Route path="solicitudes" element={<SolicitudesADM />} />
+                <Route path="productos" element={<ProductosADM />} />
+                <Route path="profileADM" element={<ProfileADM />} />
             </Route>
             {/*Rutas Areas de trabajo*/}
             <Route path="/indexAR" element={<PendAR />} />
