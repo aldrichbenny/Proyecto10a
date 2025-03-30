@@ -136,3 +136,5 @@ AFTER INSERT ON solicitud_producto
 FOR EACH ROW
 EXECUTE FUNCTION update_stock_and_historial();
 
+/* /////////////faltan la actualizacion de estados automaticos///////////////////// */
+

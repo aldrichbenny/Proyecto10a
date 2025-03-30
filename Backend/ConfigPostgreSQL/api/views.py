@@ -144,6 +144,7 @@ class Trabajo_RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
 class Pedido_ListCreate(generics.ListCreateAPIView):
     queryset = Pedido.objects.all()
     serializer_class = Pedido_Serializer
+
 class Pedido_RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Pedido.objects.all()
     serializer_class = Pedido_Serializer

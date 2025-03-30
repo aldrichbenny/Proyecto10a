@@ -233,7 +233,7 @@ class Area(models.Model):
     class Meta:
         db_table = 'area'
     def __str__(self):
-        return str(self.nombre_area)
+        return f"{self.nombre_area} - {self.id_usuario.correo}"
     
 class Trabajo(models.Model):
     id_trabajo = models.AutoField(primary_key=True)

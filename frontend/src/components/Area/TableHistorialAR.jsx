@@ -1,43 +1,67 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table, Button, Pagination, InputGroup, FormControl } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
+import axios from 'axios';
 import '../../css/TableHistorialAR.css';
 
 const TableHistorialAR = () => {
   const navigate = useNavigate();
-  const initialOrders = [
-    { id: 1, date: '28/02/2025 – 13:24:01 UTC-8' },
-    { id: 2, date: '27/02/2025 – 10:15:32 UTC-8' },
-    { id: 3, date: '26/02/2025 – 09:45:21 UTC-8' },
-    { id: 4, date: '25/02/2025 – 14:30:45 UTC-8' },
-    { id: 5, date: '24/02/2025 – 11:20:10 UTC-8' },
-    { id: 6, date: '23/02/2025 – 16:55:33 UTC-8' },
-    { id: 7, date: '22/02/2025 – 08:10:22 UTC-8' },
-    { id: 8, date: '21/02/2025 – 12:40:15 UTC-8' },
-    { id: 9, date: '20/02/2025 – 15:25:40 UTC-8' },
-    { id: 10, date: '19/02/2025 – 17:35:50 UTC-8' },
-    { id: 11, date: '18/02/2025 – 09:15:12 UTC-8' },
-    { id: 12, date: '17/02/2025 – 13:50:30 UTC-8' },
-    { id: 13, date: '16/02/2025 – 10:05:25 UTC-8' },
-    { id: 14, date: '15/02/2025 – 14:20:18 UTC-8' },
-    { id: 15, date: '14/02/2025 – 11:30:42 UTC-8' },
-    { id: 16, date: '13/02/2025 – 16:45:55 UTC-8' },
-    { id: 17, date: '12/02/2025 – 08:30:10 UTC-8' },
-    { id: 18, date: '11/02/2025 – 12:15:35 UTC-8' },
-    { id: 19, date: '10/02/2025 – 15:40:20 UTC-8' },
-    { id: 20, date: '09/02/2025 – 17:25:45 UTC-8' },
-    { id: 21, date: '08/02/2025 – 09:50:30 UTC-8' },
-    { id: 22, date: '07/02/2025 – 13:35:15 UTC-8' },
-    { id: 23, date: '06/02/2025 – 10:10:05 UTC-8' },
-  ];
-
-  const [orders, setOrders] = useState(initialOrders);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
+  const [orders, setOrders] = useState([]);
 
   const itemsPerPage = 15;
-  const totalPages = Math.ceil(orders.length / itemsPerPage);
+  const totalPages = Math.max(1, Math.ceil(orders.length / itemsPerPage));
+
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    if (!storedUser) return;
+
+    const storedUserId = storedUser.id_usuario;
+
+    axios.get('http://127.0.0.1:8000/api/Area/')
+      .then(response => {
+        const area = response.data.find(area => area.detalle_id_usuario.id_usuario === storedUserId);
+        if (!area) return;
+
+        let apiUrl = '';
+        if (area.nombre_area === 'Cut' || area.nombre_area === 'Packaging') {
+          apiUrl = 'http://127.0.0.1:8000/api/Pedido/estado/SHIPPED/';
+        }
+
+        axios.get(apiUrl)
+          .then(response => {
+            const pedidosFiltrados = response.data.map(pedido => ({
+              id_pedido: pedido.id_pedido,
+              clienteId: pedido.detalle_id_solicitud_producto.detalle_id_solicitud.detalle_id_usuario.id_usuario,
+              date: pedido.detalle_id_solicitud_producto.detalle_id_solicitud.fecha_registro,
+              hora: pedido.detalle_id_solicitud_producto.detalle_id_solicitud.hora_registro.split('.')[0],
+              prenda: pedido.detalle_id_solicitud_producto.detalle_id_talla.detalle_id_producto.nombre_producto,
+              cantidad: pedido.detalle_id_solicitud_producto.cantidad_total
+            }));
+
+            const clientesIds = pedidosFiltrados.map(pedido => pedido.clienteId);
+
+            axios.get('http://127.0.0.1:8000/api/Perfil/')
+              .then(perfilesResponse => {
+                const perfiles = perfilesResponse.data;
+                const pedidosConNombre = pedidosFiltrados.map(pedido => {
+                  const perfilCliente = perfiles.find(perfil => perfil.id_usuario === pedido.clienteId);
+                  return {
+                    ...pedido,
+                    cliente: perfilCliente ? `${perfilCliente.nombre} ${perfilCliente.apellido_pat} ${perfilCliente.apellido_mat}` : 'Desconocido',
+                  };
+                });
+
+                setOrders(pedidosConNombre);
+              })
+              .catch(error => console.error('Error fetching perfil data:', error));
+          })
+          .catch(error => console.error('Error fetching pedidos data:', error));
+      })
+      .catch(error => console.error('Error fetching area data:', error));
+  }, []);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -45,8 +69,8 @@ const TableHistorialAR = () => {
   };
 
   const filteredData = orders.filter((order) =>
-    order.date.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    order.id.toString().includes(searchTerm)
+    (order.date ? order.date.toLowerCase().includes(searchTerm.toLowerCase()) : false) ||
+    order.id_pedido.toString().includes(searchTerm)
   );
 
   const currentData = filteredData.slice(
@@ -67,7 +91,7 @@ const TableHistorialAR = () => {
             <FaSearch />
           </InputGroup.Text>
           <FormControl
-            placeholder="Buscar orden por fecha o hora"
+            placeholder="Buscar orden por fecha o número"
             value={searchTerm}
             onChange={handleSearch}
           />
@@ -85,11 +109,11 @@ const TableHistorialAR = () => {
         </thead>
         <tbody>
           {currentData.map((order) => (
-            <tr key={order.id}>
-              <td className="historial-AR-cell text-center">Orden #{order.id}</td>
-              <td className="historial-AR-cell text-center">{order.date}</td>
+            <tr key={order.id_pedido}>
+              <td className="historial-AR-cell text-center">Orden #{order.id_pedido}</td>
+              <td className="historial-AR-cell text-center">{order.date || 'Fecha no disponible'} {order.hora || 'Hora no disponible'}</td>
               <td className="historial-AR-cell text-center">
-                <Button className="historial-AR-button btn-secondary" onClick={() => navigate('/historialDetailsAR')}>
+                <Button className="historial-AR-button btn-secondary" onClick={() => navigate('/historialDetailsAR', { state: { clienteId: order.clienteId, orderId: order.id_pedido, fechaR: order.date, horaR: order.hora} })}>
                   Ver
                 </Button>
               </td>
@@ -101,21 +125,21 @@ const TableHistorialAR = () => {
       {/* Paginación */}
       <div className="d-flex justify-content-center mt-3">
         <Pagination>
-          <Pagination.Prev 
-            onClick={() => handlePageChange(Math.max(1, currentPage - 1))} 
+          <Pagination.Prev
+            onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
             disabled={currentPage === 1}
           />
           {[...Array(totalPages)].map((_, i) => (
-            <Pagination.Item 
-              key={i + 1} 
+            <Pagination.Item
+              key={i + 1}
               active={i + 1 === currentPage}
               onClick={() => handlePageChange(i + 1)}
             >
               {i + 1}
             </Pagination.Item>
           ))}
-          <Pagination.Next 
-            onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))} 
+          <Pagination.Next
+            onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
             disabled={currentPage === totalPages}
           />
         </Pagination>
