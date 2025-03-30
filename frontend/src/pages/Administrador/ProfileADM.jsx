@@ -9,13 +9,7 @@ const ProfileADM = () => {
     return(
         <>
         <div className="app">
-            <div className="navbar">
-                <NavbarADM />
-            </div>
             <div className="main-content">
-                <div className="sidebar">
-                    <AdminSidebar />
-                </div>
                 <div className="content">
                     <div className="container">
                         <div className="title-container">

@@ -9,6 +9,7 @@ import OrdenesADM from './pages/Administrador/OrdenesADM';
 import SolicitudesADM from './pages/Administrador/SolicitudesADM';
 import ProductosADM from './pages/Administrador/ProductosADM';
 import ProfileADM from './pages/Administrador/ProfileADM';
+import ProductoDetailADM from './pages/Administrador/ProductoDetailADM';
 
 //Paginas Areas de trabajo
 import PendAR from './pages/Area/PendAR';
@@ -49,6 +50,7 @@ function App() {
                 <Route path="solicitudes" element={<SolicitudesADM />} />
                 <Route path="productos" element={<ProductosADM />} />
                 <Route path="profileADM" element={<ProfileADM />} />
+                <Route path="productos/detailProducto" element={<ProductoDetailADM />} />
             </Route>
             {/*Rutas Areas de trabajo*/}
             <Route path="/indexAR" element={<PendAR />} />

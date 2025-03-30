@@ -43,7 +43,7 @@ const NavbarADM = () => {
               id="avatar-dropdown"
               align="end"
             >
-              <NavDropdown.Item onClick={() => navigate('/profileADM')}>My profile</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => navigate('/admin/profileADM')}>My profile</NavDropdown.Item>
               <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
             </NavDropdown>
           </Nav>

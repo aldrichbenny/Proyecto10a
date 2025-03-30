@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import NavbarAR from '../../components/Area/NavbarAR';
 import SidebarAR from '../../components/Area/SidebarAR';
-import { InfoCircleFill, ArrowLeftCircle } from 'react-bootstrap-icons';
+import { InfoCircleFill, ArrowLeftCircle, ExclamationCircle } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
 import { Button, Modal } from 'react-bootstrap';
 import '../../css/DetailsAR.css';
@@ -122,7 +122,7 @@ const ProcDetailsAR = () => {
                             </div>
 
                             <Button className="custom-button mt-4" onClick={handleModalOpen}>
-                                Aceptar solicitud
+                                Terminar proceso
                             </Button>
 
                         </div>
@@ -132,6 +132,7 @@ const ProcDetailsAR = () => {
 
             <Modal show={showModal} onHide={handleModalClose} centered>
                 <Modal.Header closeButton>
+                    <ExclamationCircle size={40} className='me-3'/> 
                     <Modal.Title>Confirmacion de conclusion</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>

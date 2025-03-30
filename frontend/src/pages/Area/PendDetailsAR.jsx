@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import NavbarAR from '../../components/Area/NavbarAR';
 import SidebarAR from '../../components/Area/SidebarAR';
-import { InfoCircleFill, ArrowLeftCircle } from 'react-bootstrap-icons';
+import { InfoCircleFill, ArrowLeftCircle, ExclamationCircle } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
 import { Button, Modal } from 'react-bootstrap';
 import '../../css/DetailsAR.css';
@@ -132,6 +132,7 @@ const PendDetailsAR = () => {
 
             <Modal show={showModal} onHide={handleModalClose} centered>
                 <Modal.Header closeButton>
+                    <ExclamationCircle size={40} className='me-3'/> 
                     <Modal.Title>Confirmacion de aceptacion</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
