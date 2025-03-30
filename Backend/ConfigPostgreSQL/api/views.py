@@ -12,6 +12,8 @@ from .models import Usuario
 from .serializers import UsuarioSerializer
 from django.contrib.auth.hashers import make_password, check_password
 import logging
+from rest_framework.exceptions import ValidationError
+
 
 # Create your views here.
 
@@ -144,9 +146,16 @@ class Trabajo_RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
 class Pedido_ListCreate(generics.ListCreateAPIView):
     queryset = Pedido.objects.all()
     serializer_class = Pedido_Serializer
+
 class Pedido_RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Pedido.objects.all()
     serializer_class = Pedido_Serializer
+
+    def update(self, request, *args, **kwargs):
+        try:
+            return super().update(request, *args, **kwargs)
+        except ValidationError as e:
+            return Response({"error": "Validation failed", "details": e.detail}, status=400)
 
 class Pedido_ByStatus(generics.ListAPIView):
     serializer_class = Pedido_Serializer
