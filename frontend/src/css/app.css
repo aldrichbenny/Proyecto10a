@@ -76,7 +76,7 @@
   overflow-y: auto;
   flex: 1;
   max-height: calc(100vh - 150px);
-  padding-bottom: 70pt;
+  padding-bottom: 60pt;
 }
 
 .back-button {
