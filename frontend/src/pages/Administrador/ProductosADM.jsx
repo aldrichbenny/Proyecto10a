@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Button, Table, Pagination } from 'react-bootstrap';
-import { CollectionFill, PencilSquare, Trash3Fill } from 'react-bootstrap-icons';
+import { Button, Table, Pagination, Modal } from 'react-bootstrap';
+import { CollectionFill, PencilSquare, Trash3Fill, XCircle, ExclamationCircle } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
 import '../../css/TableAR.css';
 
 const ProductosADM = () => {
     const navigate = useNavigate();
+    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
     const initialData = [
         { id: 1, nombre: 'Camisa Polo', talla: 'M', cantidad: 500, precio: '$25.00' },
         { id: 2, nombre: 'Jeans Levis', talla: '32', cantidad: 300, precio: '$40.00' },
@@ -70,6 +72,16 @@ const ProductosADM = () => {
         );
     }
 
+    const handleDeleteClick = (product) => {
+        setSelectedProduct(product); 
+        setShowDeleteModal(true);
+    };
+    
+    const handleConfirmDelete = () => {
+        setData(data.filter(product => product.id !== selectedProduct.id));
+        setShowDeleteModal(false);
+    };
+
     return (
         <div className="container">
             <div className="title-container">
@@ -120,8 +132,8 @@ const ProductosADM = () => {
                                   <Button className="historial-AR-button btn-warning" onClick={() => navigate('detailProducto')}>
                                       <PencilSquare size={25} />
                                   </Button>
-                                  <Button className="historial-AR-button btn-danger" onClick={() => handleDeleteClick(client)}>
-                                      <Trash3Fill size={25} />
+                                  <Button className="historial-AR-button btn-danger" onClick={() => handleDeleteClick(data)}>
+                                    <Trash3Fill size={25} />
                                   </Button>
                                 </td>
                             </tr>
@@ -143,6 +155,25 @@ const ProductosADM = () => {
                     </Pagination>
                 </div>
             </div>
+
+            <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
+                <Modal.Header closeButton>
+                    <ExclamationCircle size={40} className='me-3'/> 
+                    <Modal.Title>Eliminar Producto</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    ¿Estás seguro de que quieres eliminar el producto {selectedProduct?.nombre}?
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+                        Cancelar
+                    </Button>
+                    <Button variant="danger" onClick={handleConfirmDelete}>
+                        Eliminar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
         </div>
     );
 };

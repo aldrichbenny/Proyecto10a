@@ -121,3 +121,89 @@
     font-weight: bold;
 }
 
+.details-wrapper {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+#order-details-container {
+  flex: 2;
+  margin-top: 30pt;
+}
+
+#clothes-image-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f4f4f4;
+  margin-top: 45pt;
+  border-radius: 8px;
+}
+
+#clothes-image-container img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.form-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.edit-button, .save-button, .cancel-button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.edit-button {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.save-button {
+  background-color: #2196F3;
+  color: white;
+}
+
+.cancel-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.image-ropa-container {
+  margin-top: 35px;
+}
+
+.image-upload input[type="file"] {
+  display: none;
+}
+
+.image-upload label {
+  background-color: #2196F3;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+textarea.form-input {
+  min-height: 80px;
+  resize: vertical;
+}
