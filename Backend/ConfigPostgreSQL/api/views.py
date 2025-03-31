@@ -13,7 +13,6 @@ from .serializers import UsuarioSerializer
 from django.contrib.auth.hashers import make_password, check_password
 import logging
 
-
 # Create your views here.
 
 class Roles_ListCreate(generics.ListCreateAPIView):
