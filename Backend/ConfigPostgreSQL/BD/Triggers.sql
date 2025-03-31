@@ -138,3 +138,22 @@ EXECUTE FUNCTION update_stock_and_historial();
 
 /* /////////////faltan la actualizacion de estados automaticos///////////////////// */
 
+CREATE OR REPLACE FUNCTION actualizar_estado_solicitud()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE solicitud s
+    SET estado_solicitud = NEW.estado_pedido
+    FROM solicitud_producto sp
+    WHERE sp.id_solicitud = s.id_solicitud
+    AND sp.id_solicitud_producto = NEW.id_solicitud_producto;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_actualizar_estado_solicitud
+AFTER UPDATE OF estado_pedido ON pedido
+FOR EACH ROW
+WHEN (OLD.estado_pedido IS DISTINCT FROM NEW.estado_pedido)
+EXECUTE FUNCTION actualizar_estado_solicitud();
+
