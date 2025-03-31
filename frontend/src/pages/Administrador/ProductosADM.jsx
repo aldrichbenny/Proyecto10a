@@ -27,11 +27,12 @@ const ProductosADM = () => {
                     cantidad: item.cantidad,
                     precio: `$${item.detalle_id_producto.precio_producto}`
                 }));
-                setData(formattedData);
+                const sortedData = formattedData.sort((a, b) => a.idtalla - b.idtalla);
+                setData(sortedData);
             })
             .catch(error => console.error("Error fetching data:", error));
-            
     }, []);
+    
 
     const filteredData = data.filter(item => 
         item.nombre.toLowerCase().includes(searchProduct.toLowerCase()) &&

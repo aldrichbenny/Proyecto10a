@@ -10,7 +10,15 @@ const ProductoDetailADM = () => {
     const [isEditing, setIsEditing] = useState(false);
     const location = useLocation();
     const { productoId, tallaid } = location.state || {};
-    const [tallaDetails, setTallaDetails] = useState(null);
+    const [tallaDetails, setTallaDetails] = useState({
+        id_talla: '',
+        nombre_talla: '',
+        cantidad: '',
+        detalle_id_producto: {
+            nombre_producto: '',
+            descripcion_producto: ''
+        }
+    });
     const [imagenes, setImagenes] = useState([]);
     const [historialStock, setHistorialStock] = useState([]);
 
@@ -38,7 +46,6 @@ const ProductoDetailADM = () => {
         const fetchHistorialStock = async () => {
             try {
                 const response = await axios.get(`http://127.0.0.1:8000/api/Historial_stock/`);
-                // Filtramos los registros del historial de stock según la talla seleccionada
                 const filteredHistorial = response.data.filter(item => item.id_talla === tallaid);
                 setHistorialStock(filteredHistorial);
             } catch (error) {
@@ -60,9 +67,49 @@ const ProductoDetailADM = () => {
     };
 
     const handleSaveClick = () => {
-        setIsEditing(false);
-        console.log('Datos guardados:', tallaDetails); // Aquí se guardan los detalles de la talla
+        axios.get(`http://127.0.0.1:8000/api/Talla/${tallaid}/`)
+            .then(response => {
+                const currentTallaData = response.data;
+    
+                axios.put(`http://127.0.0.1:8000/api/Talla/${tallaid}/`, {
+                    id_talla: currentTallaData.id_talla, 
+                    nombre_talla: currentTallaData.nombre_talla,
+                    cantidad: tallaDetails.cantidad || currentTallaData.cantidad,  
+                    id_producto: currentTallaData.id_producto,
+                })
+                .then(() => {
+                    axios.get(`http://127.0.0.1:8000/api/Productos/${productoId}`)
+                        .then(productoResponse => {
+                            const currentProductoData = productoResponse.data;
+    
+                            axios.put(`http://127.0.0.1:8000/api/Productos/${productoId}/`, {
+                                id_producto: currentProductoData.id_producto,
+                                nombre_producto: tallaDetails?.detalle_id_producto?.nombre_producto || currentProductoData.nombre_producto, 
+                                descripcion_producto: tallaDetails?.detalle_id_producto?.descripcion_producto || currentProductoData.descripcion_producto,
+                                precio_producto: currentProductoData.precio_producto,
+                                id_categoria: currentProductoData.id_categoria,
+                            })
+                            .then(() => {
+                                console.log('Datos de talla y producto actualizados correctamente.');
+                                window.location.reload();
+                            })
+                            .catch(error => {
+                                console.error('Error al actualizar los datos del producto:', error);
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error al obtener los datos del producto:', error);
+                        });
+                })
+                .catch(error => {
+                    console.error('Error al actualizar los datos de talla:', error);
+                });
+            })
+            .catch(error => {
+                console.error('Error al obtener los datos de talla:', error);
+            });
     };
+    
 
     const handleCancelClick = () => {
         setIsEditing(false);
@@ -70,17 +117,27 @@ const ProductoDetailADM = () => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setTallaDetails(prev => ({
-            ...prev,
-            [name]: value
-        }));
+
+        if (name === 'nombre_producto' || name === 'descripcion_producto') {
+            setTallaDetails(prev => ({
+                ...prev,
+                detalle_id_producto: {
+                    ...prev.detalle_id_producto,
+                    [name]: value,
+                }
+            }));
+        } else {
+            setTallaDetails(prev => ({
+                ...prev,
+                [name]: value
+            }));
+        }
     };
 
     const formatFechaHora = (fecha, hora) => {
-        const fechaHora = `${fecha}T${hora}`; // Combina la fecha y la hora en un solo string
-        const date = new Date(fechaHora); // Crea un objeto Date
-    
-        // Opciones para formatear la fecha y la hora
+        const fechaHora = `${fecha}T${hora}`; 
+        const date = new Date(fechaHora); 
+
         const options = {
             year: 'numeric',
             month: 'short',
@@ -88,12 +145,11 @@ const ProductoDetailADM = () => {
             hour: '2-digit',
             minute: '2-digit',
             second: '2-digit',
-            hour12: true // Si quieres formato de 12 horas (AM/PM)
+            hour12: true
         };
-    
-        return date.toLocaleString('es-ES', options); // Formatea la fecha y hora en español
+
+        return date.toLocaleString('es-ES', options);
     };
-    
 
     return (
         <div className="container">
@@ -127,7 +183,7 @@ const ProductoDetailADM = () => {
                                             disabled
                                         />
                                     ) : (
-                                        <Form.Control plaintext readOnly defaultValue={tallaDetails?.id_talla} />
+                                        <Form.Control plaintext readOnly value={tallaDetails?.id_talla || ''} />
                                     )}
                                 </div>
                                 <div className="order-info-item">
@@ -135,12 +191,12 @@ const ProductoDetailADM = () => {
                                     {isEditing ? (
                                         <Form.Control
                                             type="text"
-                                            name="nombre"
+                                            name="nombre_producto"
                                             value={tallaDetails?.detalle_id_producto?.nombre_producto || ''}
                                             onChange={handleInputChange}
                                         />
                                     ) : (
-                                        <Form.Control plaintext readOnly defaultValue={tallaDetails?.detalle_id_producto?.nombre_producto} />
+                                        <Form.Control plaintext readOnly value={tallaDetails?.detalle_id_producto?.nombre_producto || ''} />
                                     )}
                                 </div>
                                 <div className="order-info-item">
@@ -148,12 +204,12 @@ const ProductoDetailADM = () => {
                                     {isEditing ? (
                                         <Form.Control
                                             type="text"
-                                            name="cantidadStock"
+                                            name="cantidad"
                                             value={tallaDetails?.cantidad || ''}
                                             onChange={handleInputChange}
                                         />
                                     ) : (
-                                        <Form.Control plaintext readOnly defaultValue={tallaDetails?.cantidad} />
+                                        <Form.Control plaintext readOnly value={tallaDetails?.cantidad || ''} />
                                     )}
                                 </div>
                             </div>
@@ -161,20 +217,14 @@ const ProductoDetailADM = () => {
                                 <div className="order-info-item">
                                     <span className="order-info-label">Talla:</span>
                                     {isEditing ? (
-                                        <Form.Select
+                                        <Form.Control
                                             name="talla"
                                             value={tallaDetails?.nombre_talla || ''}
                                             onChange={handleInputChange}
-                                        >
-                                            <option value="XS">XS</option>
-                                            <option value="S">S</option>
-                                            <option value="M">M</option>
-                                            <option value="L">L</option>
-                                            <option value="XL">XL</option>
-                                            <option value="XXL">XXL</option>
-                                        </Form.Select>
+                                            disabled
+                                        />
                                     ) : (
-                                        <Form.Control plaintext readOnly defaultValue={tallaDetails?.nombre_talla} />
+                                        <Form.Control plaintext readOnly value={tallaDetails?.nombre_talla || ''} />
                                     )}
                                 </div>
                                 <div className="order-info-item">
@@ -185,9 +235,10 @@ const ProductoDetailADM = () => {
                                              name="fechaRegistro"
                                              value={historialStock?.[0]?.fecha_historial_stock || ''}
                                              onChange={handleInputChange}
+                                             disabled
                                          />
                                      ) : (
-                                         <Form.Control plaintext readOnly defaultValue={historialStock?.[0]?.fecha_historial_stock || ''} />
+                                         <Form.Control plaintext readOnly value={historialStock?.[0]?.fecha_historial_stock || ''} />
                                      )}
                                 </div>
                                 <div className="order-info-item">
@@ -195,13 +246,13 @@ const ProductoDetailADM = () => {
                                     {isEditing ? (
                                         <Form.Control
                                             as="textarea"
-                                            name="descripcion"
+                                            name="descripcion_producto"
                                             value={tallaDetails?.detalle_id_producto?.descripcion_producto || ''}
                                             onChange={handleInputChange}
                                             rows={3}
                                         />
                                     ) : (
-                                        <Form.Control plaintext readOnly defaultValue={tallaDetails?.detalle_id_producto?.descripcion_producto} />
+                                        <Form.Control plaintext readOnly value={tallaDetails?.detalle_id_producto?.descripcion_producto || ''} />
                                     )}
                                 </div>
                             </div>
