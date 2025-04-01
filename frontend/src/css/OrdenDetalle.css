@@ -120,6 +120,7 @@ tfoot tr td {
   overflow-x: auto;
   width: 90%;
   margin-top: 20px;
+  margin-bottom: 30px;
   max-height: 300px;
   overflow-y: auto;
   border-radius: 8px;
@@ -169,6 +170,7 @@ tfoot tr td {
   justify-content: center;
   gap: 20px;
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .approve-btn, .reject-btn {

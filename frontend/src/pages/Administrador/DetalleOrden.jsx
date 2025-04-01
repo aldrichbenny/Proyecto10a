@@ -150,7 +150,7 @@ const DetalleOrden = () => {
       <div className="admin-content">
         <div className="header">
           <h1 className="header-title">Detalle de Orden #{order.id_pedido}</h1>
-          {order.estado_pedido !== "CANCELLED" && order.estado_pedido !== "COMPLETED" && (
+          {/* {order.estado_pedido !== "CANCELLED" && order.estado_pedido !== "COMPLETED" && (
             <Button 
               variant="danger" 
               className="cancel-order-btn"
@@ -158,7 +158,7 @@ const DetalleOrden = () => {
             >
               Cancelar Orden
             </Button>
-          )}
+          )} */}
         </div>
 
         <div className="card-container">
@@ -215,7 +215,7 @@ const DetalleOrden = () => {
 
               <div className="separador-dt"></div>
               <div className="section">
-                <h2 className="section-title">Historial del Pedido</h2>
+                <h2 className="section-title-h">Historial del Pedido</h2>
                 {historialPedido.length > 0 ? (
                   <div className="historial-container">
                     <table className="historial-table">

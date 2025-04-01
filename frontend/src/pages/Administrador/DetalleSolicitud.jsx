@@ -205,7 +205,7 @@ const DetalleSolicitud = () => {
               <div className="separador-dt"></div>
 
               <div className="section">
-                <h2 className="section-title">Detalles del Producto</h2>
+                <h2 className="section-title-h">Detalles del Producto</h2>
                 <table className="product-table">
                   <thead>
                     <tr>
@@ -227,31 +227,11 @@ const DetalleSolicitud = () => {
                       <td>${subtotal.toFixed(2)}</td>
                     </tr>
                   </tbody>
-                  <tfoot>
-                    <tr>
-                      <td colSpan="5" className="text-right">Subtotal:</td>
-                      <td>${subtotal.toFixed(2)}</td>
-                    </tr>
-                    <tr>
-                      <td colSpan="5" className="text-right">IVA (16%):</td>
-                      <td>${iva.toFixed(2)}</td>
-                    </tr>
-                    <tr>
-                      <td colSpan="5" className="text-right">Total:</td>
-                      <td>${totalConIva.toFixed(2)}</td>
-                    </tr>
-                  </tfoot>
                 </table>
               </div>
 
               <div className="separador-dt"></div>
 
-              <div className="section">
-                <h2 className="section-title">Descripción del Producto</h2>
-                <p>{producto.descripcion_producto}</p>
-                <p><strong>Categoría:</strong> {categoria.nombre_categoria}</p>
-                <p><strong>Descripción de la categoría:</strong> {categoria.descripcion_categoria}</p>
-              </div>
 
               {canPerformActions && (
                 <div className="section">
