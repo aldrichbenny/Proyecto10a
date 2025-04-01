@@ -140,8 +140,7 @@ const ProductoDetalle = () => {
     // Calcular el subtotal y total
     const productPrice = parseFloat(product.precio_producto);
     const calculatedSubtotal = productPrice * quantity;
-    // Aplicar un descuento del 7% para el ejemplo
-    const calculatedTotal = calculatedSubtotal * 0.93;
+    const calculatedTotal = calculatedSubtotal; // Ahora el total es igual al subtotal
     
     setSubtotal(calculatedSubtotal);
     setTotal(calculatedTotal);
