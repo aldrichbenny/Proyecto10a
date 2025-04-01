@@ -164,12 +164,11 @@ class Carrito_Serializer(serializers.ModelSerializer):
         fields = ['id_carrito','id_usuario','detalle_id_usuario']
 
 class Wishlist_Producto_Serializer(serializers.ModelSerializer):
-    detalle_id_wishlist = Wishlist_Serializer(source='id_wishlist', read_only=True)    
-    detalle_id_talla = Talla_Serializer(source='id_talla', read_only=True)   
+    detalle_id_wishlist = Wishlist_Serializer(source='id_wishlist', read_only=True)  
 
     class Meta:
         model = Wishlist_Producto
-        fields = ['id_wishlist_producto','cantidad','id_talla','detalle_id_talla','id_wishlist','detalle_id_wishlist']
+        fields = ['id_wishlist_producto','id_wishlist','detalle_id_wishlist']
 
 class Carrito_Producto_Serializer(serializers.ModelSerializer):
     detalle_id_carrito = Carrito_Serializer(source='id_wishlist', read_only=True)    

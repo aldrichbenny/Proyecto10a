@@ -1,15 +1,13 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route} from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 //Paginas Administrador
 import MainAdmin from './pages/Administrador/MainAdmin';
 import DashboardAdmin from './pages/Administrador/DashboardAdmin';
-import ClienteADM from './pages/Administrador/ClienteADM';
-import OrdenesADM from './pages/Administrador/OrdenesADM';
-import SolicitudesADM from './pages/Administrador/SolicitudesADM';
-import ProductosADM from './pages/Administrador/ProductosADM';
-import ProfileADM from './pages/Administrador/ProfileADM';
-
+import Solicitudes from './pages/Administrador/Solicitudes';
+import Ordenes from './pages/Administrador/Ordenes';
+import DetalleOrden from './pages/Administrador/DetalleOrden';
+import DetalleSolicitud from './pages/Administrador/DetalleSolicitud';
 //Paginas Areas de trabajo
 import PendAR from './pages/Area/PendAR';
 import PendDetailsAR from './pages/Area/PendDetailsAR';
@@ -23,7 +21,6 @@ import ProductoDetailADM from './pages/Administrador/ProductoDetailADM';
 
 
 //Paginas Cliente
-import InicioCL from './pages/Cliente/InicioCL';
 import MainCliente from './pages/Cliente/MainCliente';
 import Catalogo from './pages/Cliente/Catalogo';
 import ProductoDetalle from './pages/Cliente/ProductoDetalle';
@@ -42,36 +39,33 @@ function App() {
     <CartProvider>
       <BrowserRouter>
         <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+          <Route path="/" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
-            {/*Rutas administrador*/}
-            <Route path="/admin" element={<MainAdmin />}>
-                <Route index element={<DashboardAdmin />} />
-                <Route path="clientes" element={<ClienteADM />} />
-                <Route path="ordenes" element={<OrdenesADM />} />
-                <Route path="solicitudes" element={<SolicitudesADM />} />
-                <Route path="productos" element={<ProductosADM />} />
-                <Route path="profileADM" element={<ProfileADM />} />
-                <Route path="productos/detailProducto" element={<ProductoDetailADM />} />
-            </Route>
-            {/*Rutas Areas de trabajo*/}
-            <Route path="/indexAR" element={<PendAR />} />
-            <Route path="/pendienteDetailsAR" element={<PendDetailsAR />} />
-            <Route path="/procesoAR" element={<ProcAR />} />
-            <Route path="/procesoDetailsAR" element={<ProcDetailsAR />} />
-            <Route path="/historialAR" element={<HistAR />} />
-            <Route path="/historialDetailsAR" element={<HistDetailsAR />} />
-            <Route path="/profileAR" element={<ProfileAR />} />
+          {/*Rutas administrador*/}
+          <Route path="/admin" element={<MainAdmin />}>
+            <Route index element={<DashboardAdmin />} />
+            <Route path="clientes" element={<div>Clientes</div>} />
+            <Route path="ordenes" element={<Ordenes />} />
+            <Route path="orden/:id" element={<DetalleOrden />} />
+            <Route path="solicitudes" element={<Solicitudes />} />
+            <Route path="solicitud/:id" element={<DetalleSolicitud />} />
+          </Route>
 
-            {/*Rutas Cliente*/}
-            <Route path="/main" element={<MainCliente />} />
-            <Route path="/catalogo" element={<Catalogo />} />
-            <Route path="/catalogo/:categoria" element={<Catalogo />} />
-            <Route path="/producto/:id" element={<ProductoDetalle />} />
-            <Route path="/carrito" element={<Carrito />} />
-            <Route path="/mis-pedidos" element={<MisPedidos />} />
-            <Route path="/detalle-pedido/:id" element={<DetallePedido />} />
+          {/*Rutas Areas de trabajo*/}
+          <Route path="/indexAR" element={<PendAR />} />
+          <Route path="/pendienteDetailsAR" element={<PendDetailsAR />} />
+          <Route path="/procesoAR" element={<ProcAR />} />
+          <Route path="/procesoDetailsAR" element={<ProcDetailsAR />} />
+          <Route path="/historialAR" element={<HistAR />} />
+          <Route path="/historialDetailsAR" element={<HistDetailsAR />} />
+          <Route path="/profileAR" element={<ProfileAR />} />
+
+          {/*Rutas Cliente*/}
+          <Route path="/main" element={<MainCliente />} />
+          <Route path="/catalogo/:categoria" element={<Catalogo />} />
+          <Route path="/producto/:id" element={<ProductoDetalle />} />
+          <Route path="/carrito" element={<Carrito />} />
         </Routes>
       </BrowserRouter>
     </CartProvider>

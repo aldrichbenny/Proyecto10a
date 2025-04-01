@@ -10,3 +10,28 @@
     --Gray3: #5c5b5b;
     --Gray4: #1d1c1c;
 }
+
+.sidebar-container {
+  display: inline-block;
+  height: 100vh;
+  width: 20%;
+  background-color: var(--Background);
+  color: var(--Text);
+  font-family: 'Inter', Helvetica, sans-serif;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.admin-container {
+  display: inline-block;
+  height: 100vh;
+  width: 80%;
+  padding: 16px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.nav-top {
+  height: 50px;
+  background-color: var(--Gray3);
+}
