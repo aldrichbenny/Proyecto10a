@@ -16,11 +16,19 @@ const Login = () => {
         try {
             const data = await login(correo, contraseña);
 
+<<<<<<< Updated upstream
             console.log('Usuario autenticado:', data);
 
             switch (data.detalle_id_rol?.nombre_rol) {
                 case 'Customer':
                     navigate('/indexCL');
+=======
+            localStorage.setItem('user', JSON.stringify(data));
+
+            switch (data.detalle_id_rol?.nombre_rol) {
+                case 'Customer':
+                    navigate('/catalogo');
+>>>>>>> Stashed changes
                     break;
                 case 'AreaManager':
                     navigate('/indexAR');
@@ -36,7 +44,6 @@ const Login = () => {
         }
     };
 
-
     return(
         <div className='main-container'>
             <div className="sidenav">
@@ -44,6 +51,7 @@ const Login = () => {
                 <img className='logo' src={logo} height="300px" width="500px" alt="Logo" />
                 </div>
             </div>
+
             <div className="main">
                 <div className="col-md-6 col-sm-12">
                 <div className="login-form">
@@ -51,7 +59,7 @@ const Login = () => {
                     <h1>Login</h1>
                     <p>Login from here to access.</p>
                     <div className="form-group">
-                        <label className="form-label">Email</label>
+                        <label className="form-label">Correo</label>
                         <input 
                             type="email" 
                             className="form-control" 
@@ -61,7 +69,7 @@ const Login = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <label className="form-label">Password</label>
+                        <label className="form-label">Contraseña</label>
                         <input 
                             type="password" 
                             className="form-control" 
@@ -70,12 +78,12 @@ const Login = () => {
                             onChange={(e) => setContraseña(e.target.value)}
                         />
                     </div>
-                    <button type="submit" className="btn btn-primary">Login</button>
+                    <button type="submit" className="btn btn-primary">Iniciar Sesión</button>
                     {error && <p style={{ color: 'red' }}>{error}</p>}
                     <div className="text-center mt-3">
-                        <span className="text-muted">¿New User? </span>
+                        <span className="text-muted">¿Nuevo Usuario? </span>
                         <a href="/register" className="fw-bold text-decoration-none">
-                            <em>Create Account</em>
+                            <em>Crear Cuenta</em>
                         </a>
                     </div>
                 </form>
@@ -83,7 +91,7 @@ const Login = () => {
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default Login;
+export default Login

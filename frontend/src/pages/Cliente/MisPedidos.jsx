@@ -11,13 +11,24 @@ const MisPedidos = () => {
   const [imagenes, setImagenes] = useState({});
   const navigate = useNavigate();
 
+<<<<<<< Updated upstream
+=======
+  // Obtener el usuario del localStorage
+  const storedUser = localStorage.getItem('user');
+  if (!storedUser) {
+    navigate('/'); // Redirigir al login si no hay usuario
+    return null;
+  }
+  const user = JSON.parse(storedUser);
+  const idUsuario = user.id_usuario;
+
+>>>>>>> Stashed changes
   useEffect(() => {
-    // Función para obtener todos los pedidos del cliente
     const fetchPedidos = async () => {
       try {
         setLoading(true);
         
-        // Obtener todas las solicitudes de productos asociadas al usuario con ID 1
+        // Obtener todas las solicitudes de productos
         const response = await axios.get('http://127.0.0.1:8000/api/Solicitud_producto/');
         
         // Obtener todas las imágenes de productos
@@ -26,7 +37,6 @@ const MisPedidos = () => {
         // Crear un mapa de id_producto -> primera imagen
         const imagenesMap = {};
         imagenesResponse.data.forEach(img => {
-          // Solo guardar la primera imagen de cada producto
           if (!imagenesMap[img.id_producto]) {
             imagenesMap[img.id_producto] = img.nombre_imagen;
           }
@@ -34,11 +44,18 @@ const MisPedidos = () => {
         
         setImagenes(imagenesMap);
         
+<<<<<<< Updated upstream
         // Filtrar las solicitudes que pertenecen al usuario con ID 1
         const pedidosUsuario = response.data.filter(
           solicitud => solicitud.detalle_id_solicitud?.id_usuario === 1
+=======
+        // Filtrar pedidos del usuario actual
+        const pedidosUsuario = response.data.filter(
+          solicitud => solicitud.detalle_id_solicitud?.id_usuario === idUsuario
+>>>>>>> Stashed changes
         );
         
+        console.log('ID de usuario actual:', idUsuario);
         console.log('Pedidos del usuario:', pedidosUsuario);
         
         // Formatear los datos para mostrarlos en la interfaz
@@ -49,26 +66,25 @@ const MisPedidos = () => {
           
           return {
             id_solicitud_producto: solicitud.id_solicitud_producto,
-            nombre_producto: producto.nombre_producto || 'Producto sin nombre',
-            descripcion_producto: producto.descripcion_producto || 'Sin descripción',
-            marca: 'Luis Vuitron', // Valor por defecto
+            nombre_producto: producto.nombre_producto || 'Product without name',
+            descripcion_producto: producto.descripcion_producto || 'No description',
+            marca: producto.marca || 'Luis Vuitron',
             cantidad_total: solicitud.cantidad_total || 0,
             precio_unitario: parseFloat(producto.precio_producto) || 0,
             precio_total: (parseFloat(producto.precio_producto) * solicitud.cantidad_total) || 0,
             talla: talla.nombre_talla || 'N/A',
-            fecha_entrega: solicitud.detalle_id_solicitud?.fecha_entrega_estimada || 'No disponible',
-            estado: solicitud.detalle_id_solicitud?.estado_solicitud || 'EN PROCESO',
-            imagen: imagenesMap[idProducto] || `/images/producto${idProducto}.jpg`, // Usar imagen de la API o fallback
-            id_producto: idProducto // Guardar el id_producto para referencia
+            fecha_entrega: solicitud.detalle_id_solicitud?.fecha_entrega_estimada || 'Not available',
+            estado: solicitud.detalle_id_solicitud?.estado_solicitud || 'IN PROCESS',
+            imagen: imagenesMap[idProducto] || `/images/producto${idProducto}.jpg`,
+            id_producto: idProducto
           };
         });
         
         setPedidos(pedidosFormateados);
         
-        // Recuperar también el último pedido del localStorage (si existe)
+        // Recuperar el último pedido del localStorage si existe y no está duplicado
         const ultimoPedido = JSON.parse(localStorage.getItem('ultimoPedido'));
         if (ultimoPedido && !pedidosFormateados.some(p => p.id_solicitud_producto === ultimoPedido.id_solicitud_producto)) {
-          // Si el último pedido tiene un id_producto, intentar asignarle una imagen real
           if (ultimoPedido.id_producto && imagenesMap[ultimoPedido.id_producto]) {
             ultimoPedido.imagen = imagenesMap[ultimoPedido.id_producto];
           }
@@ -79,7 +95,7 @@ const MisPedidos = () => {
       } catch (error) {
         console.error('Error al obtener pedidos:', error);
         
-        // Si hay un error al obtener los pedidos de la API, intentar mostrar el último pedido del localStorage
+        // Si hay error, intentar mostrar el último pedido del localStorage
         const ultimoPedido = JSON.parse(localStorage.getItem('ultimoPedido'));
         if (ultimoPedido) {
           setPedidos([ultimoPedido]);
@@ -90,7 +106,7 @@ const MisPedidos = () => {
     };
     
     fetchPedidos();
-  }, []);
+  }, [idUsuario, navigate]);
 
   if (loading) {
     return (
@@ -98,8 +114,9 @@ const MisPedidos = () => {
         <Navbar />
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flex: 1 }}>
           <CircularProgress />
-          <Typography variant="h6" sx={{ ml: 2 }}>Cargando pedidos...</Typography>
+          <Typography variant="h6" sx={{ ml: 2 }}>Loading orders...</Typography>
         </Box>
+        <Footer />
       </Box>
     );
   }
@@ -115,17 +132,17 @@ const MisPedidos = () => {
           paddingBottom: 2,
           marginBottom: 4
         }}>
-          PEDIDOS
+          MY ORDERS
         </Typography>
         
         {pedidos.length === 0 ? (
           <Typography variant="h6" align="center">
-            No tienes pedidos realizados
+            You haven't placed any orders yet
           </Typography>
         ) : (
           pedidos.map((pedido, index) => (
             <Paper 
-              key={index} 
+              key={pedido.id_solicitud_producto || index} 
               elevation={1} 
               sx={{ 
                 mb: 3, 
@@ -164,16 +181,24 @@ const MisPedidos = () => {
                   
                   <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, mt: 1 }}>
                     <Typography variant="body2" sx={{ mr: 2 }}>
-                      ID: {pedido.id_solicitud_producto || 'K57D5E875D4D'}
+                      ID: {pedido.id_solicitud_producto}
                     </Typography>
                     
+                    <Typography variant="body2" sx={{ mr: 2 }}>
+                      BRAND: {pedido.marca}
+                    </Typography>
+
+                    <Typography variant="body2" sx={{ mr: 2 }}>
+                      SIZE: {pedido.talla}
+                    </Typography>
+
                     <Typography variant="body2">
-                      MARCA: {pedido.marca || 'Luis Vuitron'}
+                      STATUS: {pedido.estado}
                     </Typography>
                   </Box>
                   
                   <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                    {pedido.descripcion_producto || 'Lorem ipsum dolor sit amet consectetur adipiscing elit, euismod rutrum lacus gravida neque augue nunc enim, id ante inceptos penatibus magna varius. Himenaeos ullamcorper sociosqu elementum pulvinar purus dictum aenean faucibus torquent'}
+                    {pedido.descripcion_producto}
                   </Typography>
                   
                   <Box sx={{ 
@@ -182,22 +207,11 @@ const MisPedidos = () => {
                     alignItems: 'center',
                     mt: 2
                   }}>
-                    <Box 
-                      component="input" 
-                      type="text" 
-                      value={pedido.cantidad_total || 10}
-                      readOnly
-                      sx={{ 
-                        width: 100, 
-                        p: 1,
-                        textAlign: 'center',
-                        border: '1px solid #ddd',
-                        borderRadius: 1
-                      }}
-                    />
-                    
-                    <Typography variant="h6" fontWeight="bold">
-                      ${pedido.precio_total.toLocaleString('es-MX') || '18,620'} MXN
+                    <Typography variant="body2">
+                      Quantity: {pedido.cantidad_total}
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                      Total Price: ${pedido.precio_total.toLocaleString()}
                     </Typography>
                   </Box>
                 </Grid>
@@ -206,7 +220,6 @@ const MisPedidos = () => {
           ))
         )}
       </Container>
-      
       <Footer />
     </Box>
   );
