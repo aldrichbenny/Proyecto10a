@@ -18,6 +18,8 @@ const MisPedidos = () => {
   }
   const user = JSON.parse(storedUser);
   const idUsuario = user.id_usuario;
+  console.log(idUsuario);
+  
   
 
   useEffect(() => {
@@ -44,7 +46,7 @@ const MisPedidos = () => {
         setImagenes(imagenesMap);
         
         const pedidosUsuario = response.data.filter(
-          solicitud => solicitud.detalle_id_solicitud?.id_usuario === Userid
+          solicitud => solicitud.detalle_id_solicitud?.id_usuario === 1
         );
         
         console.log('Pedidos del usuario:', pedidosUsuario);

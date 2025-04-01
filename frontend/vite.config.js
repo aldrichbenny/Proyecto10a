@@ -6,17 +6,28 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: "autoUpdate", // Auto-registra el SW
+      registerType: "autoUpdate",
       devOptions: {
-        enabled: true, // Habilita PWA en desarrollo
+        enabled: true,
       },
       workbox: {
-        cleanupOutdatedCaches: true, // Limpia cachés antiguas
+        cleanupOutdatedCaches: true,
+        globPatterns: ['offline.html'], // Asegúrate de que offline.html esté en la caché
+        runtimeCaching: [
+          {
+            urlPattern: /^\/offline\.html$/, // Solo para offline.html
+            handler: "NetworkFirst", // Cambié a "NetworkFirst" como requiere Workbox
+            options: {
+              cacheName: "offline-cache",
+              networkTimeoutSeconds: 5, // Tiempo de espera si la red no responde
+            },
+          },
+        ],
       },
       manifest: {
         id: "/",
-        name: "Backtraking",
-        short_name: "BacktrakingPWA",
+        name: "Backtracking",
+        short_name: "BacktrackingPWA",
         description: "Mi aplicación como Progressive Web App",
         theme_color: "#ffffff",
         background_color: "#ffffff",
@@ -65,6 +76,9 @@ export default defineConfig({
             type: "image/png",
           },
         ],
+      },
+      inject: {
+        sw: '/custom-sw.js', // Apunta a tu archivo `custom-sw.js` personalizado
       },
     }),
   ],

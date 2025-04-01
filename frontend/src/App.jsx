@@ -23,7 +23,6 @@ import ProductoDetailADM from './pages/Administrador/ProductoDetailADM';
 
 
 //Paginas Cliente
-import InicioCL from './pages/Cliente/InicioCL';
 import MainCliente from './pages/Cliente/MainCliente';
 import Catalogo from './pages/Cliente/Catalogo';
 import ProductoDetalle from './pages/Cliente/ProductoDetalle';
@@ -33,6 +32,8 @@ import DetallePedido from './pages/Cliente/DetallePedido';
 
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Error from './pages/error/error';
+
 
 import { CartProvider } from './context/CartContext';
 
@@ -72,6 +73,8 @@ function App() {
             <Route path="/carrito" element={<Carrito />} />
             <Route path="/mis-pedidos" element={<MisPedidos />} />
             <Route path="/detalle-pedido/:id" element={<DetallePedido />} />
+
+            <Route path="/error" element={<Error />} />
         </Routes>
       </BrowserRouter>
     </CartProvider>
