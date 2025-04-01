@@ -11,18 +11,20 @@ export default defineConfig({
         enabled: true,
       },
       workbox: {
-        cleanupOutdatedCaches: true,
-        globPatterns: ['offline.html'], // Asegúrate de que offline.html esté en la caché
+        globPatterns: ['offline.html'],
         runtimeCaching: [
           {
-            urlPattern: /^\/offline\.html$/, // Solo para offline.html
-            handler: "NetworkFirst", // Cambié a "NetworkFirst" como requiere Workbox
+            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
+            handler: 'CacheFirst',
             options: {
-              cacheName: "offline-cache",
-              networkTimeoutSeconds: 5, // Tiempo de espera si la red no responde
-            },
-          },
-        ],
+              cacheName: 'google-fonts-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365
+              }
+            }
+          }
+        ]
       },
       manifest: {
         id: "/",
@@ -78,7 +80,7 @@ export default defineConfig({
         ],
       },
       inject: {
-        sw: '/custom-sw.js', // Apunta a tu archivo `custom-sw.js` personalizado
+        sw: '/custom-sw.js', // Apunta a tu archivo custom-sw.js
       },
     }),
   ],
