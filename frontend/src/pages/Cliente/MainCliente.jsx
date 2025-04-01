@@ -3,11 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import styles from './MainCliente.module.css';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import axios from 'axios';
 
 const MainCliente = () => {
   const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
   const sliderRef = useRef(null);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const slides = [
     {
@@ -50,15 +53,41 @@ const MainCliente = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const categories = [
-    { id: 1, name: 'Camisetas manga corta', image: '/images/camiseta-corta.png' },
-    { id: 2, name: 'Camisetas manga larga', image: '/images/camiseta-larga.png' },
-    { id: 3, name: 'Sudaderas', image: '/images/sudadera.png' },
-    { id: 4, name: 'Suéters', image: '/images/sueter.png' }
-  ];
+  // Fetch categories from API
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get('http://127.0.0.1:8000/api/Categoria/');
+        
+        // Map API categories to the format needed for display
+        const categoryImages = {
+          1: '/images/camiseta-corta.png', // Short Sleeve T-Shirt
+          2: '/images/camiseta-larga.png', // Long Sleeve T-Shirt
+          3: '/images/sudadera.png',       // Hoodie
+          4: '/images/sueter.png'          // Sweater
+        };
+        
+        const mappedCategories = response.data.map(category => ({
+          id: category.id_categoria,
+          name: category.nombre_categoria,
+          image: categoryImages[category.id_categoria] || '/images/default-category.png'
+        }));
+        
+        setCategories(mappedCategories);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        setLoading(false);
+      }
+    };
 
-  const handleCategoryClick = (categoryName) => {
-    navigate(`/catalogo/${categoryName.toLowerCase().replace(/\s+/g, '-')}`);
+    fetchCategories();
+  }, []);
+
+  const handleCategoryClick = (categoryId) => {
+    // Navegar directamente a la página del catálogo con el parámetro de categoría
+    navigate(`/catalogo?category=${categoryId}`);
   };
 
   return (
@@ -126,18 +155,22 @@ const MainCliente = () => {
         <div className={styles.categoriesContainer}>
           <section className={styles.categoriesSection}>
             <h2>CATEGORÍAS</h2>
-            <div className={styles.categoriesGrid}>
-              {categories.map((category) => (
-                <div
-                  key={category.id}
-                  className={styles.categoryCard}
-                  onClick={() => handleCategoryClick(category.name)}
-                >
-                  <img src={category.image} alt={category.name} />
-                  <h3>{category.name}</h3>
-                </div>
-              ))}
-            </div>
+            {loading ? (
+              <div className={styles.loading}>Cargando categorías...</div>
+            ) : (
+              <div className={styles.categoriesGrid}>
+                {categories.map((category) => (
+                  <div
+                    key={category.id}
+                    className={styles.categoryCard}
+                    onClick={() => handleCategoryClick(category.id)}
+                  >
+                    <img src={category.image} alt={category.name} />
+                    <h3>{category.name}</h3>
+                  </div>
+                ))}
+              </div>
+            )}
           </section>
         </div>
       </div>

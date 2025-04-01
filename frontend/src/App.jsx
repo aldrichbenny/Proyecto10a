@@ -23,16 +23,18 @@ import ProductoDetailADM from './pages/Administrador/ProductoDetailADM';
 
 
 //Paginas Cliente
+import InicioCL from './pages/Cliente/InicioCL';
 import MainCliente from './pages/Cliente/MainCliente';
 import Catalogo from './pages/Cliente/Catalogo';
 import ProductoDetalle from './pages/Cliente/ProductoDetalle';
 import Carrito from './components/Carrito';
+import MisPedidos from './pages/Cliente/MisPedidos';
+import DetallePedido from './pages/Cliente/DetallePedido';
 
 import Login from './pages/Login';
 import Register from './pages/Register';
 
 import { CartProvider } from './context/CartContext';
-
 
 function App() {
 
@@ -64,9 +66,12 @@ function App() {
 
             {/*Rutas Cliente*/}
             <Route path="/main" element={<MainCliente />} />
+            <Route path="/catalogo" element={<Catalogo />} />
             <Route path="/catalogo/:categoria" element={<Catalogo />} />
             <Route path="/producto/:id" element={<ProductoDetalle />} />
             <Route path="/carrito" element={<Carrito />} />
+            <Route path="/mis-pedidos" element={<MisPedidos />} />
+            <Route path="/detalle-pedido/:id" element={<DetallePedido />} />
         </Routes>
       </BrowserRouter>
     </CartProvider>
