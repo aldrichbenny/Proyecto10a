@@ -1,22 +1,70 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   AppBar,
   Box,
   Toolbar,
   Typography,
   IconButton,
-  Badge,
+  Menu,
+  MenuItem,
+  Button,
+  CircularProgress
 } from '@mui/material';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import PersonIcon from '@mui/icons-material/Person';
-import MenuIcon from '@mui/icons-material/Menu';
-import { useNavigate } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios';
 
-const Navbar = () => {
+const Navbar = ({ onCategorySelect }) => {
   const navigate = useNavigate();
-  const { cartItems } = useCart();
+  const location = useLocation();
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [categoryMenuAnchor, setCategoryMenuAnchor] = useState(null);
+
+  // Fetch categories from API
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get('http://127.0.0.1:8000/api/Categoria/');
+        setCategories(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  const handleCategoryMenuOpen = (event) => {
+    setCategoryMenuAnchor(event.currentTarget);
+  };
+
+  const handleCategoryMenuClose = () => {
+    setCategoryMenuAnchor(null);
+  };
+
+  const handleCategorySelect = (categoryId) => {
+    handleCategoryMenuClose();
+    
+    // Siempre navegar a la página del catálogo
+    if (categoryId) {
+      // Si hay una categoría seleccionada, navegar con el parámetro de categoría
+      navigate(`/catalogo?category=${categoryId}`);
+    } else {
+      // Si se selecciona "Todas las categorías", navegar sin parámetro
+      navigate('/catalogo');
+    }
+    
+    // Si estamos en la página del catálogo y hay una función de callback, llamarla
+    if (location.pathname.includes('/catalogo') && onCategorySelect) {
+      onCategorySelect(categoryId);
+    }
+  };
 
   return (
     <AppBar position="sticky" sx={{ bgcolor: 'black', boxShadow: 1 }}>
@@ -36,8 +84,45 @@ const Navbar = () => {
             MAYORSTORE
           </Typography>
           <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 1 }}>
-            
-            
+            <Button
+              color="inherit"
+              endIcon={<KeyboardArrowDownIcon />}
+              onClick={handleCategoryMenuOpen}
+              sx={{ color: 'white' }}
+            >
+              Catálogo
+            </Button>
+            <Menu
+              anchorEl={categoryMenuAnchor}
+              open={Boolean(categoryMenuAnchor)}
+              onClose={handleCategoryMenuClose}
+              MenuListProps={{
+                'aria-labelledby': 'categories-button',
+              }}
+            >
+              <MenuItem 
+                onClick={() => handleCategorySelect(null)}
+                data-category-id="all"
+              >
+                Todas las categorías
+              </MenuItem>
+              {loading ? (
+                <MenuItem disabled>
+                  <CircularProgress size={20} sx={{ mr: 1 }} />
+                  Cargando...
+                </MenuItem>
+              ) : (
+                categories.map((category) => (
+                  <MenuItem 
+                    key={category.id_categoria} 
+                    onClick={() => handleCategorySelect(category.id_categoria)}
+                    data-category-id={category.id_categoria}
+                  >
+                    {category.nombre_categoria}
+                  </MenuItem>
+                ))
+              )}
+            </Menu>
           </Box>
         </Box>
 
@@ -57,11 +142,6 @@ const Navbar = () => {
           </Box>
           <IconButton onClick={() => navigate('/favoritos')}>
             <FavoriteIcon sx={{ color: 'white' }} />
-          </IconButton>
-          <IconButton onClick={() => navigate('/carrito')}>
-            <Badge badgeContent={cartItems.length} color="error">
-              <ShoppingCartIcon sx={{ color: 'white' }} />
-            </Badge>
           </IconButton>
           <IconButton>
             <PersonIcon sx={{ color: 'white' }} />
