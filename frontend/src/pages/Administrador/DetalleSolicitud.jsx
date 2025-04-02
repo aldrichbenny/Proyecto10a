@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { ArrowLeftCircle } from 'react-bootstrap-icons';
 import '../../css/OrdenDetalle.css';
 import { getDetalleSolicitud, getDetalleSolicitudProducto, getDetallePerfilUsuario, addPedido, updateSolicitudStatus } from "../../services/adminServices";
 import { formatDate, formatTime } from "../../utils/dateUtils";
@@ -14,6 +15,10 @@ const DetalleSolicitud = () => {
   const [error, setError] = useState(null);
   const [processingAction, setProcessingAction] = useState(false);
   const [actionMessage, setActionMessage] = useState(null);
+
+  const handleBackClick = () => {
+    navigate('/admin/solicitudes');
+  };
 
   useEffect(() => {
     const fetchSolicitudDetails = async () => {
@@ -166,6 +171,9 @@ const DetalleSolicitud = () => {
       <div className="admin-content">
         <div className="header">
           <h1 className="header-title">Detalle de Solicitud #{solicitud.id_solicitud}</h1>
+          <button className='back-button2' onClick={handleBackClick} aria-label="Volver atrás">
+            <ArrowLeftCircle size={40} />
+          </button>
         </div>
 
         {actionMessage && (

@@ -7,23 +7,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0001_initial'),
+        ('api', '0004_alter_historial_pedido_hora_and_more'),
     ]
 
     operations = [
         migrations.AlterField(
             model_name='historial_pedido',
             name='hora',
-            field=models.TimeField(default=datetime.time(18, 20, 23, 793812)),
+            field=models.TimeField(default=datetime.time(18, 20, 52, 129338)),
         ),
         migrations.AlterField(
             model_name='historial_stock',
             name='hora_historial_stock',
-            field=models.TimeField(default=datetime.time(18, 20, 23, 766161)),
+            field=models.TimeField(default=datetime.time(18, 20, 52, 109547)),
         ),
         migrations.AlterField(
             model_name='solicitud',
             name='hora_registro',
-            field=models.TimeField(default=datetime.time(18, 20, 23, 791445)),
+            field=models.TimeField(default=datetime.time(18, 20, 52, 128309)),
         ),
     ]

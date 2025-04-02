@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Button, Modal } from 'react-bootstrap';
+import { ArrowLeftCircle } from 'react-bootstrap-icons';
+import { useNavigate } from 'react-router-dom';
 import '../../css/OrdenDetalle.css';
 import { getDetallePedido, getDetallePerfilUsuario, getHistorialPedido, updatePedidoStatus } from "../../services/adminServices";
 import { formatDate, formatTime, formatDateTime } from "../../utils/dateUtils";
 
 const DetalleOrden = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [order, setOrder] = useState(null);
   const [perfilUsuario, setPerfilUsuario] = useState(null);
@@ -16,6 +19,10 @@ const DetalleOrden = () => {
   const [cancelProcessing, setCancelProcessing] = useState(false);
   const [cancelSuccess, setCancelSuccess] = useState(false);
   const [cancelError, setCancelError] = useState(null);
+
+  const handleBackClick = () => {
+    navigate('/admin/ordenes');
+  };
 
   useEffect(() => {
     const fetchOrderDetails = async () => {
@@ -159,6 +166,9 @@ const DetalleOrden = () => {
               Cancelar Orden
             </Button>
           )} */}
+          <button className='back-button2' onClick={handleBackClick} aria-label="Volver atrás">
+              <ArrowLeftCircle size={40} />
+          </button>
         </div>
 
         <div className="card-container">
