@@ -9,6 +9,10 @@ import OrdenesADM from './pages/Administrador/OrdenesADM';
 import SolicitudesADM from './pages/Administrador/SolicitudesADM';
 import ProductosADM from './pages/Administrador/ProductosADM';
 import ProfileADM from './pages/Administrador/ProfileADM';
+import DetalleOrden from './pages/Administrador/DetalleOrden';
+import DetalleSolicitud from './pages/Administrador/DetalleSolicitud';
+import Solicitudes from './pages/Administrador/Solicitudes';
+import Ordenes from './pages/Administrador/Ordenes';
 
 //Paginas Areas de trabajo
 import PendAR from './pages/Area/PendAR';
@@ -30,9 +34,14 @@ import ProductoDetalle from './pages/Cliente/ProductoDetalle';
 import Carrito from './components/Carrito';
 import MisPedidos from './pages/Cliente/MisPedidos';
 import DetallePedido from './pages/Cliente/DetallePedido';
+import Perfil from './pages/Cliente/Perfil';
+import Profile from './pages/Cliente/Profile';
+
 
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Error from './pages/error/error';
+
 
 import { CartProvider } from './context/CartContext';
 
@@ -49,8 +58,10 @@ function App() {
             <Route path="/admin" element={<MainAdmin />}>
                 <Route index element={<DashboardAdmin />} />
                 <Route path="clientes" element={<ClienteADM />} />
-                <Route path="ordenes" element={<OrdenesADM />} />
-                <Route path="solicitudes" element={<SolicitudesADM />} />
+                <Route path="ordenes" element={<Ordenes />} />
+                <Route path="orden/:id" element={<DetalleOrden />} />
+                <Route path="solicitudes" element={<Solicitudes/>} />
+                <Route path="solicitud/:id" element={<DetalleSolicitud />} />
                 <Route path="productos" element={<ProductosADM />} />
                 <Route path="profileADM" element={<ProfileADM />} />
                 <Route path="productos/detailProducto" element={<ProductoDetailADM />} />
@@ -72,6 +83,8 @@ function App() {
             <Route path="/carrito" element={<Carrito />} />
             <Route path="/mis-pedidos" element={<MisPedidos />} />
             <Route path="/detalle-pedido/:id" element={<DetallePedido />} />
+            <Route path="/perfil" element={<Profile />} />
+
         </Routes>
       </BrowserRouter>
     </CartProvider>

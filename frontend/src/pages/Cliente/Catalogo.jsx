@@ -152,6 +152,9 @@ const Catalogo = () => {
     }
   });
 
+  console.log('Selected Category:', selectedCategory);
+  console.log('Filtered Products:', filteredProducts.length);
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Navbar onCategorySelect={handleCategorySelect} />
@@ -250,21 +253,6 @@ const Catalogo = () => {
                           alt={product.nombre_producto}
                           sx={{ objectFit: 'contain', p: 2 }}
                         />
-                        <IconButton
-                          sx={{
-                            position: 'absolute',
-                            top: 8,
-                            right: 8,
-                            bgcolor: 'white',
-                            '&:hover': { bgcolor: 'white' }
-                          }}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            // Add to favorites logic here
-                          }}
-                        >
-                          <FavoriteIcon />
-                        </IconButton>
                       </Box>
                       <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', p: 2, height: '190px' }}>
                         <Typography gutterBottom variant="h6" component="div" sx={{ 

@@ -7,12 +7,19 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  CircularProgress,
+  Avatar,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
   Button,
-  CircularProgress
+  Container
 } from '@mui/material';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import PersonIcon from '@mui/icons-material/Person';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import LogoutIcon from '@mui/icons-material/Logout';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
@@ -22,6 +29,9 @@ const Navbar = ({ onCategorySelect }) => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [categoryMenuAnchor, setCategoryMenuAnchor] = useState(null);
+  const [profileMenuAnchor, setProfileMenuAnchor] = useState(null);
+  const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
+  const userName = localStorage.getItem('userName') || 'User';
 
   // Fetch categories from API
   useEffect(() => {
@@ -48,6 +58,29 @@ const Navbar = ({ onCategorySelect }) => {
     setCategoryMenuAnchor(null);
   };
 
+  const handleProfileMenuOpen = (event) => {
+    setProfileMenuAnchor(event.currentTarget);
+  };
+
+  const handleProfileMenuClose = () => {
+    setProfileMenuAnchor(null);
+  };
+
+  const handleLogoutClick = () => {
+    handleProfileMenuClose();
+    setOpenLogoutDialog(true);
+  };
+
+  const handleLogoutConfirm = () => {
+    localStorage.clear();
+    navigate('/');
+    setOpenLogoutDialog(false);
+  };
+
+  const handleLogoutCancel = () => {
+    setOpenLogoutDialog(false);
+  };
+
   const handleCategorySelect = (categoryId) => {
     handleCategoryMenuClose();
     
@@ -67,54 +100,55 @@ const Navbar = ({ onCategorySelect }) => {
   };
 
   return (
-    <AppBar position="sticky" sx={{ bgcolor: 'black', boxShadow: 1 }}>
-      <Toolbar sx={{ justifyContent: 'space-between', gap: 2 }}>
-        {/* Left side - Logo and Categories */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+    <AppBar position="static" sx={{ bgcolor: 'black' }}>
+      <Container maxWidth="xl">
+        <Toolbar disableGutters>
           <Typography
             variant="h6"
-            component="div"
-            sx={{ 
-              color: 'white',
-              fontWeight: 'bold',
+            noWrap
+            sx={{
+              mr: 2,
+              display: { xs: 'none', md: 'flex' },
+              fontFamily: 'monospace',
+              fontWeight: 700,
+              letterSpacing: '.3rem',
+              color: 'inherit',
+              textDecoration: 'none',
               cursor: 'pointer'
             }}
             onClick={() => navigate('/main')}
           >
             MAYORSTORE
           </Typography>
-          <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 1 }}>
-            <Button
+
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+            <Button 
               color="inherit"
-              endIcon={<KeyboardArrowDownIcon />}
               onClick={handleCategoryMenuOpen}
               sx={{ color: 'white' }}
             >
-              Catálogo
+              Catalog
             </Button>
             <Menu
               anchorEl={categoryMenuAnchor}
               open={Boolean(categoryMenuAnchor)}
               onClose={handleCategoryMenuClose}
-              MenuListProps={{
-                'aria-labelledby': 'categories-button',
-              }}
             >
               <MenuItem 
                 onClick={() => handleCategorySelect(null)}
                 data-category-id="all"
               >
-                Todas las categorías
+                All Categories
               </MenuItem>
+
               {loading ? (
                 <MenuItem disabled>
-                  <CircularProgress size={20} sx={{ mr: 1 }} />
-                  Cargando...
+                  Loading...
                 </MenuItem>
               ) : (
                 categories.map((category) => (
-                  <MenuItem 
-                    key={category.id_categoria} 
+                  <MenuItem
+                    key={category.id_categoria}
                     onClick={() => handleCategorySelect(category.id_categoria)}
                     data-category-id={category.id_categoria}
                   >
@@ -124,30 +158,64 @@ const Navbar = ({ onCategorySelect }) => {
               )}
             </Menu>
           </Box>
-        </Box>
 
-        {/* Right side - Icons */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography 
-              sx={{ 
-                color: 'white', 
+          <Box sx={{ flexGrow: 0 }}>
+            <Typography
+              variant="h6"
+              noWrap
+              sx={{
+                mr: 2,
                 display: { xs: 'none', sm: 'block' },
                 cursor: 'pointer'
               }}
               onClick={() => navigate('/mis-pedidos')}
             >
-              Mis Pedidos
+              My Orders
             </Typography>
           </Box>
-          <IconButton onClick={() => navigate('/favoritos')}>
-            <FavoriteIcon sx={{ color: 'white' }} />
-          </IconButton>
-          <IconButton>
-            <PersonIcon sx={{ color: 'white' }} />
-          </IconButton>
-        </Box>
-      </Toolbar>
+
+          <Box sx={{ flexGrow: 0 }}>
+            <IconButton onClick={handleProfileMenuOpen} sx={{ p: 0, color: 'white' }}>
+              <AccountCircle />
+            </IconButton>
+            <Menu
+              anchorEl={profileMenuAnchor}
+              open={Boolean(profileMenuAnchor)}
+              onClose={handleProfileMenuClose}
+            >
+              <MenuItem onClick={() => {
+                handleProfileMenuClose();
+                navigate('/perfil');
+              }}>
+                <PersonIcon sx={{ mr: 1 }} />
+                My Profile
+              </MenuItem>
+              <MenuItem onClick={handleLogoutClick}>
+                <LogoutIcon sx={{ mr: 1 }} />
+                Sign Out
+              </MenuItem>
+            </Menu>
+          </Box>
+        </Toolbar>
+      </Container>
+
+      <Dialog
+        open={openLogoutDialog}
+        onClose={handleLogoutCancel}
+      >
+        <DialogTitle>Confirm Sign Out</DialogTitle>
+        <DialogContent>
+          <Typography>Are you sure you want to sign out?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleLogoutCancel} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleLogoutConfirm} color="error" variant="contained">
+            Sign Out
+          </Button>
+        </DialogActions>
+      </Dialog>
     </AppBar>
   );
 };
