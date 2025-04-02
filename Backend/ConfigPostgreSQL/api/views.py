@@ -127,6 +127,13 @@ class Solicitud_producto_RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPI
     queryset = Solicitud_producto.objects.all()
     serializer_class = Solicitud_producto_Serializer
 
+class Solicitud_producto_by_id(generics.ListAPIView):
+    serializer_class = Solicitud_producto_Serializer
+
+    def get_queryset(self):
+        id_solicitud = self.kwargs['id_solicitud']
+        return Solicitud_producto.objects.filter(id_solicitud=id_solicitud)
+
 class Area_ListCreate(generics.ListCreateAPIView):
     queryset = Area.objects.all()
     serializer_class = Area_Serializer

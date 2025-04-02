@@ -10,7 +10,14 @@
 export const formatDate = (isoDate) => {
     if (!isoDate) return '';
     
-    const date = new Date(isoDate);
+    // Fix timezone issue by parsing the date correctly
+    // The format is YYYY-MM-DD, so we need to ensure it's treated as UTC
+    const parts = isoDate.split('T')[0].split('-');
+    const year = parseInt(parts[0]);
+    const month = parseInt(parts[1]) - 1; // Months are 0-indexed in JS
+    const day = parseInt(parts[2]);
+    
+    const date = new Date(year, month, day);
     
     // Verificar si la fecha es válida
     if (isNaN(date.getTime())) return isoDate;
