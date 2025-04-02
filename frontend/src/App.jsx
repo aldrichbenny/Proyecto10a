@@ -83,7 +83,7 @@ function App() {
             <Route path="/carrito" element={<Carrito />} />
             <Route path="/mis-pedidos" element={<MisPedidos />} />
             <Route path="/detalle-pedido/:id" element={<DetallePedido />} />
-            <Route path="/perfil" element={<Profile />} />
+            <Route path="/perfil" element={<Perfil />} />
 
         </Routes>
       </BrowserRouter>

@@ -138,6 +138,22 @@ const Ordenes = () => {
         return "yellow";
       case "PENDING":
         return "blue";
+      case "IN REVIEW":
+        return "orange";
+      case "CUT-OFF":
+        return "purple";
+      case "PACKAGING":
+        return "orange";
+      case "CUT-OFF-PENDING":
+        return "#673AB7";
+      case "CUT-OFF-ACCEPTED":
+        return "lightgreen";
+      case "PACKAGING-PENDING":
+        return "darkorange";
+      case "PACKAGING-ACCEPTED":
+        return "teal";
+      case "SHIPPED":
+        return "indigo";
       case "CANCELLED":
         return "red";
       default:
@@ -153,6 +169,22 @@ const Ordenes = () => {
         return "50%";
       case "PENDING":
         return "25%";
+      case "IN REVIEW":
+        return "35%";
+      case "CUT-OFF":
+        return "45%";
+      case "PACKAGING":
+        return "65%";
+      case "CUT-OFF-PENDING":
+        return "40%";
+      case "CUT-OFF-ACCEPTED":
+        return "55%";
+      case "PACKAGING-PENDING":
+        return "70%";
+      case "PACKAGING-ACCEPTED":
+        return "85%";
+      case "SHIPPED":
+        return "95%";
       case "CANCELLED":
         return "100%";
       default:
@@ -168,6 +200,22 @@ const Ordenes = () => {
         return "En proceso";
       case "PENDING":
         return "Pendiente";
+      case "IN REVIEW":
+        return "En revisión";
+      case "CUT-OFF":
+        return "Corte";
+      case "PACKAGING":
+        return "Empaquetado";
+      case "CUT-OFF-PENDING":
+        return "Corte pendiente";
+      case "CUT-OFF-ACCEPTED":
+        return "Corte aceptado";
+      case "PACKAGING-PENDING":
+        return "Empaquetado pendiente";
+      case "PACKAGING-ACCEPTED":
+        return "Empaquetado aceptado";
+      case "SHIPPED":
+        return "Enviado";
       case "CANCELLED":
         return "Cancelada";
       default:
@@ -268,7 +316,7 @@ const Ordenes = () => {
                       <div
                         className="ordenes-progress"
                         style={{
-                          backgroundColor: getProgressBarColor(pedido.estado_pedido),
+                          background: getProgressBarColor(pedido.estado_pedido),
                           width: getProgressBarWidth(pedido.estado_pedido)
                         }}
                       ></div>

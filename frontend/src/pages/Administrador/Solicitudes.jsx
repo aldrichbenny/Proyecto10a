@@ -36,23 +36,6 @@ const Solicitudes = () => {
     setCurrentPage(1);
   };
 
-  const filteredSolicitudes = solicitudes.filter((solicitud) =>
-    solicitud.id_solicitud.toString().includes(searchTerm) ||
-    solicitud.detalle_id_usuario.correo.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    formatDate(solicitud.fecha_registro).toLowerCase().includes(searchTerm.toLowerCase()) ||
-    traducirEstado(solicitud.estado_solicitud).toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const totalPages = Math.ceil(filteredSolicitudes.length / itemsPerPage);
-  const currentSolicitudes = filteredSolicitudes.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
-
   const traducirEstado = (estado) => {
     switch (estado) {
       case "COMPLETED":
@@ -61,6 +44,20 @@ const Solicitudes = () => {
         return "En revisión";
       case "PENDING":
         return "Pendiente";
+      case "CUT-OFF":
+        return "Corte";
+      case "PACKAGING":
+        return "Empaquetado";
+      case "CUT-OFF-PENDING":
+        return "Corte pendiente";
+      case "CUT-OFF-ACCEPTED":
+        return "Corte aceptado";
+      case "PACKAGING-PENDING":
+        return "Empaquetado pendiente";
+      case "PACKAGING-ACCEPTED":
+        return "Empaquetado aceptado";
+      case "SHIPPED":
+        return "Enviado";
       case "CANCELLED":
         return "Cancelada";
       default:
@@ -76,11 +73,42 @@ const Solicitudes = () => {
         return "#FFC107";
       case "PENDING":
         return "#2196F3";
+      case "CUT-OFF":
+        return "#9C27B0";
+      case "PACKAGING":
+        return "#FF9800";
+      case "CUT-OFF-PENDING":
+        return "#673AB7";
+      case "CUT-OFF-ACCEPTED":
+        return "#8BC34A";
+      case "PACKAGING-PENDING":
+        return "#FF5722";
+      case "PACKAGING-ACCEPTED":
+        return "#00BCD4";
+      case "SHIPPED":
+        return "#3F51B5";
       case "CANCELLED":
         return "#f44336";
       default:
         return "#9E9E9E";
     }
+  };
+
+  const filteredSolicitudes = solicitudes.filter((solicitud) =>
+    solicitud.id_solicitud.toString().includes(searchTerm) ||
+    solicitud.detalle_id_usuario.correo.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    formatDate(solicitud.fecha_registro).toLowerCase().includes(searchTerm.toLowerCase()) ||
+    traducirEstado(solicitud.estado_solicitud).toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const totalPages = Math.ceil(filteredSolicitudes.length / itemsPerPage);
+  const currentSolicitudes = filteredSolicitudes.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
   };
 
   return (

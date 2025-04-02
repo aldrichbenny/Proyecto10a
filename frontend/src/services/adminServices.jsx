@@ -25,7 +25,7 @@ export async function getDetalleSolicitud(id_solicitud) {
 }
 
 export async function getDetalleSolicitudProducto(id_solicitud){
-    return await fetch('http://127.0.0.1:8000/api/Solicitud_producto/' + id_solicitud, {
+    return await fetch('http://127.0.0.1:8000/api/Solicitud_producto/solicitud/' + id_solicitud, {
         method: 'GET',
         headers: {
             'Content-type': 'application/json; charset=UTF-8',

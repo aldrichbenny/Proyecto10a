@@ -53,6 +53,7 @@ urlpatterns = [
 
     path('Solicitud_producto/', Solicitud_producto_ListCreate.as_view(), name='Solicitud_producto_list_create'),
     path('Solicitud_producto/<int:pk>/', Solicitud_producto_RetrieveUpdateDestroy.as_view(), name='Solicitud_producto_detail'),
+     path('Solicitud_producto/solicitud/<int:id_solicitud>/', Solicitud_producto_by_id.as_view(), name='solicitud-producto-por-solicitud'),
 
     path('Area/', Area_ListCreate.as_view(), name='Area_list_create'),
     path('Area/<int:pk>/', Area_RetrieveUpdateDestroy.as_view(), name='Area_detail'),

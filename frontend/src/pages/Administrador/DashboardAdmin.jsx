@@ -35,7 +35,7 @@ const DashboardAdmin = () => {
           const estado = solicitud.estado_solicitud;
           
           if (estado === 'IN REVIEW') count1++;
-          if (estado === 'CUT-OFF-PENDIND') { count2++; count4++; }
+          if (estado === 'CUT-OFF-PENDING') { count2++; count4++; }
           if (estado === 'CUT-OFF-ACCEPTED') { count2++; count5++; }
           if (estado === 'PACKAGING-PENDING') { count2++; count7++; count6++; }
           if (estado === 'PACKAGING-ACCEPTED') { count2++; count8++; count6++; }

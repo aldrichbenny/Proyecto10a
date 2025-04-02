@@ -22,7 +22,7 @@ const Perfil = () => {
         }
 
         const user = JSON.parse(userStr);
-        const response = await axios.get('http://127.0.0.1:8000/api/Perfil/{}');
+        const response = await axios.get('http://127.0.0.1:8000/api/Perfil/');
         const userProfile = response.data.find(profile => 
           profile.detalle_id_usuario.correo === user.correo
         );

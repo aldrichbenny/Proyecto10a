@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import { ArrowLeftCircle } from 'react-bootstrap-icons';
 import { Button, Modal } from 'react-bootstrap';
 import '../../css/OrdenDetalle.css';
 import { getDetallePedido, getDetallePerfilUsuario, getHistorialPedido, updatePedidoStatus } from "../../services/adminServices";
 import { formatDate, formatTime, formatDateTime } from "../../utils/dateUtils";
 
 const DetalleOrden = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [order, setOrder] = useState(null);
   const [perfilUsuario, setPerfilUsuario] = useState(null);
@@ -17,6 +20,10 @@ const DetalleOrden = () => {
   const [cancelSuccess, setCancelSuccess] = useState(false);
   const [cancelError, setCancelError] = useState(null);
 
+  const handleBackClick = () => {
+    navigate('/admin/ordenes');
+  };
+  
   useEffect(() => {
     const fetchOrderDetails = async () => {
       try {
@@ -123,6 +130,22 @@ const DetalleOrden = () => {
         return "En proceso";
       case "PENDING":
         return "Pendiente";
+      case "IN REVIEW":
+        return "En revisión";
+      case "CUT-OFF":
+        return "Corte";
+      case "PACKAGING":
+        return "Empaquetado";
+      case "CUT-OFF-PENDING":
+        return "Corte pendiente";
+      case "CUT-OFF-ACCEPTED":
+        return "Corte aceptado";
+      case "PACKAGING-PENDING":
+        return "Empaquetado pendiente";
+      case "PACKAGING-ACCEPTED":
+        return "Empaquetado aceptado";
+      case "SHIPPED":
+        return "Enviado";
       case "CANCELLED":
         return "Cancelado";
       default:
@@ -138,6 +161,22 @@ const DetalleOrden = () => {
         return "#FFC107";
       case "PENDING":
         return "#2196F3";
+      case "IN REVIEW":
+        return "#FF9800";
+      case "CUT-OFF":
+        return "#9C27B0";
+      case "PACKAGING":
+        return "#FF9800";
+      case "CUT-OFF-PENDING":
+        return "#673AB7";
+      case "CUT-OFF-ACCEPTED":
+        return "#8BC34A";
+      case "PACKAGING-PENDING":
+        return "#FF5722";
+      case "PACKAGING-ACCEPTED":
+        return "#00BCD4";
+      case "SHIPPED":
+        return "#3F51B5";
       case "CANCELLED":
         return "#f44336";
       default:
@@ -159,6 +198,9 @@ const DetalleOrden = () => {
               Cancelar Orden
             </Button>
           )} */}
+          <button className='back-button2' onClick={handleBackClick} aria-label="Volver atrás">
+              <ArrowLeftCircle size={40} />
+          </button>
         </div>
 
         <div className="card-container">
