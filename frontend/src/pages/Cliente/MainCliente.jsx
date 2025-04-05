@@ -4,6 +4,7 @@ import styles from './MainCliente.module.css';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import axios from 'axios';
+import ComponenteYT from '../../components/ComponenteYT.JSX';
 
 const MainCliente = () => {
   const navigate = useNavigate();
@@ -174,6 +175,7 @@ const MainCliente = () => {
           </section>
         </div>
       </div>
+      <ComponenteYT />
       <Footer />
     </div>
   );

@@ -98,7 +98,7 @@ const DetalleSolicitud = () => {
         estado_pedido: "CUT-OFF-PENDING",
         cantidad_total: solicitudProducto.cantidad_total,
         id_solicitud_producto: solicitudProducto.id_solicitud_producto,
-        id_area: 1
+        id_area: 3
       };
       
       const response = await addPedido(pedidoData);
