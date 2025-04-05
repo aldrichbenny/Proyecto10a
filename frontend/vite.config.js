@@ -6,17 +6,30 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: "autoUpdate", // Auto-registra el SW
+      registerType: "autoUpdate",
       devOptions: {
-        enabled: true, // Habilita PWA en desarrollo
+        enabled: true,
       },
       workbox: {
-        cleanupOutdatedCaches: true, // Limpia cachés antiguas
+        globPatterns: ['offline.html'],
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'google-fonts-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365
+              }
+            }
+          }
+        ]
       },
       manifest: {
         id: "/",
-        name: "Backtraking",
-        short_name: "BacktrakingPWA",
+        name: "Backtracking",
+        short_name: "BacktrackingPWA",
         description: "Mi aplicación como Progressive Web App",
         theme_color: "#ffffff",
         background_color: "#ffffff",
@@ -65,6 +78,9 @@ export default defineConfig({
             type: "image/png",
           },
         ],
+      },
+      inject: {
+        sw: '/custom-sw.js', // Apunta a tu archivo custom-sw.js
       },
     }),
   ],
