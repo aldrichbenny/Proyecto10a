@@ -119,7 +119,7 @@ const ProductosADM = () => {
                     </tbody>
                 </Table>
                 
-                <div className="d-flex justify-content-center mt-3">
+                <div className="d-flex justify-content-center">
                     <Pagination>
                         <Pagination.Prev 
                             onClick={() => handlePageChange(Math.max(1, currentPage - 1))} 

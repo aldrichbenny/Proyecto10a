@@ -33,7 +33,7 @@
   padding: 16px;
   box-sizing: border-box;
   overflow-y: auto;
-  margin-top: 50pt;
+  margin-top: 30pt;
 }
 
 .title-container {
@@ -62,7 +62,7 @@
 
 .container {
   padding: 16px;
-  max-height: 620pt;
+  max-height: 650pt;
   overflow-y: hidden;
 }
 
@@ -76,7 +76,7 @@
   overflow-y: auto;
   flex: 1;
   max-height: calc(100vh - 150px);
-  padding-bottom: 60pt;
+  padding-bottom: 30pt;
 }
 
 .back-button {

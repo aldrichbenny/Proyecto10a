@@ -49,10 +49,6 @@ const Register = () => {
                                         <input type="text" className="form-control" placeholder="Enter your name" value={nombre} onChange={(e) => setNombre(e.target.value)} required />
                                     </div>
                                     <div className="form-group">
-                                        <label className="form-label">Paternal Surname</label>
-                                        <input type="text" className="form-control" placeholder="Enter your surname" value={apellidoPat} onChange={(e) => setApellidoPat(e.target.value)} required />
-                                    </div>
-                                    <div className="form-group">
                                         <label className="form-label">Maternal Surname</label>
                                         <input type="text" className="form-control" placeholder="Enter your surname" value={apellidoMat} onChange={(e) => setApellidoMat(e.target.value)} required />
                                     </div>
@@ -60,8 +56,16 @@ const Register = () => {
                                         <label className="form-label">Phone</label>
                                         <input type="tel" className="form-control" placeholder="Enter your phone number" value={telefono} onChange={(e) => setTelefono(e.target.value)} required />
                                     </div>
+                                    <div className="form-group">
+                                        <label className="form-label">Password</label>
+                                        <input type="password" className="form-control" placeholder="Enter your password" value={contraseña} onChange={(e) => setContraseña(e.target.value)} required />
+                                    </div>
                                 </div>
                                 <div className='form-column'>
+                                    <div className="form-group">
+                                        <label className="form-label">Paternal Surname</label>
+                                        <input type="text" className="form-control" placeholder="Enter your surname" value={apellidoPat} onChange={(e) => setApellidoPat(e.target.value)} required />
+                                    </div>
                                     <div className="form-group">
                                         <label className="form-label">Email</label>
                                         <input type="email" className="form-control" placeholder="Enter your email" value={correo} onChange={(e) => setCorreo(e.target.value)} required />
@@ -69,10 +73,6 @@ const Register = () => {
                                     <div className="form-group">
                                         <label className="form-label">Address</label>
                                         <input type="text" className="form-control" placeholder="Enter your address" value={direccion} onChange={(e) => setDireccion(e.target.value)} required />
-                                    </div>
-                                    <div className="form-group">
-                                        <label className="form-label">Password</label>
-                                        <input type="password" className="form-control" placeholder="Enter your password" value={contraseña} onChange={(e) => setContraseña(e.target.value)} required />
                                     </div>
                                 </div>
                             </div>
