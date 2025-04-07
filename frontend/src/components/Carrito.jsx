@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -11,15 +11,67 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { useCart } from '../context/CartContext';
+import { useCurrency } from '../context/CurrencyContext';
 import Navbar from './Navbar';
+import axios from 'axios';
 
 const Carrito = () => {
   const { cartItems, removeFromCart, updateQuantity, getCartTotal } = useCart();
+  const { currency } = useCurrency();
+
+  const [convertedCartItems, setConvertedCartItems] = useState(cartItems);
+
+  useEffect(() => {
+    const convertCartPrices = async () => {
+      try {
+        // Filtrar items que necesitan conversión (están en MXN)
+        const itemsToConvert = cartItems.filter(item => item.currency !== currency);
+        
+        if (itemsToConvert.length === 0) {
+          setConvertedCartItems(cartItems);
+          return;
+        }
+
+        // Obtener los precios convertidos
+        const convertedItems = await Promise.all(
+          cartItems.map(async (item) => {
+            if (item.currency === currency) {
+              return item; // Ya está en la moneda actual
+            }
+
+            try {
+              const response = await axios.get(`http://127.0.0.1:8000/api/Productos/${item.id}/?currency=${currency}`);
+              return {
+                ...item,
+                price: response.data.price,
+                currency: currency
+              };
+            } catch (error) {
+              console.error('Error converting price:', error);
+              return item;
+            }
+          })
+        );
+
+        setConvertedCartItems(convertedItems);
+      } catch (error) {
+        console.error('Error converting cart prices:', error);
+        setConvertedCartItems(cartItems);
+      }
+    };
+
+    convertCartPrices();
+  }, [cartItems, currency]);
 
   const formatPrice = (price) => {
-    return typeof price === 'string' 
-      ? price 
-      : `$${price.toLocaleString('es-MX')} MXN`;
+    if (!price) return '';
+    const numericPrice = parseFloat(price);
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: currency,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(numericPrice);
   };
 
   const getEstimatedDeliveryDate = () => {
@@ -48,7 +100,7 @@ const Carrito = () => {
           </Typography>
           <Box sx={{ display: 'flex', gap: 4, flexDirection: { xs: 'column', md: 'row' } }}>
             <Box sx={{ flex: 1 }}>
-              {cartItems.map((item) => (
+              {convertedCartItems.map((item) => (
                 <Box key={`${item.id}-${item.size}`} sx={{ mb: 3 }}>
                   <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
                     <Box
@@ -72,7 +124,7 @@ const Carrito = () => {
                             MARCA: Luis Vuitron
                           </Typography>
                           <Typography variant="body2" color="text.secondary">
-                            TALLA: Soy un pendejo {item.size} 
+                            TALLA: {item.size} 
                           </Typography>
                         </Box>
                         <Typography variant="h6">

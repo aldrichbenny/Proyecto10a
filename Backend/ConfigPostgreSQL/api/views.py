@@ -12,6 +12,7 @@ from .models import Usuario
 from .serializers import UsuarioSerializer
 from django.contrib.auth.hashers import make_password, check_password
 import logging
+from .services import CurrencyService
 
 # Create your views here.
 
@@ -63,9 +64,22 @@ class Categoria_RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
 class Productos_ListCreate(generics.ListCreateAPIView):
     queryset = Productos.objects.all()
     serializer_class = Productos_Serializer
+
+    def list(self, request, *args, **kwargs):
+        response = super().list(request, *args, **kwargs)
+        to_usd = request.query_params.get('currency') == 'USD'
+        response.data = CurrencyService.convert_price_in_response(response.data, to_usd)
+        return response
+
 class Productos_RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Productos.objects.all()
     serializer_class = Productos_Serializer
+
+    def retrieve(self, request, *args, **kwargs):
+        response = super().retrieve(request, *args, **kwargs)
+        to_usd = request.query_params.get('currency') == 'USD'
+        response.data = CurrencyService.convert_price_in_response(response.data, to_usd)
+        return response
 
 class Imagen_ListCreate(generics.ListCreateAPIView):
     queryset = Imagen.objects.all()

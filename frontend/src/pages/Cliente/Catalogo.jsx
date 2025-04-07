@@ -6,6 +6,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import axios from 'axios';
+import { useCurrency } from '../../context/CurrencyContext';
 
 const Catalogo = () => {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ const Catalogo = () => {
   const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [categories, setCategories] = useState([]);
+  const { currency } = useCurrency();
 
   // Extract category from URL query parameters on initial load and when URL changes
   useEffect(() => {
@@ -48,8 +50,25 @@ const Catalogo = () => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
+        // Construir la URL base
+        let url = 'http://127.0.0.1:8000/api/Productos';
+        
+        // Añadir parámetros de consulta
+        const params = new URLSearchParams();
+        if (currency === 'USD') {
+          params.append('currency', 'USD');
+        }
+        if (selectedCategory) {
+          params.append('categoria', selectedCategory);
+        }
+        
+        // Añadir los parámetros a la URL si hay alguno
+        if (params.toString()) {
+          url += '?' + params.toString();
+        }
+
         // Obtener los productos
-        const productsResponse = await axios.get('http://127.0.0.1:8000/api/Productos');
+        const productsResponse = await axios.get(url);
         const productsData = productsResponse.data;
         
         // Obtener todas las imágenes
@@ -59,18 +78,15 @@ const Catalogo = () => {
         // Agrupar las imágenes por id_producto
         const imagesByProductId = {};
         allImages.forEach(img => {
-          // Si este id_producto aún no tiene imágenes en el objeto, inicializar con un array vacío
           if (!imagesByProductId[img.id_producto]) {
             imagesByProductId[img.id_producto] = [];
           }
-          // Añadir esta imagen al array correspondiente al id_producto
           imagesByProductId[img.id_producto].push(img);
         });
         
         // Para cada producto, asignar solo la primera imagen
         const productsWithImages = productsData.map(product => {
           const productImages = imagesByProductId[product.id_producto] || [];
-          // Usar la primera imagen si existe, o una imagen por defecto si no
           const firstImage = productImages.length > 0 
             ? productImages[0].nombre_imagen 
             : "https://concrete.com.mx/cdn/shop/products/poloconbolsanegra_Mesadetrabajo1_300x300.png?v=1649890064";
@@ -91,7 +107,7 @@ const Catalogo = () => {
     };
 
     fetchProducts();
-  }, [selectedCategory]);
+  }, [selectedCategory, currency]);
 
   const handleProductClick = (productId) => {
     navigate(`/producto/${productId}`);
@@ -106,10 +122,7 @@ const Catalogo = () => {
   };
 
   const handleCategorySelect = (categoryId) => {
-    // Actualizar el estado y la URL
     setSelectedCategory(categoryId);
-    
-    // Actualizar la URL para reflejar la categoría seleccionada
     if (categoryId) {
       navigate(`/catalogo?category=${categoryId}`, { replace: true });
     } else {
@@ -118,25 +131,21 @@ const Catalogo = () => {
   };
 
   const handleClearCategory = () => {
-    // Limpiar el filtro y actualizar la URL
     setSelectedCategory(null);
     navigate('/catalogo', { replace: true });
   };
 
-  // Get category name for display
   const getCategoryName = (categoryId) => {
     const category = categories.find(cat => cat.id_categoria === categoryId);
     return category ? category.nombre_categoria : '';
   };
 
-  // Filter products based on search term and selected category
   const filteredProducts = products.filter(product => {
     const matchesSearch = product.nombre_producto.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory ? product.id_categoria === selectedCategory : true;
     return matchesSearch && matchesCategory;
   });
 
-  // Sort products based on selected option
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     switch (sortBy) {
       case 'price_asc':
@@ -152,8 +161,15 @@ const Catalogo = () => {
     }
   });
 
-  console.log('Selected Category:', selectedCategory);
-  console.log('Filtered Products:', filteredProducts.length);
+  const formatPrice = (price) => {
+    const numericPrice = parseFloat(price);
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: currency,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(numericPrice);
+  };
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
@@ -163,7 +179,6 @@ const Catalogo = () => {
           CATÁLOGO
         </Typography>
 
-        {/* Active Category Filter */}
         {selectedCategory && (
           <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
             <Chip
@@ -175,12 +190,11 @@ const Catalogo = () => {
           </Box>
         )}
 
-        {/* Search and Sort Controls */}
         <Box sx={{ display: 'flex', gap: 2, mb: 4 }}>
           <TextField
             fullWidth
-            placeholder="Buscar productos..."
             value={searchTerm}
+            placeholder="Buscar productos..."
             onChange={handleSearch}
             InputProps={{
               startAdornment: (
@@ -191,8 +205,8 @@ const Catalogo = () => {
           <FormControl sx={{ minWidth: 200 }}>
             <InputLabel>Ordenar por</InputLabel>
             <Select
-              value={sortBy}
               label="Ordenar por"
+              value={sortBy}
               onChange={handleSort}
             >
               <MenuItem value="price_asc">Precio: Menor a Mayor</MenuItem>
@@ -203,21 +217,18 @@ const Catalogo = () => {
           </FormControl>
         </Box>
 
-        {/* Loading state */}
         {loading && (
           <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
             <CircularProgress />
           </Box>
         )}
 
-        {/* Error state */}
         {error && (
           <Box sx={{ textAlign: 'center', my: 4 }}>
             <Typography color="error">{error}</Typography>
           </Box>
         )}
 
-        {/* Products Grid */}
         {!loading && !error && (
           <Box sx={{ maxWidth: '1200px', mx: 'auto' }}>
             {sortedProducts.length === 0 ? (
@@ -280,7 +291,7 @@ const Catalogo = () => {
                         </Typography>
                         <Box sx={{ mt: 'auto' }}>
                           <Typography variant="h6" color="text.primary" sx={{ mb: 1 }}>
-                            ${parseFloat(product.precio_producto).toFixed(2)} MXN
+                            {formatPrice(product.precio_producto)}
                           </Typography>
                           <Typography variant="body2" color="text.secondary" sx={{
                             overflow: 'hidden',
@@ -299,7 +310,6 @@ const Catalogo = () => {
           </Box>
         )}
 
-        {/* No products found */}
         {!loading && !error && sortedProducts.length === 0 && (
           <Box sx={{ textAlign: 'center', my: 4 }}>
             <Typography>No se encontraron productos que coincidan con la búsqueda.</Typography>

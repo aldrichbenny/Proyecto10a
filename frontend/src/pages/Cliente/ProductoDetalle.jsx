@@ -5,6 +5,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import axios from 'axios';
+import { useCurrency } from '../../context/CurrencyContext';
 
 const ProductoDetalle = () => {
   const { id } = useParams();
@@ -17,6 +18,8 @@ const ProductoDetalle = () => {
     return null;
   }
   const user = JSON.parse(storedUser);
+
+  const { currency } = useCurrency();
 
   const [selectedSize, setSelectedSize] = useState('');
   const [quantity, setQuantity] = useState(1);
@@ -40,14 +43,31 @@ const ProductoDetalle = () => {
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [wishlistProductId, setWishlistProductId] = useState(null);
 
+  const formatPrice = (price) => {
+    if (!price) return '';
+    const numericPrice = parseFloat(price);
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: currency,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(numericPrice);
+  };
+
   useEffect(() => {
     const fetchProductData = async () => {
       try {
         setLoading(true);
 
+        // Construir URL con parámetro de moneda
+        let url = `http://127.0.0.1:8000/api/Productos/${id}/`;
+        if (currency === 'USD') {
+          url += '?currency=USD';
+        }
+        
         // Get product data first
-        const productResponse = await axios.get(`http://127.0.0.1:8000/api/Productos/${id}`);
-        setProduct(productResponse.data);
+        const productResponse = await axios.get(url);
+        const productData = productResponse.data;
         
         // Get all images
         const imagesResponse = await axios.get('http://127.0.0.1:8000/api/Imagen');
@@ -80,9 +100,10 @@ const ProductoDetalle = () => {
         const userWishlist = wishlistResponse.data.find(w => w.id_usuario === user.id_usuario);
         
         if (userWishlist) {
+          // Get wishlist products
           const wishlistProductsResponse = await axios.get('http://127.0.0.1:8000/api/Wishlist_producto/');
           const wishlistProduct = wishlistProductsResponse.data.find(
-            wp => wp.id_wishlist === userWishlist.id_wishlist && parseInt(wp.id_producto) === parseInt(id)
+            wp => wp.id_wishlist === userWishlist.id_wishlist && wp.id_producto === parseInt(id)
           );
           
           if (wishlistProduct) {
@@ -91,6 +112,7 @@ const ProductoDetalle = () => {
           }
         }
         
+        setProduct({ ...productData, imagen: productImagesData.length > 0 ? productImagesData[0].nombre_imagen : "https://concrete.com.mx/cdn/shop/products/poloconbolsanegra_Mesadetrabajo1_300x300.png?v=1649890064" });
         setLoading(false);
       } catch (err) {
         console.error('Error fetching product data:', err);
@@ -103,7 +125,7 @@ const ProductoDetalle = () => {
     };
 
     fetchProductData();
-  }, [id, user.id_usuario]);
+  }, [id, user.id_usuario, currency]);
 
   const handleWishlistClick = async () => {
     try {
@@ -446,10 +468,10 @@ const ProductoDetalle = () => {
               </Box>
               
               <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', mb: 1 }}>
-                ${parseFloat(product.precio_producto).toFixed(2)} MXN
+                {formatPrice(product.precio_producto)}
                 {product.precio_anterior && (
                   <Typography variant="body2" component="span" sx={{ textDecoration: 'line-through', color: 'text.secondary', ml: 2 }}>
-                    ${parseFloat(product.precio_anterior).toFixed(2)} MXN
+                    {formatPrice(product.precio_anterior)}
                   </Typography>
                 )}
               </Typography>
@@ -573,7 +595,7 @@ const ProductoDetalle = () => {
           
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
             <Typography variant="body2">Price per item:</Typography>
-            <Typography variant="body2">${parseFloat(product.precio_producto).toFixed(2)} MXN</Typography>
+            <Typography variant="body2">{formatPrice(product.precio_producto)}</Typography>
           </Box>
           
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
@@ -583,12 +605,12 @@ const ProductoDetalle = () => {
           
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
             <Typography variant="body2">Subtotal:</Typography>
-            <Typography variant="body2">${subtotal.toFixed(2)} MXN</Typography>
+            <Typography variant="body2">{formatPrice(subtotal)}</Typography>
           </Box>
           
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1, mb: 1 }}>
             <Typography variant="body1" fontWeight="bold">Total:</Typography>
-            <Typography variant="body1" fontWeight="bold">${total.toFixed(2)} MXN</Typography>
+            <Typography variant="body1" fontWeight="bold">{formatPrice(total)}</Typography>
           </Box>
           
           <Divider sx={{ my: 2 }} />

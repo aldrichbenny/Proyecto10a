@@ -14,18 +14,23 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  Container
+  Container,
+  Switch,
+  FormControlLabel
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { useCurrency } from '../context/CurrencyContext';
 
 const Navbar = ({ onCategorySelect }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { currency, toggleCurrency } = useCurrency();
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [categoryMenuAnchor, setCategoryMenuAnchor] = useState(null);
@@ -159,7 +164,7 @@ const Navbar = ({ onCategorySelect }) => {
             </Menu>
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ flexGrow: 0, mr: 3 }}>
             <Typography
               variant="h6"
               noWrap
@@ -172,6 +177,26 @@ const Navbar = ({ onCategorySelect }) => {
             >
               My Orders
             </Typography>
+          </Box>
+
+          <Box sx={{ flexGrow: 0, mr: 3, display: 'flex', alignItems: 'center' }}>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={currency === 'USD'}
+                  onChange={toggleCurrency}
+                  color="default"
+                />
+              }
+              label={
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <AttachMoneyIcon sx={{ mr: 0.5 }} />
+                  <Typography sx={{ color: 'white' }}>
+                    {currency}
+                  </Typography>
+                </Box>
+              }
+            />
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
