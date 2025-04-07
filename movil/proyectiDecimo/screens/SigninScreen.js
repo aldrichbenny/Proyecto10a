@@ -32,7 +32,7 @@ function SigninScreen(props) {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://172.18.3.176:8000/api/Login/', {        
+      const response = await axios.post('http://192.168.188.86:8000/api/Login/', {        
         correo: email,
         contraseña: password,
       });

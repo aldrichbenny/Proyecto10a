@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Line } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import '../../css/DashboardADM.css'
 import { getSolicitud } from '../../api/pedidos';
 import { Button, FormSelect } from 'react-bootstrap';
 import { Clipboard2DataFill } from 'react-bootstrap-icons';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
-ChartJS.register( CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend );
+import { Chart as ChartJS, CategoryScale, LinearScale, LineElement, Title, Tooltip, Legend, BarElement } from 'chart.js';
+ChartJS.register( CategoryScale, LinearScale, BarElement, LineElement, Title, Tooltip, Legend );
 
 const DashboardAdmin = () => {
   const [chartData, setChartData] = useState(null);
@@ -76,7 +76,7 @@ const DashboardAdmin = () => {
                 label: 'Solicitudes por día',
                 data: sortedData,
                 fill: false,
-                borderColor: 'rgb(75, 192, 192)',
+                backgroundColor: '#b04a4a',
                 tension: 0.1,
               },
             ],
@@ -105,7 +105,7 @@ const DashboardAdmin = () => {
                 label: `Solicitudes en ${selectedYear}`,
                 data: monthsCount,
                 fill: false,
-                borderColor: 'rgb(75, 192, 192)',
+                backgroundColor: '#b04a4a',
                 tension: 0.1,
               },
             ],
@@ -159,38 +159,113 @@ const DashboardAdmin = () => {
       </div>
       
       <div className="container2">
-        <div className="estadisticas-container">
-
-          {/* Generales */}
-          <div className="seccion">
-            <h3 className="titulo-seccion">Estadísticas generales</h3>
-            <div className="cartas-columna">
-              <div className="carta"><p>Solicitudes por revisar</p><h2>{GenRevisar}</h2></div>
-              <div className="carta"><p>Solicitudes aprobadas</p><h2>{GenAprobar}</h2></div>
-              <div className="carta"><p>Solicitudes terminadas</p><h2>{GenTerminar}</h2></div>
+        {/* Tabla de estadísticas */}
+        <div className="estadisticas-container-admin">
+          <div className="estadisticas-tabla-admin">
+            {/* Encabezados de columnas */}
+            <div className="tabla-header-admin">
+              <div className="tabla-celda-admin header-area-admin">Área</div>
+              <div className="tabla-celda-admin">Por revisar/Pendientes</div>
+              <div className="tabla-celda-admin">Aceptadas</div>
+              <div className="tabla-celda-admin">Terminadas</div>
+            </div>
+            
+            {/* Fila General */}
+            <div className="tabla-fila-admin">
+              <div className="tabla-celda-admin header-area-admin">General</div>
+              <div className="tabla-celda-admin">
+                <div className="valor-admin">{GenRevisar}</div>
+                <div className="barra-container-admin">
+                  <div 
+                    className="barra-progreso-admin" 
+                    style={{ width: `${(GenRevisar / Math.max(1, GenRevisar + GenAprobar + GenTerminar)) * 100}%` }}
+                  ></div>
+                </div>
+              </div>
+              <div className="tabla-celda-admin">
+                <div className="valor-admin">{GenAprobar}</div>
+                <div className="barra-container-admin">
+                  <div 
+                    className="barra-progreso-admin" 
+                    style={{ width: `${(GenAprobar / Math.max(1, GenRevisar + GenAprobar + GenTerminar)) * 100}%` }}
+                  ></div>
+                </div>
+              </div>
+              <div className="tabla-celda-admin">
+                <div className="valor-admin">{GenTerminar}</div>
+                <div className="barra-container-admin">
+                  <div 
+                    className="barra-progreso-admin" 
+                    style={{ width: `${(GenTerminar / Math.max(1, GenRevisar + GenAprobar + GenTerminar)) * 100}%` }}
+                  ></div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Fila Corte */}
+            <div className="tabla-fila-admin">
+              <div className="tabla-celda-admin header-area-admin">Corte</div>
+              <div className="tabla-celda-admin">
+                <div className="valor-admin">{CortPend}</div>
+                <div className="barra-container-admin">
+                  <div 
+                    className="barra-progreso-admin" 
+                    style={{ width: `${(CortPend / Math.max(1, CortPend + CortAceptar + CortTerminar)) * 100}%` }}
+                  ></div>
+                </div>
+              </div>
+              <div className="tabla-celda-admin">
+                <div className="valor-admin">{CortAceptar}</div>
+                <div className="barra-container-admin">
+                  <div 
+                    className="barra-progreso-admin" 
+                    style={{ width: `${(CortAceptar / Math.max(1, CortPend + CortAceptar + CortTerminar)) * 100}%` }}
+                  ></div>
+                </div>
+              </div>
+              <div className="tabla-celda-admin">
+                <div className="valor-admin">{CortTerminar}</div>
+                <div className="barra-container-admin">
+                  <div 
+                    className="barra-progreso-admin" 
+                    style={{ width: `${(CortTerminar / Math.max(1, CortPend + CortAceptar + CortTerminar)) * 100}%` }}
+                  ></div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Fila Embalaje */}
+            <div className="tabla-fila-admin">
+              <div className="tabla-celda-admin header-area-admin">Embalaje</div>
+              <div className="tabla-celda-admin">
+                <div className="valor-admin">{EmbPend}</div>
+                <div className="barra-container-admin">
+                  <div 
+                    className="barra-progreso-admin" 
+                    style={{ width: `${(EmbPend / Math.max(1, EmbPend + EmbAceptar + EmbTerminar)) * 100}%` }}
+                  ></div>
+                </div>
+              </div>
+              <div className="tabla-celda-admin">
+                <div className="valor-admin">{EmbAceptar}</div>
+                <div className="barra-container-admin">
+                  <div 
+                    className="barra-progreso-admin" 
+                    style={{ width: `${(EmbAceptar / Math.max(1, EmbPend + EmbAceptar + EmbTerminar)) * 100}%` }}
+                  ></div>
+                </div>
+              </div>
+              <div className="tabla-celda-admin">
+                <div className="valor-admin">{EmbTerminar}</div>
+                <div className="barra-container-admin">
+                  <div 
+                    className="barra-progreso-admin" 
+                    style={{ width: `${(EmbTerminar / Math.max(1, EmbPend + EmbAceptar + EmbTerminar)) * 100}%` }}
+                  ></div>
+                </div>
+              </div>
             </div>
           </div>
-
-          {/* Corte */}
-          <div className="seccion">
-            <h3 className="titulo-seccion">Área de corte</h3>
-            <div className="cartas-columna">
-              <div className="carta"><p>Solicitudes pendientes</p><h2>{CortPend}</h2></div>
-              <div className="carta"><p>Solicitudes aceptadas</p><h2>{CortAceptar}</h2></div>
-              <div className="carta"><p>Solicitudes terminadas</p><h2>{CortTerminar}</h2></div>
-            </div>
-          </div>
-
-          {/* Embalaje */}
-          <div className="seccion">
-            <h3 className="titulo-seccion">Área de embalaje</h3>
-            <div className="cartas-columna">
-              <div className="carta"><p>Solicitudes pendientes</p><h2>{EmbPend}</h2></div>
-              <div className="carta"><p>Solicitudes aceptadas</p><h2>{EmbAceptar}</h2></div>
-              <div className="carta"><p>Solicitudes terminadas</p><h2>{EmbTerminar}</h2></div>
-            </div>
-          </div>
-
         </div>
 
         {/* Controles para cambiar la vista */}
@@ -214,7 +289,7 @@ const DashboardAdmin = () => {
         {/* GRAFICA DE SOLICITUDES */}
         <div className="bg-white mt-4">
           <div className="border rounded-lg p-4">
-            {chartData ? <Line data={chartData} options={options} /> : <p>Cargando datos...</p>}
+            {chartData ? <Bar data={chartData} options={options} /> : <p>Cargando datos...</p>}
           </div>
         </div>
       </div>
