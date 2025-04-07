@@ -26,7 +26,7 @@ function HomeScreen({ navigation }) {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://172.18.3.176:8000/api/Imagen/');
+        const response = await axios.get('http://192.168.188.86:8000/api/Imagen/');
         if (response.data) {
           setProducts(response.data);
         }

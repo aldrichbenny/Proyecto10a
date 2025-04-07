@@ -48,7 +48,7 @@ function ItemDetailsScreen({ navigation }) {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get('http://172.18.3.176:8000/api/Imagen/');
+        const response = await axios.get('http://192.168.188.86:8000/api/Imagen/');
         const productImages = response.data.filter(item => item.id_producto === id_producto);
         setImages(productImages);
       } catch (error) {
@@ -61,7 +61,7 @@ function ItemDetailsScreen({ navigation }) {
   useEffect(() => {
     const fetchTallaData = async () => {
       try {
-        const response = await axios.get('http://172.18.3.176:8000/api/Talla/');
+        const response = await axios.get('http://192.168.188.86:8000/api/Talla/');
         const talla = response.data[0];
         setNombreTalla(talla.nombre_talla);
         setLoading(false);
@@ -95,7 +95,7 @@ function ItemDetailsScreen({ navigation }) {
   useEffect(() => {
     const fetchTallaData = async () => {
       try {
-        const response = await axios.get('http://172.18.3.176:8000/api/Talla/');
+        const response = await axios.get('http://192.168.188.86:8000/api/Talla/');
         const productTallas = response.data.filter((talla) => talla.id_producto === id_producto); // Filtrar por id_producto
         setTallas(productTallas);
 
@@ -112,7 +112,7 @@ function ItemDetailsScreen({ navigation }) {
 
   const fetchColors = async () => {
     try {
-      const response = await axios.get('http://172.18.3.176:8000/api/Colores/');
+      const response = await axios.get('http://192.168.188.86:8000/api/Colores/');
       setColorsList(response.data);
     } catch (error) {
     }
@@ -127,7 +127,7 @@ function ItemDetailsScreen({ navigation }) {
       setLoading(true);
 
       // Crear o verificar la Wishlist del usuario
-      const wishlistResponse = await axios.post('http://172.18.3.176:8000/api/Wishlist/', {
+      const wishlistResponse = await axios.post('http://192.168.188.86:8000/api/Wishlist/', {
         id_usuario: id_usuario,
       });
 
@@ -135,7 +135,7 @@ function ItemDetailsScreen({ navigation }) {
         const id_wishlist = wishlistResponse.data.id_wishlist;
 
         // Agregar el producto a la Wishlist_producto
-        const wishlistProductResponse = await axios.post('http://172.18.3.176:8000/api/Wishlist_producto/', {
+        const wishlistProductResponse = await axios.post('http://192.168.188.86:8000/api/Wishlist_producto/', {
           id_wishlist: id_wishlist,
           id_producto: id_producto,
           id_talla: 1, // Cambia esto según la talla seleccionada
@@ -171,7 +171,7 @@ function ItemDetailsScreen({ navigation }) {
       setLoading(true);
   
       // Crear la solicitud en la API `Solicitud`
-      const solicitudResponse = await axios.post('http://172.18.3.176:8000/api/Solicitud/', {
+      const solicitudResponse = await axios.post('http://192.168.188.86:8000/api/Solicitud/', {
         id_usuario: id_usuario,
         estado_solicitud: 'IN REVIEW', // Estado inicial de la solicitud
       });
@@ -180,7 +180,7 @@ function ItemDetailsScreen({ navigation }) {
         const id_solicitud = solicitudResponse.data.id_solicitud;
   
         // Crear el registro en la API `Solicitud_producto`
-        const solicitudProductoResponse = await axios.post('http://172.18.3.176:8000/api/Solicitud_producto/', {
+        const solicitudProductoResponse = await axios.post('http://192.168.188.86:8000/api/Solicitud_producto/', {
           id_solicitud: id_solicitud,
           id_talla: selectedTalla, // Talla seleccionada
           cantidad_total: 1, // Cantidad predeterminada

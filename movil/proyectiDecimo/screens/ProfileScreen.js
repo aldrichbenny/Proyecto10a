@@ -24,7 +24,7 @@ function ProfileScreen(props) {
 
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`http://172.18.3.176:8000/api/Perfil/`);
+        const response = await axios.get(`http://192.168.188.86:8000/api/Perfil/`);
         const userProfile = response.data.find(profile => profile.id_usuario === userId); 
         setProfile(userProfile); 
       } catch (error) {
