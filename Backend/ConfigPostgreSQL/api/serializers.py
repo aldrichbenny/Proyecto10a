@@ -14,7 +14,19 @@ class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
         fields = ['id_usuario', 'correo', 'contraseña', 'id_rol', 'detalle_id_rol']
-        extra_kwargs = {'contraseña': {'write_only': True}}
+        extra_kwargs = {
+            'contraseña': {'write_only': True},
+            'id_rol': {'required': True}
+        }
+
+    def validate(self, data):
+        if not data.get('correo'):
+            raise serializers.ValidationError({'correo': 'Este campo es requerido.'})
+        if not data.get('contraseña'):
+            raise serializers.ValidationError({'contraseña': 'Este campo es requerido.'})
+        if not data.get('id_rol'):
+            raise serializers.ValidationError({'id_rol': 'Este campo es requerido.'})
+        return data
 
     def create(self, validated_data):
         usuario = Usuario.objects.create(
@@ -24,6 +36,12 @@ class UsuarioSerializer(serializers.ModelSerializer):
         usuario.set_password(validated_data['contraseña'])
         usuario.save()
         return usuario
+
+    def update(self, instance, validated_data):
+        if 'contraseña' in validated_data:
+            instance.set_password(validated_data['contraseña'])
+            validated_data.pop('contraseña')
+        return super().update(instance, validated_data)
 
 #--------------------------------------------------------------------------------
            
@@ -172,10 +190,9 @@ class Wishlist_Producto_Serializer(serializers.ModelSerializer):
         fields = ['id_wishlist_producto','cantidad','id_talla','detalle_id_talla','id_wishlist','detalle_id_wishlist']
 
 class Carrito_Producto_Serializer(serializers.ModelSerializer):
-    detalle_id_carrito = Carrito_Serializer(source='id_wishlist', read_only=True)    
+    detalle_id_carrito = Carrito_Serializer(source='id_carrito', read_only=True)    
     detalle_id_talla = Talla_Serializer(source='id_talla', read_only=True)   
 
     class Meta:
         model = Carrito_Producto
         fields = ['id_carrito_producto','cantidad','id_talla','detalle_id_talla','id_carrito','detalle_id_carrito']
-

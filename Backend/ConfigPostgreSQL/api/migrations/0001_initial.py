@@ -295,20 +295,20 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'historial_pedido',
-                'constraints': [models.CheckConstraint(condition=models.Q(('estado_seguimiento__in', ['IN REVIEW', 'PENDING', 'CUT-OFF', 'PACKAGING', 'SHIPPED'])), name='historial_estado_solicitud')],
+                'constraints': [models.CheckConstraint(check=models.Q(estado_seguimiento__in=['IN REVIEW', 'PENDING', 'CUT-OFF', 'PACKAGING', 'SHIPPED']), name='historial_estado_solicitud')],
             },
         ),
         migrations.AddConstraint(
             model_name='pedido',
-            constraint=models.CheckConstraint(condition=models.Q(('cantidad_total__gte', 0)), name='pedido_cantidad_total'),
+            constraint=models.CheckConstraint(check=models.Q(cantidad_total__gte=0), name='pedido_cantidad_total'),
         ),
         migrations.AddConstraint(
             model_name='pedido',
-            constraint=models.CheckConstraint(condition=models.Q(('estado_pedido__in', ['IN REVIEW', 'PENDING', 'CUT-OFF', 'PACKAGING', 'SHIPPED'])), name='pedido_estado_solicitud'),
+            constraint=models.CheckConstraint(check=models.Q(estado_pedido__in=['IN REVIEW', 'PENDING', 'CUT-OFF', 'PACKAGING', 'SHIPPED']), name='pedido_estado_solicitud'),
         ),
         migrations.AddConstraint(
             model_name='talla',
-            constraint=models.CheckConstraint(condition=models.Q(('cantidad__gte', 0)), name='talla_cantidad_no_negativa'),
+            constraint=models.CheckConstraint(check=models.Q(cantidad__gte=0), name='talla_cantidad_no_negativa'),
         ),
         migrations.AlterUniqueTogether(
             name='talla',
@@ -316,10 +316,10 @@ class Migration(migrations.Migration):
         ),
         migrations.AddConstraint(
             model_name='solicitud_producto',
-            constraint=models.CheckConstraint(condition=models.Q(('cantidad_total__gte', 0)), name='solicitud_cantidad_total'),
+            constraint=models.CheckConstraint(check=models.Q(cantidad_total__gte=0), name='solicitud_cantidad_total'),
         ),
         migrations.AddConstraint(
             model_name='solicitud',
-            constraint=models.CheckConstraint(condition=models.Q(('estado_solicitud__in', ['IN REVIEW', 'PENDING', 'CUT-OFF', 'PACKAGING', 'SHIPPED'])), name='estado_solicitud'),
+            constraint=models.CheckConstraint(check=models.Q(estado_solicitud__in=['IN REVIEW', 'PENDING', 'CUT-OFF', 'PACKAGING', 'SHIPPED']), name='estado_solicitud'),
         ),
     ]

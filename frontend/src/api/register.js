@@ -15,14 +15,17 @@ export const registerUserAndProfile = async (userData, profileData) => {
             }),
         });
 
+        const responseData = await userResponse.json();
+        
         if (!userResponse.ok) {
+            if (responseData.error) {
+                throw new Error(JSON.stringify(responseData.error));
+            }
             throw new Error('Error al registrar el usuario.');
         }
 
-        const userDataResponse = await userResponse.json();
-        const userId = userDataResponse.id_usuario; 
-
-        console.log('Usuario creado:', userDataResponse);
+        const userId = responseData.id_usuario; 
+        console.log('Usuario creado:', responseData);
 
         const profileResponse = await fetch(API_URL2, {
             method: 'POST',
@@ -35,16 +38,19 @@ export const registerUserAndProfile = async (userData, profileData) => {
             }),
         });
 
+        const profileResponseData = await profileResponse.json();
+        
         if (!profileResponse.ok) {
+            if (profileResponseData.error) {
+                throw new Error(JSON.stringify(profileResponseData.error));
+            }
             throw new Error('Error al registrar el perfil.');
         }
 
-        const profileDataResponse = await profileResponse.json();
-        console.log('Perfil creado:', profileDataResponse);
-
-        return { userDataResponse, profileDataResponse };
+        console.log('Perfil creado:', profileResponseData);
+        return { user: responseData, profile: profileResponseData };
     } catch (error) {
         console.error('Error en el registro:', error);
-        throw new Error('Error al registrar el usuario y el perfil.');
+        throw error;
     }
 };

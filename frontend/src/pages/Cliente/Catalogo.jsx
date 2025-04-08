@@ -6,6 +6,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import axios from 'axios';
+import { useCurrency } from '../../context/CurrencyContext';
 
 const Catalogo = () => {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ const Catalogo = () => {
   const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [categories, setCategories] = useState([]);
+  const { formatPrice } = useCurrency();
 
   // Extract category from URL query parameters on initial load and when URL changes
   useEffect(() => {
@@ -280,7 +282,7 @@ const Catalogo = () => {
                         </Typography>
                         <Box sx={{ mt: 'auto' }}>
                           <Typography variant="h6" color="text.primary" sx={{ mb: 1 }}>
-                            ${parseFloat(product.precio_producto).toFixed(2)} MXN
+                            {formatPrice(product.precio_producto)}
                           </Typography>
                           <Typography variant="body2" color="text.secondary" sx={{
                             overflow: 'hidden',

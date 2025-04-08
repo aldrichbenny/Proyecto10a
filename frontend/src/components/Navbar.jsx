@@ -14,7 +14,8 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  Container
+  Container,
+  Switch
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -22,6 +23,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { useCurrency } from '../context/CurrencyContext';
 
 const Navbar = ({ onCategorySelect }) => {
   const navigate = useNavigate();
@@ -32,19 +34,19 @@ const Navbar = ({ onCategorySelect }) => {
   const [profileMenuAnchor, setProfileMenuAnchor] = useState(null);
   const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
   const userName = localStorage.getItem('userName') || 'User';
+  const { currency, toggleCurrency } = useCurrency();
 
   // Fetch categories from API
   useEffect(() => {
     const fetchCategories = async () => {
+      setLoading(true);
       try {
-        setLoading(true);
         const response = await axios.get('http://127.0.0.1:8000/api/Categoria/');
         setCategories(response.data);
-        setLoading(false);
       } catch (error) {
         console.error('Error fetching categories:', error);
-        setLoading(false);
       }
+      setLoading(false);
     };
 
     fetchCategories();
@@ -56,6 +58,24 @@ const Navbar = ({ onCategorySelect }) => {
 
   const handleCategoryMenuClose = () => {
     setCategoryMenuAnchor(null);
+  };
+
+  const handleCategorySelect = (categoryId) => {
+    handleCategoryMenuClose();
+    
+    // Siempre navegar a la página del catálogo
+    if (categoryId) {
+      // Si hay una categoría seleccionada, navegar con el parámetro de categoría
+      navigate(`/catalogo?category=${categoryId}`);
+    } else {
+      // Si se selecciona "Todas las categorías", navegar sin parámetro
+      navigate('/catalogo');
+    }
+    
+    // Si estamos en la página del catálogo y hay una función de callback, llamarla
+    if (location.pathname.includes('/catalogo') && onCategorySelect) {
+      onCategorySelect(categoryId);
+    }
   };
 
   const handleProfileMenuOpen = (event) => {
@@ -81,24 +101,6 @@ const Navbar = ({ onCategorySelect }) => {
     setOpenLogoutDialog(false);
   };
 
-  const handleCategorySelect = (categoryId) => {
-    handleCategoryMenuClose();
-    
-    // Siempre navegar a la página del catálogo
-    if (categoryId) {
-      // Si hay una categoría seleccionada, navegar con el parámetro de categoría
-      navigate(`/catalogo?category=${categoryId}`);
-    } else {
-      // Si se selecciona "Todas las categorías", navegar sin parámetro
-      navigate('/catalogo');
-    }
-    
-    // Si estamos en la página del catálogo y hay una función de callback, llamarla
-    if (location.pathname.includes('/catalogo') && onCategorySelect) {
-      onCategorySelect(categoryId);
-    }
-  };
-
   return (
     <AppBar position="static" sx={{ bgcolor: 'black' }}>
       <Container maxWidth="xl">
@@ -106,17 +108,8 @@ const Navbar = ({ onCategorySelect }) => {
           <Typography
             variant="h6"
             noWrap
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-              cursor: 'pointer'
-            }}
-            onClick={() => navigate('/main')}
+            component="div"
+            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
           >
             MAYORSTORE
           </Typography>
@@ -157,6 +150,18 @@ const Navbar = ({ onCategorySelect }) => {
                 ))
               )}
             </Menu>
+          </Box>
+
+          <Box sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
+            <Switch
+              checked={currency === 'USD'}
+              onChange={toggleCurrency}
+              color="default"
+              size="small"
+            />
+            <Typography variant="body2" sx={{ color: 'white', ml: 1 }}>
+              {currency}
+            </Typography>
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>

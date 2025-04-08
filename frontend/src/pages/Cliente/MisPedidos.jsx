@@ -4,13 +4,14 @@ import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useCurrency } from '../../context/CurrencyContext';
 
 const MisPedidos = () => {
   const [pedidos, setPedidos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [imagenes, setImagenes] = useState({});
   const navigate = useNavigate();
-
+  const { formatPrice } = useCurrency();
 
   // Obtener el usuario del localStorage
   const storedUser = localStorage.getItem('user');
@@ -203,7 +204,7 @@ const MisPedidos = () => {
                       Quantity: {pedido.cantidad_total}
                     </Typography>
                     <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-                      Total Price: ${pedido.precio_total.toLocaleString()}
+                      Total Price: {formatPrice(pedido.precio_total)}
                     </Typography>
                   </Box>
                 </Grid>

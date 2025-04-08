@@ -28,6 +28,32 @@ class Roles_RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
 class Usuario_ListCreate(generics.ListCreateAPIView):
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
+
+    def create(self, request, *args, **kwargs):
+        try:
+            serializer = self.get_serializer(data=request.data)
+            if not serializer.is_valid():
+                return Response(
+                    {'error': serializer.errors},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(
+                serializer.data,
+                status=status.HTTP_201_CREATED,
+                headers=headers
+            )
+        except Exception as e:
+            return Response(
+                {'error': str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+    def perform_create(self, serializer):
+        instance = serializer.save()
+        instance.set_password(serializer.validated_data['contraseña'])
+        instance.save()
 class Usuario_RetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer

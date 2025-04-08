@@ -23,8 +23,24 @@ const Register = () => {
             );
             setSuccess('Registro exitoso. Ahora puedes iniciar sesión.');
             setError('');
+            // Redirect to login after successful registration
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 2000);
         } catch (error) {
-            setError(error.message);
+            try {
+                const errorObj = JSON.parse(error.message);
+                if (typeof errorObj === 'object') {
+                    const errorMessages = Object.entries(errorObj)
+                        .map(([field, msg]) => `${field}: ${msg}`)
+                        .join('\n');
+                    setError(errorMessages);
+                } else {
+                    setError(error.message);
+                }
+            } catch {
+                setError(error.message);
+            }
             setSuccess('');
         }
     };

@@ -5,8 +5,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import axios from 'axios';
+import { useCurrency } from '../../context/CurrencyContext';
 
 const ProductoDetalle = () => {
+  const { formatPrice } = useCurrency();
   const { id } = useParams();
   const navigate = useNavigate();
   
@@ -441,10 +443,10 @@ const ProductoDetalle = () => {
               </Box>
               
               <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', mb: 1 }}>
-                ${parseFloat(product.precio_producto).toFixed(2)} MXN
+                {formatPrice(product.precio_producto)}
                 {product.precio_anterior && (
                   <Typography variant="body2" component="span" sx={{ textDecoration: 'line-through', color: 'text.secondary', ml: 2 }}>
-                    ${parseFloat(product.precio_anterior).toFixed(2)} MXN
+                    {formatPrice(product.precio_anterior)}
                   </Typography>
                 )}
               </Typography>
@@ -568,7 +570,7 @@ const ProductoDetalle = () => {
           
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
             <Typography variant="body2">Price per item:</Typography>
-            <Typography variant="body2">${parseFloat(product.precio_producto).toFixed(2)} MXN</Typography>
+            <Typography variant="body2">{formatPrice(product.precio_producto)}</Typography>
           </Box>
           
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
@@ -578,12 +580,12 @@ const ProductoDetalle = () => {
           
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
             <Typography variant="body2">Subtotal:</Typography>
-            <Typography variant="body2">${subtotal.toFixed(2)} MXN</Typography>
+            <Typography variant="body2">{formatPrice(subtotal)}</Typography>
           </Box>
           
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1, mb: 1 }}>
             <Typography variant="body1" fontWeight="bold">Total:</Typography>
-            <Typography variant="body1" fontWeight="bold">${total.toFixed(2)} MXN</Typography>
+            <Typography variant="body1" fontWeight="bold">{formatPrice(total)}</Typography>
           </Box>
           
           <Divider sx={{ my: 2 }} />
