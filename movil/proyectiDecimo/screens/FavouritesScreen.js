@@ -35,7 +35,7 @@ const FavouritesScreen = ({ navigation }) => {
   const fetchWishlistProducts = async (id_usuario) => {
     setLoading(true);
     try {
-      const response = await axios.get('http://192.168.188.86:8000/api/Wishlist_producto/');
+      const response = await axios.get('http://172.18.2.162:8000/api/Wishlist_producto/');
 
       // Filtrar productos que pertenecen al usuario autenticado
       const userWishlist = response.data.filter(

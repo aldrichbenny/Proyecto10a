@@ -44,10 +44,12 @@ import Error from './pages/error/error';
 
 
 import { CartProvider } from './context/CartContext';
+import { CurrencyProvider } from './context/CurrencyContext';
 
 function App() {
 
   return (
+    <CurrencyProvider>
     <CartProvider>
       <BrowserRouter>
         <Routes>
@@ -88,6 +90,7 @@ function App() {
         </Routes>
       </BrowserRouter>
     </CartProvider>
+    </CurrencyProvider>
   )
 }
 

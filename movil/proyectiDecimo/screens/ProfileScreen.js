@@ -11,12 +11,15 @@ import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import axios from 'axios'; // Importa axios
 import Animated, { FadeInDown, FadeInRight } from 'react-native-reanimated';
 import { normalizeY } from 'utils/normalize';
+import { useNavigation } from '@react-navigation/native';
 
 function ProfileScreen(props) {
   const [key, setKey] = useState(0);
   const [profile, setProfile] = useState(null); 
-  const { user, logout } = useAuth()
+  const { user} = useAuth()
   const userId = user?.id_usuario; 
+  const navigation = useNavigation();
+  
 
   console.log('User:', userId);
   useEffect(() => {
@@ -24,7 +27,7 @@ function ProfileScreen(props) {
 
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`http://192.168.188.86:8000/api/Perfil/`);
+        const response = await axios.get(`http://172.18.2.162:8000/api/Perfil/`);
         const userProfile = response.data.find(profile => profile.id_usuario === userId); 
         setProfile(userProfile); 
       } catch (error) {
@@ -41,6 +44,10 @@ function ProfileScreen(props) {
     }, [])
   );
 
+  const handlePress = () => {
+    navigation.navigate('Signin');
+  };
+         
   const Row = ({ icon, title, iconColor, index, onPress }) => {
     return (
       <TouchableOpacity onPress={onPress}>
@@ -117,12 +124,12 @@ function ProfileScreen(props) {
 
 
         <View style={[styles.bottomContainer, { marginBottom: '30%' }]}>
-          <Row
-            title={'Log out'}
+        <Row
+            title={'Logout '}
             iconColor={'#d1d1d1'}
-            icon={<MaterialCommunityIcons name="logout" size={24} color={colors.black} />}
+            icon={<MaterialCommunityIcons name="logout" size={24} color="#000" />}
             index={5}
-           onPress={logout} 
+            onPress={handlePress} // Llama a handlePress cuando se presiona
           />
         </View>
       </View>
