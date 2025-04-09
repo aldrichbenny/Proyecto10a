@@ -6,10 +6,12 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import axios from 'axios';
+import { useCurrency } from '../../context/CurrencyContext';
 
 const DetallePedido = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { formatPrice } = useCurrency();
   const [loading, setLoading] = useState(true);
   const [pedido, setPedido] = useState(null);
   const [imagenes, setImagenes] = useState([]);
@@ -227,7 +229,7 @@ const DetallePedido = () => {
                   </Typography>
                   
                   <Typography variant="body1" sx={{ mb: 2 }}>
-                    <strong>Precio unitario:</strong> ${pedido.precio_unitario.toLocaleString('es-MX')} MXN
+                    <strong>Precio unitario:</strong> {formatPrice(pedido.precio_unitario)}
                   </Typography>
 
                   <Typography variant="body1" sx={{ mb: 2 }}>
@@ -273,7 +275,7 @@ const DetallePedido = () => {
                   </Box>
                   
                   <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
-                    Total: ${pedido.precio_total.toLocaleString('es-MX')} MXN
+                    Total: {formatPrice(pedido.precio_total)}
                   </Typography>
 
                   <Box sx={{ mt: 3 }}>

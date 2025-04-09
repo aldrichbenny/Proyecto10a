@@ -1,0 +1,317 @@
+/* Admin Layout */
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.admin-content {
+  flex: 1;
+  padding: 20px;
+  margin-left: 64px; /* Width of the sidebar */
+}
+
+/* Header */
+.ordenes-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+    height: 83px;
+    background-color: #b75252;
+    border-radius: 8px;
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+    padding-left: 16px;
+  }
+  
+  .ordenes-header-logo {
+    width: 45px;
+    height: 77px;
+  }
+  
+  .ordenes-header-title {
+    margin-left: 16px;
+    font-family: 'Inter', Helvetica, sans-serif;
+    font-weight: bold;
+    color: white;
+    font-size: 24px;
+  }
+  
+  /* Card Container */
+  .ordenes-card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: start;
+    height: 65vh;
+  }
+  
+  /* Card */
+  .ordenes-card {
+    border: 1px solid #d9d9d9;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 32%;
+    max-width: 400px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: #f9fafb;
+  }
+  
+  .ordenes-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transform: scale(1.05);
+  }
+  
+  /* Card Content */
+  .ordenes-card-content {
+    padding: 0;
+  }
+  
+  /* Card Header */
+  .ordenes-card-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+  }
+  
+  .ordenes-label {
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+  
+  .ordenes-value {
+    font-weight: bold;
+    font-size: 1rem;
+  }
+  
+  .ordenes-right-align {
+    text-align: right;
+  }
+  
+  /* Card Body */
+  .ordenes-card-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 16px 0;
+  }
+  
+  .ordenes-id {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4b5563;
+  }
+  
+  .ordenes-icon {
+    position: absolute;
+    right: 16px;
+  }
+  
+  .ordenes-arrow-icon {
+    height: 24px;
+    width: 24px;
+    color: #9ca3af;
+  }
+  
+  /* Progress Bar */
+  .ordenes-progress-bar {
+    padding: 16px;
+  }
+  
+  .ordenes-progress-container {
+    width: 100%;
+    background-color: #e5e7eb;
+    border-radius: 9999px;
+    height: 10px;
+  }
+  
+  .ordenes-progress {
+    height: 100%;
+    border-radius: 9999px;
+    transition: width 0.3s ease-in-out;
+  }
+  
+  /* Card Footer */
+  .ordenes-card-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+  }
+  
+  /* Filters and Sort */
+  .ordenes-filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 20px;
+    padding: 16px;
+    background-color: #f9fafb;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .ordenes-search {
+    flex: 1;
+    margin-right: 16px;
+  }
+  
+  .ordenes-search-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.2s;
+  }
+  
+  .ordenes-search-input:focus {
+    outline: none;
+    border-color: #b75252;
+    box-shadow: 0 0 0 2px rgba(183, 82, 82, 0.2);
+  }
+  
+  .ordenes-sort {
+    display: flex;
+    align-items: center;
+  }
+  
+  .ordenes-sort label {
+    margin-right: 8px;
+    font-size: 14px;
+    color: #4b5563;
+  }
+  
+  .ordenes-sort-select {
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background-color: white;
+    font-size: 14px;
+    min-width: 180px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  
+  .ordenes-sort-select:focus {
+    outline: none;
+    border-color: #b75252;
+    box-shadow: 0 0 0 2px rgba(183, 82, 82, 0.2);
+  }
+  
+  .ordenes-no-results {
+    width: 100%;
+    padding: 40px;
+    text-align: center;
+    background-color: #f9fafb;
+    border-radius: 8px;
+    border: 1px dashed #d1d5db;
+  }
+  
+  .ordenes-no-results p {
+    color: #6b7280;
+    font-size: 16px;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .ordenes-filters {
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .ordenes-search {
+      width: 100%;
+      margin-right: 0;
+    }
+    
+    .ordenes-sort {
+      width: 100%;
+    }
+    
+    .ordenes-sort-select {
+      flex: 1;
+    }
+    
+    .ordenes-card {
+      width: 100%;
+    }
+  }
+
+  .estadisticas-tabla-admin {
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background: white;
+    margin-bottom: 2rem;
+  }
+  
+  .tabla-header-admin, .tabla-fila-admin {
+    display: flex;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .tabla-header-admin {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+  }
+  
+  .tabla-celda-admin {
+    flex: 1;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .header-area-admin {
+    flex: 0.8;
+    font-weight: 600;
+    color: #b04a4a;
+  }
+  
+  .tabla-fila-admin:last-child {
+    border-bottom: none;
+  }
+  
+  .valor-admin {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #343a40;
+  }
+  
+  .barra-container-admin {
+    height: 6px;
+    background-color: #e9ecef;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  
+  .barra-progreso-admin {
+    height: 100%;
+    background-color: #b04a4a;
+    border-radius: 3px;
+    transition: width 0.5s ease;
+  }
+  
+  .tabla-fila-admin:hover {
+    background-color: #f8f9fa;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .estadisticas-tabla-admin {
+      overflow-x: auto;
+    }
+    
+    .tabla-header-admin, .tabla-fila-admin {
+      min-width: 600px;
+    }
+  }
+
+
+  

@@ -35,8 +35,8 @@ function CartScreen({ navigation }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const pedidosRes = await axios.get('http://192.168.188.86:8000/api/Solicitud_producto/');
-        const imagenesRes = await axios.get('http://192.168.188.86:8000/api/Imagen/');
+        const pedidosRes = await axios.get('http://172.18.2.162:8000/api/Solicitud_producto/');
+        const imagenesRes = await axios.get('http://172.18.2.162:8000/api/Imagen/');
   
         const userPedidos = pedidosRes.data.filter(
           (pedido) => pedido.detalle_id_solicitud.id_usuario === id_usuario

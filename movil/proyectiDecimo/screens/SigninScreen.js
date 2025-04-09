@@ -32,19 +32,28 @@ function SigninScreen(props) {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://192.168.188.86:8000/api/Login/', {        
+      const response = await axios.post('http://172.18.2.162:8000/api/Login/', {        
         correo: email,
         contraseña: password,
       });
+  
       if (response.data) {
         Auth.setUser(response.data);
         console.log('User:', response.data);
-        navigation.navigate('Home');
+  
+        const rolId = response.data.id_rol;
+  
+        if (rolId === 3) {
+          navigation.navigate('AdminScreen'); 
+        } else {
+          navigation.navigate('Home');
+        }
       }
     } catch (error) {
       console.error('Error logging in:', error);
     }
   };
+  
 
   return (
     <SafeAreaView style={styles.container}>
